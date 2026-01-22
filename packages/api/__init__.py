@@ -10,6 +10,7 @@ from pydantic import BaseModel, Field
 from packages.api.config import Settings
 from packages.core.concierge import classify_intent, detect_risks
 from packages.core.governance import PolicyLoader, PolicySet, evaluate_governance
+from packages.core.router import Router
 from packages.core.schemas.models import (
     GovernanceDecision,
     Intent,
@@ -70,12 +71,38 @@ class BatchSimulationRequest(BaseModel):
     )
 
 
+class AskRequest(BaseModel):
+    """Request for AI-powered response."""
+
+    text: str = Field(..., min_length=1, description="User request text")
+    tenant_id: str = Field(..., description="Tenant identifier")
+    user_id: str = Field(default="anonymous", description="User identifier")
+    role: str = Field(default="employee", description="User role")
+    department: str = Field(default="General", description="User department")
+    use_llm_classification: bool = Field(
+        default=False, description="Use LLM for intent classification (more accurate)"
+    )
+
+
+class AskResponse(BaseModel):
+    """Response from AI assistant."""
+
+    response: str = Field(description="AI-generated response")
+    intent: Intent = Field(description="Classified intent")
+    risk_signals: list[str] = Field(description="Detected risk signals")
+    hitl_mode: str = Field(description="Human-in-the-loop mode applied")
+    requires_approval: bool = Field(description="Whether response needs approval")
+    model_used: str = Field(description="AI model used for response")
+    governance_triggers: list[str] = Field(description="Policy IDs that triggered")
+
+
 class HealthResponse(BaseModel):
     """Health check response."""
 
     status: str = "ok"
     version: str = "1.0.0"
     policies_loaded: bool = False
+    claude_available: bool = False
 
 
 class PolicyLoadResponse(BaseModel):
@@ -99,6 +126,7 @@ app = FastAPI(
 # Initialize state at module level for immediate availability
 app.state.policy_set = PolicySet()
 app.state.settings = Settings()
+app.state.router = Router()
 
 
 # =============================================================================
@@ -114,10 +142,12 @@ async def health_check() -> HealthResponse:
         or app.state.policy_set.organization_rules.default
         or app.state.policy_set.department_rules
     )
+    router: Router = app.state.router
     return HealthResponse(
         status="ok",
         version="1.0.0",
         policies_loaded=has_policies,
+        claude_available=router.settings.has_anthropic_key,
     )
 
 
@@ -227,6 +257,61 @@ async def simulate_batch_endpoint(
     return runner.simulate_batch(
         inputs=request.inputs,
         tenant_id=request.tenant_id,
+    )
+
+
+# =============================================================================
+# AI Assistant Endpoint
+# =============================================================================
+
+
+@app.post("/ask", response_model=AskResponse, tags=["Assistant"])
+async def ask_assistant(request: AskRequest) -> AskResponse:
+    """Ask the AI assistant a question with full governance.
+
+    This endpoint:
+    1. Classifies intent (rule-based or LLM)
+    2. Detects risk signals
+    3. Evaluates governance policies
+    4. Generates response respecting HITL mode and constraints
+    """
+    router: Router = app.state.router
+
+    # Step 1: Classify intent
+    if request.use_llm_classification and router.settings.has_anthropic_key:
+        intent = router.classify_intent_with_llm(request.text)
+    else:
+        intent = classify_intent(request.text)
+
+    # Step 2: Detect risks
+    risk = detect_risks(request.text)
+
+    # Step 3: Build user context
+    ctx = UserContext(
+        tenant_id=request.tenant_id,
+        user_id=request.user_id,
+        role=request.role,
+        department=request.department,
+    )
+
+    # Step 4: Evaluate governance
+    governance = evaluate_governance(intent, risk, ctx, app.state.policy_set)
+
+    # Step 5: Generate response with governance constraints
+    result = router.generate_response(
+        request_text=request.text,
+        intent=intent,
+        governance=governance,
+    )
+
+    return AskResponse(
+        response=result["text"],
+        intent=intent,
+        risk_signals=risk.signals,
+        hitl_mode=result["hitl_mode"],
+        requires_approval=result["requires_approval"],
+        model_used=result["model"],
+        governance_triggers=governance.policy_trigger_ids,
     )
 
 
