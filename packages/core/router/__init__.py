@@ -2,11 +2,25 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Protocol
 
 from packages.core.router.claude import ClaudeClient
+from packages.core.router.openai_client import OpenAIClient
 from packages.core.router.config import RouterSettings
 from packages.core.schemas.models import GovernanceDecision, Intent, ProviderConstraints
+
+
+class LLMClient(Protocol):
+    """Protocol for LLM clients."""
+
+    def classify_intent(self, text: str) -> dict[str, Any]: ...
+    def generate_response(
+        self,
+        request_text: str,
+        intent_domain: str,
+        hitl_mode: str,
+        context: str | None = None,
+    ) -> dict[str, Any]: ...
 
 
 class Router:
@@ -15,6 +29,7 @@ class Router:
     def __init__(self, settings: RouterSettings | None = None) -> None:
         self.settings = settings or RouterSettings()
         self._claude: ClaudeClient | None = None
+        self._openai: OpenAIClient | None = None
 
     @property
     def claude(self) -> ClaudeClient:
@@ -22,6 +37,20 @@ class Router:
         if self._claude is None:
             self._claude = ClaudeClient(self.settings)
         return self._claude
+
+    @property
+    def openai(self) -> OpenAIClient:
+        """Get OpenAI client (lazy loaded)."""
+        if self._openai is None:
+            self._openai = OpenAIClient(self.settings)
+        return self._openai
+
+    @property
+    def llm(self) -> LLMClient:
+        """Get the configured LLM client based on settings."""
+        if self.settings.llm_provider == "openai":
+            return self.openai
+        return self.claude
 
     def can_use_external_provider(self, constraints: ProviderConstraints) -> bool:
         """Check if external providers can be used given constraints."""
@@ -32,7 +61,7 @@ class Router:
         text: str,
         constraints: ProviderConstraints | None = None,
     ) -> Intent:
-        """Classify intent using LLM (Claude).
+        """Classify intent using LLM.
 
         Falls back to rule-based if constraints block external providers.
         """
@@ -42,14 +71,14 @@ class Router:
 
             return classify_intent(text)
 
-        if not self.settings.has_anthropic_key:
+        if not self.settings.has_api_key:
             # No API key, fall back to rule-based
             from packages.core.concierge import classify_intent
 
             return classify_intent(text)
 
-        # Use Claude for classification
-        result = self.claude.classify_intent(text)
+        # Use configured LLM for classification
+        result = self.llm.classify_intent(text)
 
         return Intent(
             domain=result.get("domain", "General"),
@@ -87,7 +116,7 @@ class Router:
                 "blocked_reason": "local_only_constraint",
             }
 
-        if not self.settings.has_anthropic_key:
+        if not self.settings.has_api_key:
             return {
                 "text": "[AI response unavailable: No API key configured]",
                 "model": "none",
@@ -109,8 +138,8 @@ class Router:
                 "blocked_reason": "escalation_required",
             }
 
-        # Generate response with Claude
-        return self.claude.generate_response(
+        # Generate response with configured LLM
+        return self.llm.generate_response(
             request_text=request_text,
             intent_domain=intent.domain,
             hitl_mode=governance.hitl_mode.value,
@@ -132,6 +161,7 @@ def get_router() -> Router:
 
 __all__ = [
     "ClaudeClient",
+    "OpenAIClient",
     "Router",
     "RouterSettings",
     "get_router",

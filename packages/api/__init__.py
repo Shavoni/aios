@@ -102,7 +102,8 @@ class HealthResponse(BaseModel):
     status: str = "ok"
     version: str = "1.0.0"
     policies_loaded: bool = False
-    claude_available: bool = False
+    llm_available: bool = False
+    llm_provider: str = "none"
 
 
 class PolicyLoadResponse(BaseModel):
@@ -123,10 +124,28 @@ app = FastAPI(
     version="1.0.0",
 )
 
+# CORS middleware for frontend
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Initialize state at module level for immediate availability
 app.state.policy_set = PolicySet()
 app.state.settings = Settings()
 app.state.router = Router()
+
+# Include agent management router
+from packages.api.agents import router as agents_router
+from packages.api.system import router as system_router
+
+app.include_router(agents_router)
+app.include_router(system_router)
 
 
 # =============================================================================
@@ -147,7 +166,8 @@ async def health_check() -> HealthResponse:
         status="ok",
         version="1.0.0",
         policies_loaded=has_policies,
-        claude_available=router.settings.has_anthropic_key,
+        llm_available=router.settings.has_api_key,
+        llm_provider=router.settings.llm_provider if router.settings.has_api_key else "none",
     )
 
 
