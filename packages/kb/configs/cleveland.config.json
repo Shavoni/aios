@@ -1,0 +1,66 @@
+{
+  "version": "1.0",
+  "publisher": "City of Cleveland",
+  "department": "dept-citywide",
+  "refreshCadence": "weekly",
+  "outputBaseDir": "kb_sources/citywide_public",
+  "httpSettings": {
+    "maxRetries": 3,
+    "retryDelayMs": 1000,
+    "timeoutMs": 30000,
+    "rateLimit": 2,
+    "respectRobotsTxt": true
+  },
+  "webPages": [
+    {
+      "url": "https://codelibrary.amlegal.com/codes/cleveland/latest/overview",
+      "filename": "codified-ordinances-overview",
+      "subdir": "ordinances",
+      "sourceType": "ordinance",
+      "knowledgeProfile": "codified_ordinances",
+      "licenseNotes": "Cleveland Codified Ordinances. Official version available at American Legal Publishing. Verify current status before official use."
+    },
+    {
+      "url": "https://www.clevelandohio.gov/government/departments",
+      "filename": "city-departments-directory",
+      "subdir": "web_pages",
+      "sourceType": "web_page",
+      "knowledgeProfile": "department_map"
+    },
+    {
+      "url": "https://www.clevelandohio.gov/government/mayor",
+      "filename": "mayors-office",
+      "subdir": "web_pages",
+      "sourceType": "web_page",
+      "knowledgeProfile": "city_leadership"
+    },
+    {
+      "url": "https://www.clevelandohio.gov/residents/services",
+      "filename": "resident-services",
+      "subdir": "web_pages",
+      "sourceType": "web_page",
+      "knowledgeProfile": "resident_services"
+    },
+    {
+      "url": "https://www.clevelandohio.gov/residents/public-safety",
+      "filename": "public-safety-services",
+      "subdir": "web_pages",
+      "sourceType": "web_page",
+      "knowledgeProfile": "public_safety"
+    }
+  ],
+  "socrata": {
+    "baseUrl": "https://data.clevelandohio.gov",
+    "subdir": "open_data_catalog",
+    "knowledgeProfile": "open_data_catalog",
+    "limit": 500
+  },
+  "legistar": {
+    "portalUrl": "https://cityofcleveland.legistar.com",
+    "subdir": "legislation",
+    "knowledgeProfile": "legislation",
+    "limit": 100,
+    "introducedWithinDays": 365,
+    "includeBodyText": false
+  }
+}

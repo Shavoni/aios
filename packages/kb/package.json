@@ -1,13 +1,20 @@
 {
   "name": "@haais/kb",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "HAAIS Knowledge Layer - Governed semantic search for Custom GPT Actions",
   "main": "server.ts",
   "scripts": {
     "dev": "tsx server.ts",
     "ingest": "tsx ingest-md.ts",
+    "ingest:md": "tsx ingest-md.ts",
+    "import:public": "tsx cli/import-public-sources.ts --config configs/cleveland.config.json",
+    "import:public:dry": "tsx cli/import-public-sources.ts --config configs/cleveland.config.json --dry-run",
+    "import:socrata": "tsx cli/import-public-sources.ts --config configs/cleveland.config.json --type socrata",
+    "import:legistar": "tsx cli/import-public-sources.ts --config configs/cleveland.config.json --type legistar",
+    "import:web": "tsx cli/import-public-sources.ts --config configs/cleveland.config.json --type webPages",
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "test": "node --test --experimental-test-coverage __tests__/*.test.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
