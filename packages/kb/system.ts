@@ -5,14 +5,8 @@
  */
 
 import type { Request, Response } from "express";
-import { createClient } from "@supabase/supabase-js";
 import { agentRegistry, SENSITIVITY_ORDER, type AgentManifest } from "./manifest";
-
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  { auth: { persistSession: false } }
-);
+import { getSupabase } from "./query";
 
 interface ProvisionRequest {
   client_name: string;
@@ -35,11 +29,11 @@ export async function systemStatus(_req: Request, res: Response): Promise<Respon
 
   // Count records in each table
   const [depts, docs, chunks, logs, keys] = await Promise.all([
-    supabase.from("departments").select("id", { count: "exact", head: true }),
-    supabase.from("documents").select("id", { count: "exact", head: true }),
-    supabase.from("document_chunks").select("id", { count: "exact", head: true }),
-    supabase.from("kb_query_logs").select("id", { count: "exact", head: true }),
-    supabase.from("agent_api_keys").select("id", { count: "exact", head: true }),
+    getSupabase().from("departments").select("id", { count: "exact", head: true }),
+    getSupabase().from("documents").select("id", { count: "exact", head: true }),
+    getSupabase().from("document_chunks").select("id", { count: "exact", head: true }),
+    getSupabase().from("kb_query_logs").select("id", { count: "exact", head: true }),
+    getSupabase().from("agent_api_keys").select("id", { count: "exact", head: true }),
   ]);
 
   return res.json({
@@ -82,7 +76,7 @@ export async function systemReset(req: Request, res: Response): Promise<Response
   try {
     // 1. Archive audit logs if requested
     if (archive_logs) {
-      const { data: logs } = await supabase
+      const { data: logs } = await getSupabase()
         .from("kb_query_logs")
         .select("*")
         .order("at", { ascending: true });
@@ -97,7 +91,7 @@ export async function systemReset(req: Request, res: Response): Promise<Response
     // 2. Delete in correct order (foreign key constraints)
 
     // Delete chunks first (references documents)
-    const { error: chunksErr } = await supabase
+    const { error: chunksErr } = await getSupabase()
       .from("document_chunks")
       .delete()
       .neq("id", "00000000-0000-0000-0000-000000000000"); // Delete all
@@ -105,7 +99,7 @@ export async function systemReset(req: Request, res: Response): Promise<Response
     results.chunks_deleted = true;
 
     // Delete documents
-    const { error: docsErr } = await supabase
+    const { error: docsErr } = await getSupabase()
       .from("documents")
       .delete()
       .neq("id", "00000000-0000-0000-0000-000000000000");
@@ -113,7 +107,7 @@ export async function systemReset(req: Request, res: Response): Promise<Response
     results.documents_deleted = true;
 
     // Delete query logs
-    const { error: logsErr } = await supabase
+    const { error: logsErr } = await getSupabase()
       .from("kb_query_logs")
       .delete()
       .neq("id", "00000000-0000-0000-0000-000000000000");
@@ -121,7 +115,7 @@ export async function systemReset(req: Request, res: Response): Promise<Response
     results.logs_deleted = true;
 
     // Delete API keys
-    const { error: keysErr } = await supabase
+    const { error: keysErr } = await getSupabase()
       .from("agent_api_keys")
       .delete()
       .neq("id", "00000000-0000-0000-0000-000000000000");
@@ -129,7 +123,7 @@ export async function systemReset(req: Request, res: Response): Promise<Response
     results.api_keys_deleted = true;
 
     // Delete manifests
-    const { error: manifestErr } = await supabase
+    const { error: manifestErr } = await getSupabase()
       .from("agent_manifests")
       .delete()
       .neq("id", "00000000-0000-0000-0000-000000000000");
@@ -137,7 +131,7 @@ export async function systemReset(req: Request, res: Response): Promise<Response
     results.manifests_deleted = true;
 
     // Delete departments
-    const { error: deptsErr } = await supabase
+    const { error: deptsErr } = await getSupabase()
       .from("departments")
       .delete()
       .neq("id", "placeholder");
@@ -223,7 +217,7 @@ Available departments will be configured by your administrator.`;
     };
 
     // Store manifest in database
-    const { error: manifestErr } = await supabase
+    const { error: manifestErr } = await getSupabase()
       .from("agent_manifests")
       .insert({
         manifest_id: newManifest.manifest_id,
@@ -235,7 +229,7 @@ Available departments will be configured by your administrator.`;
     if (manifestErr) throw new Error(`Failed to store manifest: ${manifestErr.message}`);
 
     // Create concierge department
-    const { error: deptErr } = await supabase
+    const { error: deptErr } = await getSupabase()
       .from("departments")
       .insert({
         id: "concierge",
@@ -308,7 +302,7 @@ export async function systemImportManifest(req: Request, res: Response): Promise
     }
 
     // Store/update manifest in database
-    const { error: manifestErr } = await supabase
+    const { error: manifestErr } = await getSupabase()
       .from("agent_manifests")
       .upsert({
         manifest_id: manifest.manifest_id,
@@ -326,7 +320,7 @@ export async function systemImportManifest(req: Request, res: Response): Promise
     const departments = new Set(manifest.agents.map(a => a.department_id));
     for (const deptId of departments) {
       const agent = manifest.agents.find(a => a.department_id === deptId);
-      await supabase
+      await getSupabase()
         .from("departments")
         .upsert({
           id: deptId,
@@ -400,7 +394,7 @@ export async function systemGenerateKey(req: Request, res: Response): Promise<Re
 
   try {
     // Store key hash (never store plain key)
-    const { error } = await supabase
+    const { error } = await getSupabase()
       .from("agent_api_keys")
       .insert({
         api_key_hash: keyHash,

@@ -4,14 +4,15 @@
   "description": "HAAIS Knowledge Layer - Governed semantic search for Custom GPT Actions",
   "main": "server.ts",
   "scripts": {
-    "dev": "npx ts-node server.ts",
-    "ingest": "npx ts-node ingest-md.ts",
+    "dev": "tsx server.ts",
+    "ingest": "tsx ingest-md.ts",
     "build": "tsc",
     "start": "node dist/server.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "express": "^4.18.2",
     "openai": "^4.28.0"
   },
@@ -20,6 +21,7 @@
     "@types/express": "^4.17.21",
     "@types/node": "^20.11.0",
     "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.3.3"
   },
   "engines": {

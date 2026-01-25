@@ -7,26 +7,45 @@ import OpenAI from "openai";
 import { createClient } from "@supabase/supabase-js";
 import { agentRegistry, getEffectiveSensitivity, CLEVELAND_MANIFEST, type Sensitivity, type AgentDefinition } from "./manifest";
 
-const REQUIRED_ENV = ["OPENAI_API_KEY", "SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
-for (const name of REQUIRED_ENV) {
-  if (!process.env[name]) throw new Error(`Missing required env var: ${name}`);
+// Lazy initialization - clients are created on first use
+let openai: OpenAI | null = null;
+let supabase: ReturnType<typeof createClient> | null = null;
+let initialized = false;
+
+function initClients() {
+  if (initialized) return;
+  const REQUIRED_ENV = ["OPENAI_API_KEY", "SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
+  for (const name of REQUIRED_ENV) {
+    if (!process.env[name]) throw new Error(`Missing required env var: ${name}`);
+  }
+  openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, { auth: { persistSession: false } });
+  agentRegistry.loadManifest(CLEVELAND_MANIFEST);
+  initialized = true;
 }
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, { auth: { persistSession: false } });
+export function getSupabase() {
+  initClients();
+  return supabase!;
+}
 
-agentRegistry.loadManifest(CLEVELAND_MANIFEST);
+export function getOpenAI() {
+  initClients();
+  return openai!;
+}
 
-if (process.env.NODE_ENV !== "production") {
-  agentRegistry.registerKey("sk-dev-public-safety", "cle-public-safety-001");
-  agentRegistry.registerKey("sk-dev-public-works", "cle-public-works-002");
-  agentRegistry.registerKey("sk-dev-hr", "cle-hr-003");
-  agentRegistry.registerKey("sk-dev-finance", "cle-finance-004");
-  agentRegistry.registerKey("sk-dev-community-dev", "cle-community-dev-005");
-  agentRegistry.registerKey("sk-dev-public-health", "cle-public-health-006");
-  agentRegistry.registerKey("sk-dev-law", "cle-law-007");
-  agentRegistry.registerKey("sk-dev-it", "cle-it-008");
-  console.log("Registered development API keys");
+function registerDevKeys() {
+  if (process.env.NODE_ENV !== "production") {
+    agentRegistry.registerKey("sk-dev-public-safety", "cle-public-safety-001");
+    agentRegistry.registerKey("sk-dev-public-works", "cle-public-works-002");
+    agentRegistry.registerKey("sk-dev-hr", "cle-hr-003");
+    agentRegistry.registerKey("sk-dev-finance", "cle-finance-004");
+    agentRegistry.registerKey("sk-dev-community-dev", "cle-community-dev-005");
+    agentRegistry.registerKey("sk-dev-public-health", "cle-public-health-006");
+    agentRegistry.registerKey("sk-dev-law", "cle-law-007");
+    agentRegistry.registerKey("sk-dev-it", "cle-it-008");
+    console.log("Registered development API keys");
+  }
 }
 
 interface KBQueryRequest {
@@ -37,6 +56,9 @@ interface KBQueryRequest {
 }
 
 export async function kbQuery(req: Request, res: Response): Promise<Response> {
+  initClients();
+  registerDevKeys();
+
   const keyConfig = agentRegistry.validateKey(req.headers.authorization);
   if (!keyConfig) {
     return res.status(401).json({ error: "Unauthorized", message: "Missing or invalid Authorization header" });
@@ -56,7 +78,7 @@ export async function kbQuery(req: Request, res: Response): Promise<Response> {
 
   let queryEmbedding: number[];
   try {
-    const embResponse = await openai.embeddings.create({ model: "text-embedding-3-small", input: question.trim() });
+    const embResponse = await getOpenAI().embeddings.create({ model: "text-embedding-3-small", input: question.trim() });
     queryEmbedding = embResponse.data[0].embedding;
   } catch (err) {
     console.error("OpenAI embedding error:", err);
@@ -64,7 +86,7 @@ export async function kbQuery(req: Request, res: Response): Promise<Response> {
   }
 
   const { data, error: dbError } = accessibleProfiles.length > 0
-    ? await supabase.rpc("kb_match_chunks_by_profile", {
+    ? await getSupabase().rpc("kb_match_chunks_by_profile", {
         query_embedding: queryEmbedding,
         dept: agent.department_id,
         include_citywide: effectiveIncludeCitywide,
@@ -72,7 +94,7 @@ export async function kbQuery(req: Request, res: Response): Promise<Response> {
         allowed_profiles: accessibleProfiles,
         match_count: effectiveTopK,
       })
-    : await supabase.rpc("kb_match_chunks", {
+    : await getSupabase().rpc("kb_match_chunks", {
         query_embedding: queryEmbedding,
         dept: agent.department_id,
         include_citywide: effectiveIncludeCitywide,
@@ -87,7 +109,7 @@ export async function kbQuery(req: Request, res: Response): Promise<Response> {
 
   const results = data ?? [];
 
-  await supabase.from("kb_query_logs").insert({
+  await getSupabase().from("kb_query_logs").insert({
     requester: `gpt:${agent.agent_id}`,
     agent_id: agent.agent_id,
     department_id: agent.department_id,
@@ -112,9 +134,12 @@ export async function kbQuery(req: Request, res: Response): Promise<Response> {
 }
 
 export async function kbHealth(_req: Request, res: Response): Promise<Response> {
+  initClients();
+  registerDevKeys();
+
   let openaiOk = false, supabaseOk = false;
-  try { await openai.models.list(); openaiOk = true; } catch {}
-  try { const { error } = await supabase.from("departments").select("id").limit(1); supabaseOk = !error; } catch {}
+  try { await getOpenAI().models.list(); openaiOk = true; } catch {}
+  try { const { error } = await getSupabase().from("departments").select("id").limit(1); supabaseOk = !error; } catch {}
   const healthy = openaiOk && supabaseOk;
   const manifest = agentRegistry.getManifest();
   return res.status(healthy ? 200 : 503).json({
@@ -127,6 +152,9 @@ export async function kbHealth(_req: Request, res: Response): Promise<Response> 
 }
 
 export async function kbAgentInfo(req: Request, res: Response): Promise<Response> {
+  initClients();
+  registerDevKeys();
+
   const keyConfig = agentRegistry.validateKey(req.headers.authorization);
   if (!keyConfig) return res.status(401).json({ error: "Unauthorized" });
   const agent = keyConfig.agent;

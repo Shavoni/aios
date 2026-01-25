@@ -2,6 +2,12 @@
  * HAAIS Knowledge Layer - Express Server
  */
 
+import { config } from "dotenv";
+import { resolve } from "path";
+
+// Load env from root .env file
+config({ path: resolve(__dirname, "../../.env") });
+
 import express from "express";
 import cors from "cors";
 import { kbQuery, kbHealth, kbAgentInfo } from "./query";
