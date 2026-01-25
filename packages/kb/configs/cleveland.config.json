@@ -46,6 +46,76 @@
       "subdir": "web_pages",
       "sourceType": "web_page",
       "knowledgeProfile": "open_data"
+    },
+    {
+      "url": "https://www.clevelandohio.gov/311",
+      "filename": "311-services",
+      "subdir": "web_pages",
+      "sourceType": "web_page",
+      "knowledgeProfile": "citizen_services"
+    },
+    {
+      "url": "https://www.clevelandohio.gov/city-hall/office-mayor",
+      "filename": "mayors-office",
+      "subdir": "web_pages",
+      "sourceType": "web_page",
+      "knowledgeProfile": "city_leadership"
+    },
+    {
+      "url": "https://www.clevelandohio.gov/city-hall/city-council",
+      "filename": "city-council",
+      "subdir": "web_pages",
+      "sourceType": "web_page",
+      "knowledgeProfile": "city_leadership"
+    },
+    {
+      "url": "https://www.clevelandohio.gov/city-hall/departments/public-safety",
+      "filename": "public-safety",
+      "subdir": "web_pages",
+      "sourceType": "web_page",
+      "knowledgeProfile": "public_safety"
+    },
+    {
+      "url": "https://www.clevelandohio.gov/city-hall/departments/public-works",
+      "filename": "public-works",
+      "subdir": "web_pages",
+      "sourceType": "web_page",
+      "knowledgeProfile": "public_works"
+    },
+    {
+      "url": "https://www.clevelandohio.gov/city-hall/departments/public-utilities",
+      "filename": "public-utilities",
+      "subdir": "web_pages",
+      "sourceType": "web_page",
+      "knowledgeProfile": "utilities"
+    },
+    {
+      "url": "https://www.clevelandohio.gov/city-hall/departments/finance",
+      "filename": "finance-department",
+      "subdir": "web_pages",
+      "sourceType": "web_page",
+      "knowledgeProfile": "finance"
+    },
+    {
+      "url": "https://www.clevelandohio.gov/city-hall/departments/building-housing",
+      "filename": "building-housing",
+      "subdir": "web_pages",
+      "sourceType": "web_page",
+      "knowledgeProfile": "housing"
+    },
+    {
+      "url": "https://www.clevelandohio.gov/city-hall/departments/community-development",
+      "filename": "community-development",
+      "subdir": "web_pages",
+      "sourceType": "web_page",
+      "knowledgeProfile": "community_dev"
+    },
+    {
+      "url": "https://www.clevelandohio.gov/careers",
+      "filename": "city-careers",
+      "subdir": "web_pages",
+      "sourceType": "web_page",
+      "knowledgeProfile": "hr_services"
     }
   ],
   "legistar": {
