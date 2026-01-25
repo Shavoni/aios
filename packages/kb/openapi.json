@@ -1,0 +1,291 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "HAAIS Knowledge Layer API",
+    "version": "1.0.0",
+    "description": "Department-scoped knowledge search for HAAIS OS with governed retrieval, citations, and audit logging."
+  },
+  "servers": [
+    { "url": "https://kb.haais.io", "description": "Production" },
+    { "url": "http://localhost:3001", "description": "Development" }
+  ],
+  "tags": [
+    { "name": "kb", "description": "Knowledge Base operations for Custom GPT Actions" },
+    { "name": "admin", "description": "System administration (white-label provisioning)" }
+  ],
+  "security": [{ "bearerAuth": [] }],
+  "paths": {
+    "/kb/query": {
+      "post": {
+        "operationId": "kbQuery",
+        "tags": ["kb"],
+        "summary": "Query the governed knowledge base",
+        "description": "Semantic search over department and citywide documents. Returns evidence chunks and citations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "question": { "type": "string", "description": "The user's question" },
+                  "include_citywide": { "type": "boolean", "default": true },
+                  "max_sensitivity": { "type": "string", "enum": ["public", "internal", "confidential", "restricted", "privileged"], "default": "internal" },
+                  "top_k": { "type": "integer", "default": 8, "minimum": 1, "maximum": 20 }
+                },
+                "required": ["question"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Evidence and citations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "evidence": { "type": "array", "items": { "type": "object" } },
+                    "citations": { "type": "array", "items": { "type": "object" } },
+                    "agent": { "type": "object" }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "500": { "description": "Server error" }
+        }
+      }
+    },
+    "/kb/health": {
+      "get": {
+        "operationId": "kbHealth",
+        "tags": ["kb"],
+        "summary": "Health check",
+        "security": [],
+        "responses": { "200": { "description": "Service status" } }
+      }
+    },
+    "/kb/agent": {
+      "get": {
+        "operationId": "kbAgentInfo",
+        "tags": ["kb"],
+        "summary": "Get current agent info",
+        "responses": { "200": { "description": "Agent configuration" } }
+      }
+    },
+    "/system/status": {
+      "get": {
+        "operationId": "systemStatus",
+        "tags": ["admin"],
+        "summary": "Get system status",
+        "description": "Returns current manifest, data counts, and configuration.",
+        "security": [{ "adminAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "System status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "manifest": { "type": "object" },
+                    "data": { "type": "object" },
+                    "timestamp": { "type": "string", "format": "date-time" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/system/reset": {
+      "post": {
+        "operationId": "systemReset",
+        "tags": ["admin"],
+        "summary": "Reset all client data",
+        "description": "Clears all agents, documents, and knowledge data for white-label redeployment. Requires confirmation.",
+        "security": [{ "adminAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "archive_logs": { "type": "boolean", "default": true, "description": "Archive audit logs before deletion" },
+                  "confirm": { "type": "string", "description": "Must be 'RESET_ALL_CLIENT_DATA' to proceed" }
+                },
+                "required": ["confirm"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Reset complete" },
+          "400": { "description": "Confirmation required" },
+          "500": { "description": "Reset failed" }
+        }
+      }
+    },
+    "/system/provision": {
+      "post": {
+        "operationId": "systemProvision",
+        "tags": ["admin"],
+        "summary": "Provision new client",
+        "description": "Sets up system for a new client with a base Concierge agent.",
+        "security": [{ "adminAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "client_name": { "type": "string", "description": "Display name for the client" },
+                  "organization": { "type": "string", "description": "Organization identifier (used in manifest_id)" },
+                  "admin_email": { "type": "string", "format": "email" },
+                  "description": { "type": "string" }
+                },
+                "required": ["client_name", "organization"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Client provisioned" },
+          "400": { "description": "Missing required fields" },
+          "500": { "description": "Provisioning failed" }
+        }
+      }
+    },
+    "/system/import-manifest": {
+      "post": {
+        "operationId": "systemImportManifest",
+        "tags": ["admin"],
+        "summary": "Import agent manifest",
+        "description": "Import a complete agent manifest with all agent definitions.",
+        "security": [{ "adminAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentManifest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Manifest imported" },
+          "400": { "description": "Invalid manifest" },
+          "500": { "description": "Import failed" }
+        }
+      }
+    },
+    "/system/generate-key": {
+      "post": {
+        "operationId": "systemGenerateKey",
+        "tags": ["admin"],
+        "summary": "Generate API key for agent",
+        "description": "Creates a new API key for an agent. Key is only shown once.",
+        "security": [{ "adminAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "agent_id": { "type": "string", "description": "The agent to generate a key for" },
+                  "description": { "type": "string", "description": "Optional description for the key" }
+                },
+                "required": ["agent_id"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Key generated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "agent_id": { "type": "string" },
+                    "api_key": { "type": "string", "description": "Only shown once" },
+                    "warning": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Missing agent_id" },
+          "404": { "description": "Agent not found" },
+          "500": { "description": "Key generation failed" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": { "type": "http", "scheme": "bearer", "description": "Department-specific API key" },
+      "adminAuth": { "type": "http", "scheme": "bearer", "description": "Admin API key for system management" }
+    },
+    "schemas": {
+      "AgentManifest": {
+        "type": "object",
+        "properties": {
+          "schema_version": { "type": "string" },
+          "manifest_id": { "type": "string" },
+          "created_at": { "type": "string", "format": "date-time" },
+          "agents": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/AgentDefinition" }
+          },
+          "sensitivity_levels": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "citywide_knowledge_base": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["manifest_id", "agents"]
+      },
+      "AgentDefinition": {
+        "type": "object",
+        "properties": {
+          "agent_id": { "type": "string" },
+          "display_name": { "type": "string" },
+          "department_id": { "type": "string" },
+          "gpt_name_in_openai": { "type": "string" },
+          "public_description": { "type": "string" },
+          "instruction_kernel": { "type": "string" },
+          "default_max_sensitivity": { "type": "string", "enum": ["public", "internal", "confidential", "restricted", "privileged"] },
+          "include_citywide": { "type": "boolean" },
+          "allowed_scopes": { "type": "array", "items": { "type": "string" } },
+          "knowledge_profile": { "type": "array", "items": { "type": "string" } },
+          "action_profile": { "$ref": "#/components/schemas/ActionProfile" }
+        },
+        "required": ["agent_id", "department_id", "instruction_kernel", "default_max_sensitivity"]
+      },
+      "ActionProfile": {
+        "type": "object",
+        "properties": {
+          "can_draft": { "type": "boolean" },
+          "can_submit": { "type": "boolean" },
+          "can_query_external": { "type": "boolean" },
+          "can_schedule": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}

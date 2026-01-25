@@ -2,7 +2,7 @@
  * API client for AIOS backend
  */
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8001";
 
 /**
  * Generic fetch wrapper with error handling
