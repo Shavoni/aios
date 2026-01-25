@@ -13,54 +13,47 @@
   },
   "webPages": [
     {
-      "url": "https://codelibrary.amlegal.com/codes/cleveland/latest/overview",
-      "filename": "codified-ordinances-overview",
-      "subdir": "ordinances",
-      "sourceType": "ordinance",
-      "knowledgeProfile": "codified_ordinances",
-      "licenseNotes": "Cleveland Codified Ordinances. Official version available at American Legal Publishing. Verify current status before official use."
+      "url": "https://www.clevelandohio.gov",
+      "filename": "city-homepage",
+      "subdir": "web_pages",
+      "sourceType": "web_page",
+      "knowledgeProfile": "city_info"
     },
     {
-      "url": "https://www.clevelandohio.gov/government/departments",
+      "url": "https://www.clevelandohio.gov/city-hall/departments",
       "filename": "city-departments-directory",
       "subdir": "web_pages",
       "sourceType": "web_page",
       "knowledgeProfile": "department_map"
     },
     {
-      "url": "https://www.clevelandohio.gov/government/mayor",
-      "filename": "mayors-office",
+      "url": "https://www.clevelandohio.gov/city-hall",
+      "filename": "city-hall-overview",
       "subdir": "web_pages",
       "sourceType": "web_page",
       "knowledgeProfile": "city_leadership"
     },
     {
-      "url": "https://www.clevelandohio.gov/residents/services",
-      "filename": "resident-services",
+      "url": "https://www.clevelandohio.gov/city-hall/departments/innovation-technology/uai",
+      "filename": "urban-analytics-innovation",
       "subdir": "web_pages",
       "sourceType": "web_page",
-      "knowledgeProfile": "resident_services"
+      "knowledgeProfile": "uai"
     },
     {
-      "url": "https://www.clevelandohio.gov/residents/public-safety",
-      "filename": "public-safety-services",
+      "url": "https://data.clevelandohio.gov",
+      "filename": "open-data-portal",
       "subdir": "web_pages",
       "sourceType": "web_page",
-      "knowledgeProfile": "public_safety"
+      "knowledgeProfile": "open_data"
     }
   ],
-  "socrata": {
-    "baseUrl": "https://data.clevelandohio.gov",
-    "subdir": "open_data_catalog",
-    "knowledgeProfile": "open_data_catalog",
-    "limit": 500
-  },
   "legistar": {
     "portalUrl": "https://cityofcleveland.legistar.com",
     "subdir": "legislation",
     "knowledgeProfile": "legislation",
-    "limit": 100,
-    "introducedWithinDays": 365,
+    "limit": 50,
+    "introducedWithinDays": 90,
     "includeBodyText": false
   }
 }
