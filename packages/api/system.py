@@ -1,25 +1,65 @@
-"""System management API endpoints."""
+"""System management API endpoints with enterprise security."""
 
 from __future__ import annotations
 
+import hashlib
+import hmac
+import secrets
 import shutil
 from pathlib import Path
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
 
+from packages.api.security import (
+    AuthenticatedUser,
+    Permission,
+    Role,
+    log_audit_event,
+    require_permission,
+    require_role,
+)
 from packages.core.agents import AgentConfig, get_agent_manager
 from packages.core.knowledge import get_knowledge_manager
 
 router = APIRouter(prefix="/system", tags=["System"])
 
+# Secure reset token (regenerated on startup)
+_reset_token: str | None = None
+
+
+def _get_reset_token() -> str:
+    """Get or generate the reset confirmation token."""
+    global _reset_token
+    if _reset_token is None:
+        _reset_token = secrets.token_urlsafe(32)
+    return _reset_token
+
 
 class ClientSetupRequest(BaseModel):
     """Request to set up for a new client."""
 
-    client_name: str = Field(..., min_length=1, description="Client/deployment name")
-    organization: str = Field(..., min_length=1, description="Organization name")
-    description: str = Field(default="", description="Optional description")
+    client_name: str = Field(
+        ...,
+        min_length=1,
+        max_length=100,
+        description="Client/deployment name"
+    )
+    organization: str = Field(
+        ...,
+        min_length=1,
+        max_length=100,
+        description="Organization name"
+    )
+    description: str = Field(
+        default="",
+        max_length=500,
+        description="Optional description"
+    )
+    confirm_token: str = Field(
+        ...,
+        description="Confirmation token from /system/reset-token endpoint"
+    )
 
 
 class ResetResponse(BaseModel):
@@ -27,6 +67,24 @@ class ResetResponse(BaseModel):
 
     message: str
     concierge: AgentConfig
+
+
+class ResetTokenResponse(BaseModel):
+    """Response with reset confirmation token."""
+
+    token: str
+    warning: str
+    expires_in: str = "This token is valid until server restart"
+
+
+class SystemInfoResponse(BaseModel):
+    """System information response."""
+
+    total_agents: int
+    active_agents: int
+    has_concierge: bool
+    concierge_status: str | None
+    agent_domains: list[str]
 
 
 def generate_concierge_prompt(client_name: str, organization: str, agents: list[AgentConfig]) -> str:
@@ -112,25 +170,82 @@ def create_concierge(client_name: str, organization: str, agents: list[AgentConf
     )
 
 
+@router.get("/reset-token", response_model=ResetTokenResponse)
+async def get_reset_token(
+    user: AuthenticatedUser = Depends(require_role(Role.ADMIN)),
+) -> ResetTokenResponse:
+    """Get a reset confirmation token. Required for system reset.
+
+    This is a two-step verification process:
+    1. Call this endpoint to get a confirmation token
+    2. Use that token in the /system/reset endpoint
+
+    Requires ADMIN role.
+    """
+    token = _get_reset_token()
+
+    log_audit_event(
+        event_type="reset_token_requested",
+        user=user,
+        endpoint="/system/reset-token",
+        method="GET",
+        action="request_reset_token",
+        status="success",
+    )
+
+    return ResetTokenResponse(
+        token=token,
+        warning="WARNING: Using this token with /system/reset will DELETE ALL agents and knowledge bases. This action is IRREVERSIBLE.",
+    )
+
+
 @router.post("/reset", response_model=ResetResponse)
-async def reset_for_new_client(request: ClientSetupRequest) -> ResetResponse:
+async def reset_for_new_client(
+    request: ClientSetupRequest,
+    user: AuthenticatedUser = Depends(require_role(Role.ADMIN)),
+) -> ResetResponse:
     """Reset the system for a new client deployment.
 
     This will:
     1. Delete all existing agents
     2. Clear all knowledge bases
     3. Create a fresh Concierge agent configured for the new client
+
+    Requires ADMIN role and valid confirmation token from /system/reset-token.
     """
+    # Verify confirmation token with constant-time comparison
+    expected_token = _get_reset_token()
+    if not hmac.compare_digest(request.confirm_token, expected_token):
+        log_audit_event(
+            event_type="reset_denied",
+            user=user,
+            endpoint="/system/reset",
+            method="POST",
+            action="system_reset",
+            status="denied",
+            details={"reason": "invalid_token"},
+        )
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Invalid confirmation token. Get a new token from /system/reset-token",
+        )
+
+    # Regenerate token after use (one-time use)
+    global _reset_token
+    _reset_token = secrets.token_urlsafe(32)
+
     agent_manager = get_agent_manager()
     knowledge_manager = get_knowledge_manager()
 
     # Get all current agents and delete them
     current_agents = agent_manager.list_agents()
+    deleted_agents = []
     for agent in current_agents:
         # Clear knowledge base first
         knowledge_manager.clear_agent_knowledge(agent.id)
         # Delete agent
         agent_manager.delete_agent(agent.id)
+        deleted_agents.append(agent.id)
 
     # Also clean up the knowledge storage directory to ensure clean slate
     try:
@@ -158,6 +273,20 @@ async def reset_for_new_client(request: ClientSetupRequest) -> ResetResponse:
     # Save the concierge
     created = agent_manager.create_agent(concierge)
 
+    log_audit_event(
+        event_type="system_reset",
+        user=user,
+        endpoint="/system/reset",
+        method="POST",
+        action="system_reset",
+        status="success",
+        details={
+            "deleted_agents": deleted_agents,
+            "new_client": request.client_name,
+            "new_organization": request.organization,
+        },
+    )
+
     return ResetResponse(
         message=f"System reset complete. Ready for {request.organization} ({request.client_name}).",
         concierge=created,
@@ -165,11 +294,15 @@ async def reset_for_new_client(request: ClientSetupRequest) -> ResetResponse:
 
 
 @router.post("/regenerate-concierge", response_model=AgentConfig)
-async def regenerate_concierge() -> AgentConfig:
+async def regenerate_concierge(
+    user: AuthenticatedUser = Depends(require_permission(Permission.WRITE_AGENTS)),
+) -> AgentConfig:
     """Regenerate the Concierge agent with awareness of all current agents.
 
     Call this after adding/removing agents to update the Concierge's knowledge
     of available specialists.
+
+    Requires WRITE_AGENTS permission.
     """
     agent_manager = get_agent_manager()
 
@@ -210,24 +343,49 @@ async def regenerate_concierge() -> AgentConfig:
             "description": concierge.description,
         })
         if updated:
+            log_audit_event(
+                event_type="concierge_regenerated",
+                user=user,
+                endpoint="/system/regenerate-concierge",
+                method="POST",
+                action="regenerate_concierge",
+                status="success",
+                details={"agent_count": len(agents)},
+            )
             return updated
 
     # Create new if doesn't exist
-    return agent_manager.create_agent(concierge)
+    created = agent_manager.create_agent(concierge)
+
+    log_audit_event(
+        event_type="concierge_created",
+        user=user,
+        endpoint="/system/regenerate-concierge",
+        method="POST",
+        action="create_concierge",
+        status="success",
+    )
+
+    return created
 
 
-@router.get("/info")
-async def get_system_info() -> dict:
-    """Get current system configuration info."""
+@router.get("/info", response_model=SystemInfoResponse)
+async def get_system_info(
+    user: AuthenticatedUser = Depends(require_permission(Permission.READ_AGENTS)),
+) -> SystemInfoResponse:
+    """Get current system configuration info.
+
+    Requires READ_AGENTS permission.
+    """
     agent_manager = get_agent_manager()
     agents = agent_manager.list_agents()
 
     concierge = agent_manager.get_agent("concierge")
 
-    return {
-        "total_agents": len(agents),
-        "active_agents": len([a for a in agents if a.status == "active"]),
-        "has_concierge": concierge is not None,
-        "concierge_status": concierge.status if concierge else None,
-        "agent_domains": list(set(a.domain for a in agents)),
-    }
+    return SystemInfoResponse(
+        total_agents=len(agents),
+        active_agents=len([a for a in agents if a.status == "active"]),
+        has_concierge=concierge is not None,
+        concierge_status=concierge.status if concierge else None,
+        agent_domains=list(set(a.domain for a in agents)),
+    )

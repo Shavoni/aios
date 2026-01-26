@@ -102,6 +102,106 @@ create index if not exists kb_query_logs_agent_idx on kb_query_logs(agent_id);
 
 alter table documents enable row level security;
 alter table document_chunks enable row level security;
+alter table kb_query_logs enable row level security;
+alter table agent_manifests enable row level security;
+alter table agent_api_keys enable row level security;
+
+-- =============================================================================
+-- RLS POLICIES
+-- =============================================================================
+
+-- Documents: Agents can only see documents from their department, citywide docs, or shared docs
+create policy "documents_select_policy" on documents
+  for select
+  using (
+    -- Service role bypasses RLS
+    current_setting('role', true) = 'service_role'
+    or
+    -- Department match
+    department_id = coalesce(current_setting('app.department_id', true), '')
+    or
+    -- Citywide documents visible to all
+    visibility_scope = 'citywide'
+    or
+    -- Shared documents visible to listed departments
+    (visibility_scope = 'shared' and
+     coalesce(current_setting('app.department_id', true), '') = any(shared_with))
+  );
+
+create policy "documents_insert_policy" on documents
+  for insert
+  with check (
+    current_setting('role', true) = 'service_role'
+    or department_id = coalesce(current_setting('app.department_id', true), '')
+  );
+
+create policy "documents_update_policy" on documents
+  for update
+  using (
+    current_setting('role', true) = 'service_role'
+    or department_id = coalesce(current_setting('app.department_id', true), '')
+  );
+
+create policy "documents_delete_policy" on documents
+  for delete
+  using (
+    current_setting('role', true) = 'service_role'
+    or department_id = coalesce(current_setting('app.department_id', true), '')
+  );
+
+-- Document chunks: Follow same rules as parent documents
+create policy "chunks_select_policy" on document_chunks
+  for select
+  using (
+    current_setting('role', true) = 'service_role'
+    or
+    exists (
+      select 1 from documents d
+      where d.id = document_chunks.document_id
+      and (
+        d.department_id = coalesce(current_setting('app.department_id', true), '')
+        or d.visibility_scope = 'citywide'
+        or (d.visibility_scope = 'shared' and
+            coalesce(current_setting('app.department_id', true), '') = any(d.shared_with))
+      )
+    )
+  );
+
+create policy "chunks_insert_policy" on document_chunks
+  for insert
+  with check (
+    current_setting('role', true) = 'service_role'
+    or department_id = coalesce(current_setting('app.department_id', true), '')
+  );
+
+create policy "chunks_delete_policy" on document_chunks
+  for delete
+  using (
+    current_setting('role', true) = 'service_role'
+    or department_id = coalesce(current_setting('app.department_id', true), '')
+  );
+
+-- Query logs: Only service role can read all, agents see their own
+create policy "query_logs_select_policy" on kb_query_logs
+  for select
+  using (
+    current_setting('role', true) = 'service_role'
+    or agent_id = coalesce(current_setting('app.agent_id', true), '')
+  );
+
+create policy "query_logs_insert_policy" on kb_query_logs
+  for insert
+  with check (true);  -- Anyone can insert logs
+
+-- Agent manifests: Service role only
+create policy "manifests_all_policy" on agent_manifests
+  for all
+  using (current_setting('role', true) = 'service_role');
+
+-- API keys: Service role only
+create policy "api_keys_all_policy" on agent_api_keys
+  for all
+  using (current_setting('role', true) = 'service_role');
 
 -- =============================================================================
 -- FUNCTIONS
