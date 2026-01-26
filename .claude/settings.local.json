@@ -44,7 +44,25 @@
       "Bash(git remote set-url:*)",
       "Bash(git init:*)",
       "mcp__MCP_DOCKER__fetch",
-      "WebSearch"
+      "WebSearch",
+      "Bash(git fetch:*)",
+      "Bash(git gc:*)",
+      "Bash(dir /s /b *.md)",
+      "Bash(git fsck:*)",
+      "Bash(git stash:*)",
+      "Bash(git hash-object:*)",
+      "Bash(npx tsx:*)",
+      "Bash(gh pr create --title \"feat\\(kb\\): Add Public Source Importer with 55 Cleveland sources\" --body \"$\\(cat <<''EOF''\n## Summary\n- Adds enterprise-grade Public Source Importer for knowledge base population\n- Imports 55 Cleveland municipal public sources \\(city departments, utilities, transit, etc.\\)\n- Includes encoding fixes for Windows compatibility\n\n## Changes\n- `packages/knowledge/importers/public_source_importer.py` - Core importer with rate limiting, retry logic, and content extraction\n- `packages/knowledge/sources/cleveland_public_sources.json` - 55 curated Cleveland data sources\n- Updated knowledge base with imported content\n\n## Test plan\n- [x] Importer handles network errors gracefully\n- [x] Content extraction works across different HTML structures\n- [x] Encoding issues resolved for Windows environments\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\nEOF\n\\)\")",
+      "Bash(gh pr checkout:*)",
+      "Bash(dir \"E:\\\\My AI Projects and Apps\\\\aiOS\\\\.git\\\\HEAD\")",
+      "Bash(ls:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(python3:*)",
+      "Bash(file:*)",
+      "Bash(for f in web/tsconfig.json web/package.json web/components.json)",
+      "Bash(do python3 -c \"import json; json.load\\(open\\(''$f''\\)\\)\")",
+      "Bash(done)",
+      "Bash(gh repo view:*)"
     ]
   }
 }
