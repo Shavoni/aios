@@ -33,6 +33,7 @@ from packages.core.voice import (
 
     # Audit
     VoiceEventType,
+    VoiceAuditEvent,
     get_voice_audit_log,
 )
 
@@ -528,4 +529,189 @@ async def list_audit_events(
     return {
         "events": [e.model_dump() for e in events],
         "total": len(events),
+    }
+
+
+# =============================================================================
+# Pipeline Endpoints (Streaming Voice)
+# =============================================================================
+
+
+class BargeInRequest(BaseModel):
+    """Request to trigger barge-in (user interruption)."""
+
+    reason: str = Field(default="user_speech_detected", description="Why barge-in triggered")
+
+
+class PipelineSessionRequest(BaseModel):
+    """Request to create a voice pipeline session."""
+
+    profile_id: str = Field(default="compliance_locked")
+    is_interruptible: bool = Field(default=True, description="Allow barge-in")
+    org_id: str = ""
+    user_id: str = ""
+
+
+class PipelineMetricsResponse(BaseModel):
+    """Pipeline latency metrics."""
+
+    stt_first_interim_ms: float = 0.0
+    stt_final_ms: float = 0.0
+    llm_first_token_ms: float = 0.0
+    llm_complete_ms: float = 0.0
+    tts_first_chunk_ms: float = 0.0
+    tts_complete_ms: float = 0.0
+    total_latency_ms: float = 0.0
+    user_perceived_latency_ms: float = 0.0
+
+
+@router.post("/pipeline/session")
+async def create_pipeline_session(request: PipelineSessionRequest) -> dict:
+    """Create a new voice pipeline session.
+
+    This prepares a session for streaming STT → LLM → TTS processing.
+    Use WebSocket endpoint for actual audio streaming.
+    """
+    from packages.core.voice.pipeline import get_voice_pipeline
+
+    pipeline = get_voice_pipeline()
+
+    # Get provider assignments from routing
+    voice_router = get_voice_router()
+    stt_result = voice_router.route(
+        session_id=str(uuid.uuid4()),
+        profile_id=request.profile_id,
+        provider_type=ProviderType.STT,
+    )
+    tts_result = voice_router.route(
+        session_id=str(uuid.uuid4()),
+        profile_id=request.profile_id,
+        provider_type=ProviderType.TTS,
+    )
+
+    session = pipeline.create_session(
+        stt_provider_id=stt_result.provider.id if stt_result.provider else "",
+        tts_provider_id=tts_result.provider.id if tts_result.provider else "",
+        is_interruptible=request.is_interruptible,
+    )
+
+    return {
+        "session_id": session.session_id,
+        "state": session.state.value,
+        "stt_provider_id": session.stt_provider_id,
+        "tts_provider_id": session.tts_provider_id,
+        "is_interruptible": session.is_interruptible,
+        "websocket_url": f"/voice/pipeline/ws/{session.session_id}",
+    }
+
+
+@router.post("/pipeline/session/{session_id}/barge-in")
+async def handle_barge_in(session_id: str, request: BargeInRequest) -> dict:
+    """Trigger barge-in to interrupt current TTS playback.
+
+    ENTERPRISE: Barge-in allows natural conversation flow by letting
+    users interrupt the AI mid-speech. This:
+    1. Cancels current TTS stream
+    2. Immediately switches to listening mode
+    3. Logs the interruption for analytics
+    """
+    from packages.core.voice.pipeline import get_voice_pipeline
+
+    pipeline = get_voice_pipeline()
+    session = pipeline.get_session(session_id)
+
+    if not session:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Pipeline session '{session_id}' not found",
+        )
+
+    if not session.is_interruptible:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Session does not support barge-in",
+        )
+
+    # Trigger barge-in
+    event = await pipeline.handle_barge_in(session_id)
+
+    # Log to audit
+    audit = get_voice_audit_log()
+    audit.log(
+        VoiceAuditEvent(
+            event_type=VoiceEventType.BARGE_IN,
+            session_id=session_id,
+            org_id="",  # TODO: Get from session
+            metadata={
+                "reason": request.reason,
+                "tts_cancelled": event.tts_cancelled,
+                "audio_position_ms": event.audio_position_ms,
+            },
+        )
+    )
+
+    return {
+        "success": True,
+        "session_id": session_id,
+        "tts_cancelled": event.tts_cancelled,
+        "new_state": session.state.value,
+    }
+
+
+@router.get("/pipeline/session/{session_id}/metrics", response_model=PipelineMetricsResponse)
+async def get_pipeline_metrics(session_id: str) -> PipelineMetricsResponse:
+    """Get latency metrics for a pipeline session.
+
+    ENTERPRISE: Latency tracking for SLA monitoring and optimization.
+    """
+    from packages.core.voice.pipeline import get_voice_pipeline
+
+    pipeline = get_voice_pipeline()
+    session = pipeline.get_session(session_id)
+
+    if not session:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Pipeline session '{session_id}' not found",
+        )
+
+    return PipelineMetricsResponse(
+        stt_first_interim_ms=session.metrics.stt_first_interim_ms,
+        stt_final_ms=session.metrics.stt_final_ms,
+        llm_first_token_ms=session.metrics.llm_first_token_ms,
+        llm_complete_ms=session.metrics.llm_complete_ms,
+        tts_first_chunk_ms=session.metrics.tts_first_chunk_ms,
+        tts_complete_ms=session.metrics.tts_complete_ms,
+        total_latency_ms=session.metrics.total_latency_ms,
+        user_perceived_latency_ms=session.metrics.user_perceived_latency_ms,
+    )
+
+
+@router.delete("/pipeline/session/{session_id}")
+async def end_pipeline_session(session_id: str) -> dict:
+    """End a voice pipeline session."""
+    from packages.core.voice.pipeline import get_voice_pipeline
+
+    pipeline = get_voice_pipeline()
+    session = pipeline.get_session(session_id)
+
+    if not session:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Pipeline session '{session_id}' not found",
+        )
+
+    # Get final metrics before ending
+    metrics = session.metrics
+
+    pipeline.end_session(session_id)
+
+    return {
+        "success": True,
+        "session_id": session_id,
+        "turn_count": session.turn_count,
+        "final_metrics": {
+            "avg_user_perceived_latency_ms": metrics.user_perceived_latency_ms,
+            "total_latency_ms": metrics.total_latency_ms,
+        },
     }
