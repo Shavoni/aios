@@ -484,14 +484,56 @@ class GovernanceManager:
         self._save_policies(f"Marked rule {rule_id} as immutable", "system")
         return True
 
-    def unmark_rule_immutable(self, rule_id: str, override_key: str = "") -> bool:
-        """Unmark a rule as immutable (requires override key for safety)."""
-        # In production, override_key would be validated against a secure store
-        if rule_id in self._immutable_rules:
-            self._immutable_rules.remove(rule_id)
-            self._save_policies(f"Unmarked rule {rule_id} as immutable", "admin")
-            return True
-        return False
+    def unmark_rule_immutable(
+        self,
+        rule_id: str,
+        override_key: str,
+        admin_user: str = "admin",
+    ) -> bool:
+        """Unmark a rule as immutable (requires valid override key).
+
+        ENTERPRISE SECURITY: This is a privileged operation that requires:
+        1. Valid override_key matching GOVERNANCE_OVERRIDE_KEY environment variable
+        2. Rule must currently be marked as immutable
+        3. Action is logged with admin user for audit trail
+
+        Args:
+            rule_id: The rule ID to unmark
+            override_key: Must match GOVERNANCE_OVERRIDE_KEY env var
+            admin_user: Admin performing this action (for audit)
+
+        Returns:
+            True if successfully unmarked, False if rule wasn't immutable
+
+        Raises:
+            PermissionError: If override_key is invalid or missing
+        """
+        import os
+
+        # SECURITY: Validate override key against environment variable
+        expected_key = os.environ.get("GOVERNANCE_OVERRIDE_KEY", "")
+
+        if not expected_key:
+            raise PermissionError(
+                "GOVERNANCE_OVERRIDE_KEY environment variable not set. "
+                "Cannot unmark immutable rules without system configuration."
+            )
+
+        if not override_key or override_key != expected_key:
+            raise PermissionError(
+                f"Invalid override key provided by '{admin_user}'. "
+                "Cannot unmark immutable rule without valid authorization."
+            )
+
+        if rule_id not in self._immutable_rules:
+            return False
+
+        self._immutable_rules.remove(rule_id)
+        self._save_policies(
+            f"PRIVILEGED: Unmarked rule {rule_id} as immutable by {admin_user}",
+            admin_user,
+        )
+        return True
 
     def is_rule_immutable(self, rule_id: str) -> bool:
         """Check if a rule is immutable."""
@@ -1242,14 +1284,68 @@ class GovernanceManager:
         self._save_policies(f"Added organization rule: {rule.id}", "system")
 
     def add_department_rule(self, department: str, rule: PolicyRule) -> None:
-        """Add a new department-specific (Tier 3) rule."""
+        """Add a new department-specific (Tier 3) rule.
+
+        ENTERPRISE SECURITY: Prevents duplicate rule IDs and modification
+        of immutable rules. Department rules cannot override constitutional
+        rules due to priority system (+10000 boost for constitutional).
+
+        Raises:
+            ValueError: If rule ID already exists globally or is immutable
+        """
         from packages.core.governance import DepartmentRules
+
+        # SECURITY: Check if rule ID is immutable (matches any tier)
+        if self.is_rule_immutable(rule.id):
+            raise ValueError(
+                f"Rule '{rule.id}' is marked as immutable and cannot be modified. "
+                "Department rules cannot shadow immutable rules."
+            )
+
+        # SECURITY: Check if rule ID already exists in ANY tier
+        all_rule_ids = self._get_all_rule_ids()
+        if rule.id in all_rule_ids:
+            raise ValueError(
+                f"Rule ID '{rule.id}' already exists in another tier. "
+                "Department rules cannot use IDs that exist in constitutional or organization rules."
+            )
+
+        # Check for duplicate within department
+        if department in self._policy_set.department_rules:
+            dept_rule_ids = {r.id for r in self._policy_set.department_rules[department].defaults}
+            if rule.id in dept_rule_ids:
+                raise ValueError(
+                    f"Department rule '{rule.id}' already exists in {department}. "
+                    "Cannot add duplicate rules."
+                )
 
         if department not in self._policy_set.department_rules:
             self._policy_set.department_rules[department] = DepartmentRules()
 
         self._policy_set.department_rules[department].defaults.append(rule)
-        self._save_policies()
+        self._save_policies(f"Added department rule: {rule.id} to {department}", "system")
+
+    def _get_all_rule_ids(self) -> set[str]:
+        """Get all rule IDs across all tiers.
+
+        SECURITY: Used to prevent ID collisions across tiers.
+        """
+        rule_ids = set()
+
+        # Constitutional rules
+        for rule in self._policy_set.constitutional_rules:
+            rule_ids.add(rule.id)
+
+        # Organization rules
+        for rule in self._policy_set.organization_rules.default:
+            rule_ids.add(rule.id)
+
+        # Department rules (all departments)
+        for dept_rules in self._policy_set.department_rules.values():
+            for rule in dept_rules.defaults:
+                rule_ids.add(rule.id)
+
+        return rule_ids
 
     def remove_rule(self, rule_id: str, force: bool = False) -> bool:
         """Remove a rule by ID from any tier.

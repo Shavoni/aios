@@ -431,14 +431,45 @@ async def mark_rule_immutable(rule_id: str) -> dict:
     return {"success": True, "rule_id": rule_id, "immutable": True}
 
 
+class UnmarkImmutableRequest(BaseModel):
+    """Request to unmark a rule as immutable."""
+
+    override_key: str = Field(..., description="Override key for authorization")
+    admin_user: str = Field(default="admin", description="Admin performing this action")
+
+
 @router.delete("/rules/{rule_id}/immutable")
-async def unmark_rule_immutable(rule_id: str, override_key: str = "") -> dict:
-    """Unmark a rule as immutable."""
+async def unmark_rule_immutable_endpoint(
+    rule_id: str,
+    request: UnmarkImmutableRequest,
+) -> dict:
+    """Unmark a rule as immutable.
+
+    ENTERPRISE SECURITY: This is a privileged operation that requires:
+    - Valid override_key matching GOVERNANCE_OVERRIDE_KEY env var
+    - Action is logged with admin user for audit trail
+
+    Returns 403 Forbidden if authorization fails.
+    """
     governance = get_governance_manager()
-    success = governance.unmark_rule_immutable(rule_id, override_key)
-    if not success:
-        raise HTTPException(status_code=404, detail=f"Rule {rule_id} is not immutable")
-    return {"success": True, "rule_id": rule_id, "immutable": False}
+
+    try:
+        success = governance.unmark_rule_immutable(
+            rule_id,
+            override_key=request.override_key,
+            admin_user=request.admin_user,
+        )
+        if not success:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Rule {rule_id} is not immutable",
+            )
+        return {"success": True, "rule_id": rule_id, "immutable": False}
+    except PermissionError as e:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(e),
+        )
 
 
 @router.get("/rules/immutable")
