@@ -935,3 +935,107 @@ export async function deleteSystemTemplate(templateId: string): Promise<{ succes
     method: "DELETE",
   });
 }
+
+// =============================================================================
+// Governance API
+// =============================================================================
+
+export interface GovernanceSummary {
+  version: number;
+  policy_hash: string;
+  require_approval: boolean;
+  rules: {
+    constitutional: number;
+    organization: number;
+    department: number;
+  };
+  immutable_rules: number;
+  pending_changes: number;
+  prohibited_topics: number;
+  drift_status: string;
+}
+
+export interface PolicyVersion {
+  version_id: string;
+  version_number: number;
+  created_at: string;
+  created_by: string;
+  change_description: string;
+  policy_hash: string;
+  policy_snapshot: Record<string, unknown>;
+}
+
+export interface PolicyChange {
+  change_id: string;
+  change_type: string;
+  description: string;
+  proposed_by: string;
+  data: Record<string, unknown>;
+  status: string;
+  created_at: string;
+  reviewed_by?: string;
+  reviewed_at?: string;
+  review_notes?: string;
+}
+
+export interface DriftReport {
+  timestamp: string;
+  current_version: number;
+  policy_hash: string;
+  memory_drift: { drift_detected: boolean; status: string; message: string };
+  file_drift: { drift_detected: boolean; status: string; message: string };
+  overall_status: string;
+}
+
+export async function getGovernanceSummary(): Promise<GovernanceSummary> {
+  return apiFetch("/governance/summary");
+}
+
+export async function getGovernanceVersions(limit: number = 50): Promise<{ current_version: number; versions: PolicyVersion[] }> {
+  return apiFetch(`/governance/versions?limit=${limit}`);
+}
+
+export async function rollbackToVersion(versionId: string, rolledBackBy: string = "admin"): Promise<{ success: boolean; rolled_back_to: string; new_version: number }> {
+  return apiFetch(`/governance/versions/${versionId}/rollback`, {
+    method: "POST",
+    body: JSON.stringify({ rolled_back_by: rolledBackBy }),
+  });
+}
+
+export async function getPendingPolicyChanges(): Promise<{ pending: PolicyChange[] }> {
+  return apiFetch("/governance/approval/pending");
+}
+
+export async function approvePolicyChange(changeId: string, reviewedBy: string, reviewNotes: string = ""): Promise<{ success: boolean; message: string }> {
+  return apiFetch(`/governance/approval/changes/${changeId}/approve`, {
+    method: "POST",
+    body: JSON.stringify({ reviewed_by: reviewedBy, review_notes: reviewNotes }),
+  });
+}
+
+export async function rejectPolicyChange(changeId: string, reviewedBy: string, reviewNotes: string = ""): Promise<{ success: boolean; message: string }> {
+  return apiFetch(`/governance/approval/changes/${changeId}/reject`, {
+    method: "POST",
+    body: JSON.stringify({ reviewed_by: reviewedBy, review_notes: reviewNotes }),
+  });
+}
+
+export async function getDriftReport(): Promise<DriftReport> {
+  return apiFetch("/governance/drift");
+}
+
+export async function syncPoliciesFromFile(): Promise<{ success: boolean; old_hash: string; new_hash: string; message: string }> {
+  return apiFetch("/governance/drift/sync", { method: "POST" });
+}
+
+export async function getImmutableRules(): Promise<{ immutable_rules: string[] }> {
+  return apiFetch("/governance/rules/immutable");
+}
+
+export async function markRuleImmutable(ruleId: string): Promise<{ success: boolean; rule_id: string; immutable: boolean }> {
+  return apiFetch(`/governance/rules/${ruleId}/immutable`, { method: "POST" });
+}
+
+export async function unmarkRuleImmutable(ruleId: string): Promise<{ success: boolean; rule_id: string; immutable: boolean }> {
+  return apiFetch(`/governance/rules/${ruleId}/immutable`, { method: "DELETE" });
+}

@@ -67,8 +67,27 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
-import { resetForNewClient, regenerateConcierge, listAgents } from "@/lib/api";
+import {
+  resetForNewClient,
+  regenerateConcierge,
+  listAgents,
+  getGovernanceSummary,
+  getGovernanceVersions,
+  rollbackToVersion,
+  getPendingPolicyChanges,
+  approvePolicyChange,
+  rejectPolicyChange,
+  getDriftReport,
+  syncPoliciesFromFile,
+  getImmutableRules,
+  type GovernanceSummary,
+  type PolicyVersion,
+  type PolicyChange,
+  type DriftReport,
+} from "@/lib/api";
 import { config } from "@/lib/config";
+import { History, GitBranch, AlertCircle, RotateCcw, FileCheck, ShieldCheck } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface Policy {
   id: string;
@@ -612,113 +631,7 @@ export default function SettingsPage() {
 
         {/* Governance Tab */}
         <TabsContent value="governance" className="space-y-6">
-          <Card className="border-0 shadow-lg">
-            <CardHeader className="border-b bg-muted/30 flex flex-row items-center justify-between">
-              <div>
-                <CardTitle className="flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-500 text-white">
-                    <Shield className="h-4 w-4" />
-                  </div>
-                  Governance Policies
-                </CardTitle>
-                <CardDescription>
-                  Rules that control AI behavior and human oversight
-                </CardDescription>
-              </div>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Add Policy
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Create New Policy</DialogTitle>
-                    <DialogDescription>
-                      Define a governance rule for AI requests
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="space-y-4 py-4">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Policy Name</label>
-                      <Input placeholder="e.g., External Communications Review" className="bg-muted/50" />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Trigger Condition</label>
-                      <Input placeholder="e.g., domain = Comms AND audience = public" className="bg-muted/50 font-mono text-sm" />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Action</label>
-                      <Input placeholder="e.g., DRAFT" className="bg-muted/50" />
-                    </div>
-                  </div>
-                  <DialogFooter>
-                    <Button variant="outline">Cancel</Button>
-                    <Button className="bg-gradient-to-r from-blue-500 to-indigo-500">Create Policy</Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-            </CardHeader>
-            <CardContent className="p-0">
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-muted/30">
-                    <TableHead>Policy</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead className="hidden md:table-cell">Domain</TableHead>
-                    <TableHead className="hidden lg:table-cell">Trigger</TableHead>
-                    <TableHead>Action</TableHead>
-                    <TableHead className="w-[100px]">Status</TableHead>
-                    <TableHead className="w-[50px]"></TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {mockPolicies.map((policy) => (
-                    <TableRow key={policy.id} className="hover:bg-muted/50">
-                      <TableCell className="font-medium">{policy.name}</TableCell>
-                      <TableCell>
-                        <Badge
-                          className={
-                            policy.type === "constitutional"
-                              ? "bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300 border-0"
-                              : "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300 border-0"
-                          }
-                        >
-                          {policy.type}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        <Badge variant="outline" className="bg-muted/50">{policy.domain}</Badge>
-                      </TableCell>
-                      <TableCell className="hidden lg:table-cell font-mono text-xs text-muted-foreground">
-                        {policy.trigger}
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline" className="font-mono">{policy.action}</Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          className={
-                            policy.enabled
-                              ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300 border-0"
-                              : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border-0"
-                          }
-                        >
-                          {policy.enabled ? "Active" : "Disabled"}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950">
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+          <GovernanceTab />
         </TabsContent>
 
         {/* Notifications Tab */}
@@ -962,6 +875,348 @@ export default function SettingsPage() {
           </Card>
         </TabsContent>
       </Tabs>
+    </div>
+  );
+}
+
+// =============================================================================
+// Governance Tab Component
+// =============================================================================
+
+function GovernanceTab() {
+  const [summary, setSummary] = useState<GovernanceSummary | null>(null);
+  const [versions, setVersions] = useState<PolicyVersion[]>([]);
+  const [pendingChanges, setPendingChanges] = useState<PolicyChange[]>([]);
+  const [driftReport, setDriftReport] = useState<DriftReport | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [syncing, setSyncing] = useState(false);
+  const [selectedVersion, setSelectedVersion] = useState<PolicyVersion | null>(null);
+
+  useEffect(() => {
+    loadGovernanceData();
+  }, []);
+
+  async function loadGovernanceData() {
+    try {
+      setLoading(true);
+      const [summaryData, versionsData, pendingData, driftData] = await Promise.all([
+        getGovernanceSummary(),
+        getGovernanceVersions(20),
+        getPendingPolicyChanges(),
+        getDriftReport(),
+      ]);
+      setSummary(summaryData);
+      setVersions(versionsData.versions);
+      setPendingChanges(pendingData.pending);
+      setDriftReport(driftData);
+    } catch (error) {
+      console.error("Failed to load governance data:", error);
+      toast.error("Failed to load governance data");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleSync() {
+    setSyncing(true);
+    try {
+      await syncPoliciesFromFile();
+      toast.success("Policies synced from file");
+      loadGovernanceData();
+    } catch (error) {
+      toast.error("Failed to sync policies");
+    } finally {
+      setSyncing(false);
+    }
+  }
+
+  async function handleRollback(versionId: string) {
+    try {
+      await rollbackToVersion(versionId, "admin");
+      toast.success("Rolled back to previous version");
+      setSelectedVersion(null);
+      loadGovernanceData();
+    } catch (error) {
+      toast.error("Failed to rollback");
+    }
+  }
+
+  async function handleApproveChange(changeId: string) {
+    try {
+      await approvePolicyChange(changeId, "admin");
+      toast.success("Change approved and applied");
+      loadGovernanceData();
+    } catch (error) {
+      toast.error("Failed to approve change");
+    }
+  }
+
+  async function handleRejectChange(changeId: string) {
+    try {
+      await rejectPolicyChange(changeId, "admin");
+      toast.success("Change rejected");
+      loadGovernanceData();
+    } catch (error) {
+      toast.error("Failed to reject change");
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Governance Summary */}
+      <Card className="border-0 shadow-lg">
+        <CardHeader className="border-b bg-muted/30">
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-500 text-white">
+                  <Shield className="h-4 w-4" />
+                </div>
+                Governance Status
+              </CardTitle>
+              <CardDescription>
+                Policy versioning, approval workflow, and drift detection
+              </CardDescription>
+            </div>
+            <Button variant="outline" size="sm" onClick={loadGovernanceData}>
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Refresh
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="p-6">
+          {summary && (
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              <div className="rounded-lg border bg-muted/30 p-4">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <GitBranch className="h-4 w-4" />
+                  Version
+                </div>
+                <p className="text-2xl font-bold mt-1">v{summary.version}</p>
+                <p className="text-xs text-muted-foreground font-mono">{summary.policy_hash}</p>
+              </div>
+              <div className="rounded-lg border bg-muted/30 p-4">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Shield className="h-4 w-4" />
+                  Rules
+                </div>
+                <p className="text-2xl font-bold mt-1">{summary.rules.constitutional + summary.rules.organization + summary.rules.department}</p>
+                <p className="text-xs text-muted-foreground">
+                  {summary.rules.constitutional} constitutional, {summary.rules.organization} org
+                </p>
+              </div>
+              <div className="rounded-lg border bg-muted/30 p-4">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Lock className="h-4 w-4" />
+                  Immutable
+                </div>
+                <p className="text-2xl font-bold mt-1">{summary.immutable_rules}</p>
+                <p className="text-xs text-muted-foreground">Protected rules</p>
+              </div>
+              <div className="rounded-lg border bg-muted/30 p-4">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  {driftReport?.overall_status === "ok" ? (
+                    <CheckCircle2 className="h-4 w-4 text-green-500" />
+                  ) : (
+                    <AlertCircle className="h-4 w-4 text-amber-500" />
+                  )}
+                  Drift Status
+                </div>
+                <p className={`text-2xl font-bold mt-1 ${driftReport?.overall_status === "ok" ? "text-green-600" : "text-amber-600"}`}>
+                  {driftReport?.overall_status === "ok" ? "Synced" : "Drift Detected"}
+                </p>
+                {driftReport?.overall_status !== "ok" && (
+                  <Button size="sm" variant="outline" className="mt-2" onClick={handleSync} disabled={syncing}>
+                    {syncing ? <Loader2 className="h-3 w-3 animate-spin mr-1" /> : <RefreshCw className="h-3 w-3 mr-1" />}
+                    Sync
+                  </Button>
+                )}
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Pending Changes */}
+      {pendingChanges.length > 0 && (
+        <Card className="border-0 shadow-lg border-l-4 border-l-amber-500">
+          <CardHeader className="border-b bg-amber-50 dark:bg-amber-950/30">
+            <CardTitle className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
+              <AlertCircle className="h-5 w-5" />
+              Pending Policy Changes ({pendingChanges.length})
+            </CardTitle>
+            <CardDescription>
+              These changes require approval before being applied
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="p-0">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-muted/30">
+                  <TableHead>Change</TableHead>
+                  <TableHead>Type</TableHead>
+                  <TableHead>Proposed By</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {pendingChanges.map((change) => (
+                  <TableRow key={change.change_id}>
+                    <TableCell className="font-medium">{change.description}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline">{change.change_type}</Badge>
+                    </TableCell>
+                    <TableCell>{change.proposed_by}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {new Date(change.created_at).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell className="text-right space-x-2">
+                      <Button
+                        size="sm"
+                        className="bg-gradient-to-r from-green-500 to-emerald-500"
+                        onClick={() => handleApproveChange(change.change_id)}
+                      >
+                        Approve
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-red-600 border-red-300 hover:bg-red-50"
+                        onClick={() => handleRejectChange(change.change_id)}
+                      >
+                        Reject
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Version History */}
+      <Card className="border-0 shadow-lg">
+        <CardHeader className="border-b bg-muted/30">
+          <CardTitle className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 text-white">
+              <History className="h-4 w-4" />
+            </div>
+            Version History
+          </CardTitle>
+          <CardDescription>
+            Track policy changes and rollback if needed
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="p-0">
+          <ScrollArea className="h-[300px]">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-muted/30">
+                  <TableHead>Version</TableHead>
+                  <TableHead>Description</TableHead>
+                  <TableHead>Changed By</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {versions.map((version, index) => (
+                  <TableRow key={version.version_id}>
+                    <TableCell>
+                      <Badge className={index === 0 ? "bg-green-100 text-green-700 border-0" : "bg-muted"}>
+                        v{version.version_number}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="font-medium max-w-xs truncate">
+                      {version.change_description}
+                    </TableCell>
+                    <TableCell>{version.created_by}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {new Date(version.created_at).toLocaleString()}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {index > 0 && (
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button size="sm" variant="outline">
+                              <RotateCcw className="h-3 w-3 mr-1" />
+                              Rollback
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Rollback to v{version.version_number}?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This will revert all policies to the state from "{version.change_description}".
+                                A new version will be created to track this rollback.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleRollback(version.version_id)}
+                                className="bg-gradient-to-r from-amber-500 to-orange-500"
+                              >
+                                Rollback
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      )}
+                      {index === 0 && (
+                        <Badge className="bg-green-100 text-green-700 border-0">Current</Badge>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+                {versions.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
+                      No version history yet
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </ScrollArea>
+        </CardContent>
+      </Card>
+
+      {/* Approval Settings */}
+      <Card className="border-0 shadow-lg">
+        <CardHeader className="border-b bg-muted/30">
+          <CardTitle className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 text-white">
+              <FileCheck className="h-4 w-4" />
+            </div>
+            Approval Settings
+          </CardTitle>
+          <CardDescription>
+            Configure policy change approval requirements
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="font-medium">Require Approval for Policy Changes</p>
+              <p className="text-sm text-muted-foreground">
+                When enabled, policy changes must be approved before taking effect
+              </p>
+            </div>
+            <Switch checked={summary?.require_approval ?? true} />
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -61,23 +61,49 @@ web/src/app/(dashboard)/agents/page.tsx
 
 ---
 
+## GOVERNANCE HARDENING - COMPLETED
+
+All governance requirements implemented:
+
+| Item | Status | API Endpoints |
+|------|--------|---------------|
+| A) Single Source of Truth | ✅ Already existed | - |
+| B) Override Prevention | ✅ Implemented | `/governance/rules/{id}/immutable` |
+| C) Policy Versioning | ✅ Implemented | `/governance/versions`, `/governance/versions/{id}/rollback` |
+| D) Approval Workflow | ✅ Implemented | `/governance/approval/propose`, `/governance/approval/pending` |
+| E) Drift Detection | ✅ Implemented | `/governance/drift`, `/governance/drift/sync` |
+
+**Test the new endpoints:**
+```bash
+# Get governance summary
+curl http://localhost:8000/governance/summary
+
+# Get version history
+curl http://localhost:8000/governance/versions
+
+# Check for drift
+curl http://localhost:8000/governance/drift
+
+# Mark a rule as immutable
+curl -X POST http://localhost:8000/governance/rules/const-001/immutable
+```
+
+---
+
 ## TODO - NEXT SESSION
 
 ### High Priority
 1. **Verify HITL Mode UI is working** - User couldn't see it
-2. **Test HITL workflow end-to-end:**
-   - Set agent to REVIEW mode
-   - Query agent in Concierge chat
-   - Check Approvals page for pending response
-   - Approve/reject and verify behavior
+2. **Add Governance UI to Settings page** - Expose versioning, approval workflow
+3. **Test HITL workflow end-to-end**
 
 ### Hidden Features to Expose in UI
-- [ ] Governance Rules management (Settings page)
+- [x] Governance versioning/rollback (backend done, needs UI)
+- [x] Governance approval workflow (backend done, needs UI)
+- [x] Drift detection (backend done, needs UI)
 - [ ] Rate Limiting controls (Settings page)
 - [ ] Reviewer management for HITL
 - [ ] Audit log filtering and export
-- [ ] SLA status indicators
-- [ ] Batch approve/reject in Approvals
 
 ### Polish
 - [ ] Add Docker Compose for easy deployment
