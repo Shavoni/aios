@@ -5,12 +5,18 @@ This module provides a singleton governance manager that:
 - Enables runtime policy updates that propagate to all agents
 - Persists policies to disk for durability
 - Provides quick intent/risk classification for governance evaluation
+- Tracks policy versions and change history
+- Supports approval workflow for policy changes
+- Detects configuration drift
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
+import uuid
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -33,6 +39,125 @@ from packages.core.schemas.models import (
 
 # Default policy file location
 DEFAULT_POLICY_PATH = Path("data/governance_policies.json")
+POLICY_HISTORY_PATH = Path("data/governance_history.json")
+PENDING_POLICY_PATH = Path("data/pending_policy_changes.json")
+
+# =============================================================================
+# Policy Change Types and History Tracking
+# =============================================================================
+
+class PolicyChangeType:
+    """Types of policy changes."""
+    ADD_RULE = "add_rule"
+    REMOVE_RULE = "remove_rule"
+    UPDATE_RULE = "update_rule"
+    ADD_PROHIBITION = "add_prohibition"
+    REMOVE_PROHIBITION = "remove_prohibition"
+    FULL_RELOAD = "full_reload"
+    ROLLBACK = "rollback"
+
+
+class PolicyChange:
+    """Represents a proposed or applied policy change."""
+
+    def __init__(
+        self,
+        change_id: str,
+        change_type: str,
+        description: str,
+        proposed_by: str = "system",
+        data: dict | None = None,
+        status: str = "pending",  # pending, approved, rejected, applied
+        created_at: str | None = None,
+        reviewed_by: str | None = None,
+        reviewed_at: str | None = None,
+        review_notes: str | None = None,
+    ):
+        self.change_id = change_id
+        self.change_type = change_type
+        self.description = description
+        self.proposed_by = proposed_by
+        self.data = data or {}
+        self.status = status
+        self.created_at = created_at or datetime.utcnow().isoformat()
+        self.reviewed_by = reviewed_by
+        self.reviewed_at = reviewed_at
+        self.review_notes = review_notes
+
+    def to_dict(self) -> dict:
+        return {
+            "change_id": self.change_id,
+            "change_type": self.change_type,
+            "description": self.description,
+            "proposed_by": self.proposed_by,
+            "data": self.data,
+            "status": self.status,
+            "created_at": self.created_at,
+            "reviewed_by": self.reviewed_by,
+            "reviewed_at": self.reviewed_at,
+            "review_notes": self.review_notes,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "PolicyChange":
+        return cls(
+            change_id=data["change_id"],
+            change_type=data["change_type"],
+            description=data["description"],
+            proposed_by=data.get("proposed_by", "system"),
+            data=data.get("data", {}),
+            status=data.get("status", "pending"),
+            created_at=data.get("created_at"),
+            reviewed_by=data.get("reviewed_by"),
+            reviewed_at=data.get("reviewed_at"),
+            review_notes=data.get("review_notes"),
+        )
+
+
+class PolicyVersion:
+    """Represents a point-in-time snapshot of policies."""
+
+    def __init__(
+        self,
+        version_id: str,
+        version_number: int,
+        created_at: str,
+        created_by: str,
+        change_description: str,
+        policy_hash: str,
+        policy_snapshot: dict,
+    ):
+        self.version_id = version_id
+        self.version_number = version_number
+        self.created_at = created_at
+        self.created_by = created_by
+        self.change_description = change_description
+        self.policy_hash = policy_hash
+        self.policy_snapshot = policy_snapshot
+
+    def to_dict(self) -> dict:
+        return {
+            "version_id": self.version_id,
+            "version_number": self.version_number,
+            "created_at": self.created_at,
+            "created_by": self.created_by,
+            "change_description": self.change_description,
+            "policy_hash": self.policy_hash,
+            "policy_snapshot": self.policy_snapshot,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "PolicyVersion":
+        return cls(
+            version_id=data["version_id"],
+            version_number=data["version_number"],
+            created_at=data["created_at"],
+            created_by=data["created_by"],
+            change_description=data["change_description"],
+            policy_hash=data["policy_hash"],
+            policy_snapshot=data["policy_snapshot"],
+        )
+
 
 # Risk signal patterns
 RISK_PATTERNS: dict[str, list[str]] = {
@@ -66,16 +191,33 @@ class GovernanceManager:
     Provides runtime policy management that propagates to all agents.
     When you update a policy here, all agent queries will immediately
     enforce the new rules.
+
+    Features:
+    - Single source of truth for all governance policies
+    - Policy versioning with full history
+    - Approval workflow for policy changes
+    - Drift detection
+    - Override prevention with immutable rules
     """
 
     _instance: GovernanceManager | None = None
 
     def __init__(self, policy_path: Path | None = None):
         self._policy_path = policy_path or DEFAULT_POLICY_PATH
+        self._history_path = POLICY_HISTORY_PATH
+        self._pending_path = PENDING_POLICY_PATH
         self._policy_set = PolicySet()
         self._loader = PolicyLoader()
         self._prohibited_topics: list[str] = []
+        self._immutable_rules: set[str] = set()  # Rule IDs that cannot be modified
+        self._current_version: int = 0
+        self._policy_hash: str = ""
+        self._versions: list[PolicyVersion] = []
+        self._pending_changes: list[PolicyChange] = []
+        self._require_approval: bool = True  # Require approval for policy changes
         self._load_policies()
+        self._load_history()
+        self._load_pending_changes()
 
     @classmethod
     def get_instance(cls) -> GovernanceManager:
@@ -96,23 +238,96 @@ class GovernanceManager:
                 raw = json.loads(self._policy_path.read_text(encoding="utf-8"))
                 self._policy_set = self._loader.load_from_dict(raw)
                 self._prohibited_topics = raw.get("prohibited_topics", [])
+                self._immutable_rules = set(raw.get("immutable_rules", []))
+                self._current_version = raw.get("version", 0)
+                self._require_approval = raw.get("require_approval", True)
+                self._policy_hash = self._compute_policy_hash()
             except Exception:
                 self._policy_set = PolicySet()
                 self._prohibited_topics = []
+                self._immutable_rules = set()
         else:
             self._init_default_policies()
 
-    def _save_policies(self) -> None:
-        """Persist policies to disk."""
+    def _load_history(self) -> None:
+        """Load policy version history from disk."""
+        if self._history_path.exists():
+            try:
+                data = json.loads(self._history_path.read_text(encoding="utf-8"))
+                self._versions = [PolicyVersion.from_dict(v) for v in data.get("versions", [])]
+            except Exception:
+                self._versions = []
+        else:
+            self._versions = []
+
+    def _save_history(self) -> None:
+        """Save policy version history to disk."""
+        self._history_path.parent.mkdir(parents=True, exist_ok=True)
+        data = {"versions": [v.to_dict() for v in self._versions]}
+        self._history_path.write_text(json.dumps(data, indent=2), encoding="utf-8")
+
+    def _load_pending_changes(self) -> None:
+        """Load pending policy changes from disk."""
+        if self._pending_path.exists():
+            try:
+                data = json.loads(self._pending_path.read_text(encoding="utf-8"))
+                self._pending_changes = [PolicyChange.from_dict(c) for c in data.get("pending", [])]
+            except Exception:
+                self._pending_changes = []
+        else:
+            self._pending_changes = []
+
+    def _save_pending_changes(self) -> None:
+        """Save pending policy changes to disk."""
+        self._pending_path.parent.mkdir(parents=True, exist_ok=True)
+        data = {"pending": [c.to_dict() for c in self._pending_changes]}
+        self._pending_path.write_text(json.dumps(data, indent=2), encoding="utf-8")
+
+    def _compute_policy_hash(self) -> str:
+        """Compute a hash of the current policy state for drift detection."""
+        policy_data = self._serialize_policy_set()
+        policy_data["prohibited_topics"] = sorted(self._prohibited_topics)
+        policy_str = json.dumps(policy_data, sort_keys=True)
+        return hashlib.sha256(policy_str.encode()).hexdigest()[:16]
+
+    def _create_version_snapshot(self, description: str, created_by: str = "system") -> PolicyVersion:
+        """Create a version snapshot of current policies."""
+        self._current_version += 1
+        version = PolicyVersion(
+            version_id=str(uuid.uuid4()),
+            version_number=self._current_version,
+            created_at=datetime.utcnow().isoformat(),
+            created_by=created_by,
+            change_description=description,
+            policy_hash=self._compute_policy_hash(),
+            policy_snapshot=self._serialize_policy_set(),
+        )
+        version.policy_snapshot["prohibited_topics"] = list(self._prohibited_topics)
+        version.policy_snapshot["immutable_rules"] = list(self._immutable_rules)
+        self._versions.append(version)
+        self._save_history()
+        return version
+
+    def _save_policies(self, description: str = "Policy update", changed_by: str = "system") -> None:
+        """Persist policies to disk with versioning."""
         self._policy_path.parent.mkdir(parents=True, exist_ok=True)
+
+        # Create version snapshot before saving
+        self._create_version_snapshot(description, changed_by)
 
         data = self._serialize_policy_set()
         data["prohibited_topics"] = self._prohibited_topics
+        data["immutable_rules"] = list(self._immutable_rules)
+        data["version"] = self._current_version
+        data["require_approval"] = self._require_approval
+        data["last_modified"] = datetime.utcnow().isoformat()
+        data["last_modified_by"] = changed_by
 
         self._policy_path.write_text(
             json.dumps(data, indent=2),
             encoding="utf-8",
         )
+        self._policy_hash = self._compute_policy_hash()
 
     def _serialize_policy_set(self) -> dict[str, Any]:
         """Serialize policy set to dict for storage."""
@@ -241,7 +456,447 @@ class GovernanceManager:
             department_rules={},
         )
 
-        self._save_policies()
+        self._save_policies("Initial default policies", "system")
+
+    # =========================================================================
+    # B) Override Prevention - Immutable Rules
+    # =========================================================================
+
+    def mark_rule_immutable(self, rule_id: str) -> bool:
+        """Mark a rule as immutable (cannot be modified or deleted)."""
+        # Check if rule exists
+        all_rules = self.get_all_rules()
+        found = False
+        for rules in [all_rules["constitutional"], all_rules["organization"]]:
+            if any(r.id == rule_id for r in rules):
+                found = True
+                break
+        if not found:
+            for dept_rules in all_rules.get("department", {}).values():
+                if any(r.id == rule_id for r in dept_rules):
+                    found = True
+                    break
+
+        if not found:
+            return False
+
+        self._immutable_rules.add(rule_id)
+        self._save_policies(f"Marked rule {rule_id} as immutable", "system")
+        return True
+
+    def unmark_rule_immutable(self, rule_id: str, override_key: str = "") -> bool:
+        """Unmark a rule as immutable (requires override key for safety)."""
+        # In production, override_key would be validated against a secure store
+        if rule_id in self._immutable_rules:
+            self._immutable_rules.remove(rule_id)
+            self._save_policies(f"Unmarked rule {rule_id} as immutable", "admin")
+            return True
+        return False
+
+    def is_rule_immutable(self, rule_id: str) -> bool:
+        """Check if a rule is immutable."""
+        return rule_id in self._immutable_rules
+
+    def get_immutable_rules(self) -> list[str]:
+        """Get list of immutable rule IDs."""
+        return list(self._immutable_rules)
+
+    def check_override_conflict(self, new_rule: PolicyRule) -> dict | None:
+        """Check if a new rule would conflict with higher-priority rules.
+
+        Returns conflict details or None if no conflict.
+        """
+        for const_rule in self._policy_set.constitutional_rules:
+            if const_rule.priority > new_rule.priority:
+                # Check for overlapping conditions
+                for new_cond in new_rule.conditions:
+                    for const_cond in const_rule.conditions:
+                        if new_cond.field == const_cond.field:
+                            return {
+                                "conflict_type": "priority_override",
+                                "conflicting_rule_id": const_rule.id,
+                                "conflicting_rule_name": const_rule.name,
+                                "conflicting_priority": const_rule.priority,
+                                "new_rule_priority": new_rule.priority,
+                                "field": new_cond.field,
+                                "warning": f"Rule '{new_rule.name}' may be overridden by higher-priority rule '{const_rule.name}'",
+                            }
+        return None
+
+    # =========================================================================
+    # C) Policy Versioning
+    # =========================================================================
+
+    def get_current_version(self) -> int:
+        """Get the current policy version number."""
+        return self._current_version
+
+    def get_version_history(self, limit: int = 50) -> list[dict]:
+        """Get policy version history."""
+        versions = sorted(self._versions, key=lambda v: v.version_number, reverse=True)[:limit]
+        return [v.to_dict() for v in versions]
+
+    def get_version(self, version_id: str) -> PolicyVersion | None:
+        """Get a specific version by ID."""
+        for v in self._versions:
+            if v.version_id == version_id:
+                return v
+        return None
+
+    def get_version_by_number(self, version_number: int) -> PolicyVersion | None:
+        """Get a specific version by version number."""
+        for v in self._versions:
+            if v.version_number == version_number:
+                return v
+        return None
+
+    def rollback_to_version(self, version_id: str, rolled_back_by: str = "admin") -> bool:
+        """Rollback policies to a previous version."""
+        version = self.get_version(version_id)
+        if not version:
+            return False
+
+        # Load the snapshot
+        snapshot = version.policy_snapshot
+        self._policy_set = self._loader.load_from_dict(snapshot)
+        self._prohibited_topics = snapshot.get("prohibited_topics", [])
+        self._immutable_rules = set(snapshot.get("immutable_rules", []))
+
+        # Save with new version (rollback creates a new version)
+        self._save_policies(
+            f"Rollback to version {version.version_number} ({version.change_description})",
+            rolled_back_by
+        )
+        return True
+
+    def compare_versions(self, version_id_1: str, version_id_2: str) -> dict:
+        """Compare two policy versions."""
+        v1 = self.get_version(version_id_1)
+        v2 = self.get_version(version_id_2)
+
+        if not v1 or not v2:
+            return {"error": "One or both versions not found"}
+
+        # Compare snapshots
+        diff = {
+            "version_1": {"id": v1.version_id, "number": v1.version_number},
+            "version_2": {"id": v2.version_id, "number": v2.version_number},
+            "changes": [],
+        }
+
+        # Compare constitutional rules
+        v1_const_ids = {r["id"] for r in v1.policy_snapshot.get("constitutional_rules", [])}
+        v2_const_ids = {r["id"] for r in v2.policy_snapshot.get("constitutional_rules", [])}
+
+        for rule_id in v2_const_ids - v1_const_ids:
+            diff["changes"].append({"type": "added", "tier": "constitutional", "rule_id": rule_id})
+        for rule_id in v1_const_ids - v2_const_ids:
+            diff["changes"].append({"type": "removed", "tier": "constitutional", "rule_id": rule_id})
+
+        # Compare prohibited topics
+        v1_topics = set(v1.policy_snapshot.get("prohibited_topics", []))
+        v2_topics = set(v2.policy_snapshot.get("prohibited_topics", []))
+
+        for topic in v2_topics - v1_topics:
+            diff["changes"].append({"type": "added", "tier": "prohibited_topic", "topic": topic})
+        for topic in v1_topics - v2_topics:
+            diff["changes"].append({"type": "removed", "tier": "prohibited_topic", "topic": topic})
+
+        return diff
+
+    # =========================================================================
+    # D) Approval Workflow for Policy Changes
+    # =========================================================================
+
+    def set_require_approval(self, require: bool) -> None:
+        """Enable or disable approval requirement for policy changes."""
+        self._require_approval = require
+        self._save_policies(
+            f"{'Enabled' if require else 'Disabled'} approval requirement",
+            "admin"
+        )
+
+    def is_approval_required(self) -> bool:
+        """Check if approval is required for policy changes."""
+        return self._require_approval
+
+    def propose_rule_change(
+        self,
+        change_type: str,
+        description: str,
+        data: dict,
+        proposed_by: str = "system",
+    ) -> PolicyChange:
+        """Propose a policy change that requires approval."""
+        change = PolicyChange(
+            change_id=str(uuid.uuid4()),
+            change_type=change_type,
+            description=description,
+            proposed_by=proposed_by,
+            data=data,
+            status="pending",
+        )
+        self._pending_changes.append(change)
+        self._save_pending_changes()
+        return change
+
+    def get_pending_changes(self) -> list[dict]:
+        """Get all pending policy changes."""
+        return [c.to_dict() for c in self._pending_changes if c.status == "pending"]
+
+    def get_change(self, change_id: str) -> PolicyChange | None:
+        """Get a specific change by ID."""
+        for c in self._pending_changes:
+            if c.change_id == change_id:
+                return c
+        return None
+
+    def approve_change(
+        self,
+        change_id: str,
+        reviewed_by: str,
+        review_notes: str = "",
+    ) -> dict:
+        """Approve and apply a pending policy change."""
+        change = self.get_change(change_id)
+        if not change:
+            return {"success": False, "error": "Change not found"}
+
+        if change.status != "pending":
+            return {"success": False, "error": f"Change is not pending (status: {change.status})"}
+
+        # Apply the change based on type
+        try:
+            if change.change_type == PolicyChangeType.ADD_RULE:
+                self._apply_add_rule(change.data, reviewed_by)
+            elif change.change_type == PolicyChangeType.REMOVE_RULE:
+                self._apply_remove_rule(change.data, reviewed_by)
+            elif change.change_type == PolicyChangeType.ADD_PROHIBITION:
+                self._apply_add_prohibition(change.data, reviewed_by)
+            elif change.change_type == PolicyChangeType.REMOVE_PROHIBITION:
+                self._apply_remove_prohibition(change.data, reviewed_by)
+            else:
+                return {"success": False, "error": f"Unknown change type: {change.change_type}"}
+
+            # Update change status
+            change.status = "applied"
+            change.reviewed_by = reviewed_by
+            change.reviewed_at = datetime.utcnow().isoformat()
+            change.review_notes = review_notes
+            self._save_pending_changes()
+
+            return {"success": True, "message": f"Change {change_id} approved and applied"}
+
+        except Exception as e:
+            return {"success": False, "error": str(e)}
+
+    def reject_change(
+        self,
+        change_id: str,
+        reviewed_by: str,
+        review_notes: str = "",
+    ) -> dict:
+        """Reject a pending policy change."""
+        change = self.get_change(change_id)
+        if not change:
+            return {"success": False, "error": "Change not found"}
+
+        if change.status != "pending":
+            return {"success": False, "error": f"Change is not pending (status: {change.status})"}
+
+        change.status = "rejected"
+        change.reviewed_by = reviewed_by
+        change.reviewed_at = datetime.utcnow().isoformat()
+        change.review_notes = review_notes
+        self._save_pending_changes()
+
+        return {"success": True, "message": f"Change {change_id} rejected"}
+
+    def _apply_add_rule(self, data: dict, applied_by: str) -> None:
+        """Apply an add rule change."""
+        tier = data.get("tier", "organization")
+        rule_data = data.get("rule", {})
+
+        rule = PolicyRule(
+            id=rule_data.get("id", str(uuid.uuid4())),
+            name=rule_data.get("name", "Unnamed Rule"),
+            description=rule_data.get("description", ""),
+            conditions=[
+                RuleCondition(
+                    field=c["field"],
+                    operator=ConditionOperator(c["operator"]),
+                    value=c["value"],
+                )
+                for c in rule_data.get("conditions", [])
+            ],
+            action=RuleAction(
+                hitl_mode=HITLMode(rule_data.get("action", {}).get("hitl_mode", "INFORM")),
+                approval_required=rule_data.get("action", {}).get("approval_required", False),
+                escalation_reason=rule_data.get("action", {}).get("escalation_reason"),
+            ),
+            priority=rule_data.get("priority", 50),
+        )
+
+        if tier == "constitutional":
+            self.add_constitutional_rule(rule)
+        elif tier == "organization":
+            self.add_organization_rule(rule)
+        else:
+            self.add_department_rule(tier, rule)
+
+    def _apply_remove_rule(self, data: dict, applied_by: str) -> None:
+        """Apply a remove rule change."""
+        rule_id = data.get("rule_id")
+        if rule_id:
+            if self.is_rule_immutable(rule_id):
+                raise ValueError(f"Cannot remove immutable rule: {rule_id}")
+            self.remove_rule(rule_id)
+
+    def _apply_add_prohibition(self, data: dict, applied_by: str) -> None:
+        """Apply an add prohibition change."""
+        topic = data.get("topic")
+        scope = data.get("scope", "global")
+        scope_id = data.get("scope_id")
+
+        if scope == "global":
+            self.add_prohibited_topic(topic)
+        elif scope == "agent":
+            self.add_agent_prohibition(scope_id, topic)
+        elif scope == "domain":
+            self.add_domain_prohibition(scope_id, topic)
+
+    def _apply_remove_prohibition(self, data: dict, applied_by: str) -> None:
+        """Apply a remove prohibition change."""
+        topic = data.get("topic")
+        scope = data.get("scope", "global")
+        scope_id = data.get("scope_id")
+
+        if scope == "global":
+            self.remove_prohibited_topic(topic)
+        elif scope == "agent":
+            self.remove_agent_prohibition(scope_id, topic)
+        elif scope == "domain":
+            self.remove_domain_prohibition(scope_id, topic)
+
+    # =========================================================================
+    # E) Drift Detection
+    # =========================================================================
+
+    def get_policy_hash(self) -> str:
+        """Get the current policy hash for drift detection."""
+        return self._policy_hash
+
+    def check_drift(self) -> dict:
+        """Check if policies have drifted from the stored hash.
+
+        Returns drift status and details.
+        """
+        current_hash = self._compute_policy_hash()
+        stored_hash = self._policy_hash
+
+        if current_hash == stored_hash:
+            return {
+                "drift_detected": False,
+                "status": "ok",
+                "current_hash": current_hash,
+                "message": "No drift detected",
+            }
+
+        return {
+            "drift_detected": True,
+            "status": "warning",
+            "stored_hash": stored_hash,
+            "current_hash": current_hash,
+            "message": "Policy drift detected! In-memory policies differ from stored hash.",
+        }
+
+    def check_file_drift(self) -> dict:
+        """Check if the policy file has been modified externally."""
+        if not self._policy_path.exists():
+            return {
+                "drift_detected": True,
+                "status": "error",
+                "message": "Policy file not found!",
+            }
+
+        # Load file and compute hash
+        try:
+            raw = json.loads(self._policy_path.read_text(encoding="utf-8"))
+            file_policy_set = self._loader.load_from_dict(raw)
+            file_prohibited = raw.get("prohibited_topics", [])
+
+            # Compute hash of file contents
+            file_data = {
+                "constitutional_rules": [{"id": r.id} for r in file_policy_set.constitutional_rules],
+                "organization_rules": {"default": [{"id": r.id} for r in file_policy_set.organization_rules.default]},
+                "prohibited_topics": sorted(file_prohibited),
+            }
+            file_str = json.dumps(file_data, sort_keys=True)
+            file_hash = hashlib.sha256(file_str.encode()).hexdigest()[:16]
+
+            # Compute hash of in-memory contents
+            mem_data = {
+                "constitutional_rules": [{"id": r.id} for r in self._policy_set.constitutional_rules],
+                "organization_rules": {"default": [{"id": r.id} for r in self._policy_set.organization_rules.default]},
+                "prohibited_topics": sorted(self._prohibited_topics),
+            }
+            mem_str = json.dumps(mem_data, sort_keys=True)
+            mem_hash = hashlib.sha256(mem_str.encode()).hexdigest()[:16]
+
+            if file_hash == mem_hash:
+                return {
+                    "drift_detected": False,
+                    "status": "ok",
+                    "message": "File and memory are in sync",
+                }
+
+            return {
+                "drift_detected": True,
+                "status": "warning",
+                "file_hash": file_hash,
+                "memory_hash": mem_hash,
+                "message": "Policy file differs from in-memory policies. External modification detected.",
+            }
+
+        except Exception as e:
+            return {
+                "drift_detected": True,
+                "status": "error",
+                "message": f"Error checking file drift: {str(e)}",
+            }
+
+    def sync_from_file(self) -> dict:
+        """Reload policies from file to resolve drift."""
+        try:
+            old_hash = self._policy_hash
+            self._load_policies()
+            new_hash = self._compute_policy_hash()
+
+            return {
+                "success": True,
+                "old_hash": old_hash,
+                "new_hash": new_hash,
+                "message": "Policies reloaded from file",
+            }
+        except Exception as e:
+            return {
+                "success": False,
+                "error": str(e),
+            }
+
+    def get_drift_report(self) -> dict:
+        """Get a comprehensive drift report."""
+        memory_drift = self.check_drift()
+        file_drift = self.check_file_drift()
+
+        return {
+            "timestamp": datetime.utcnow().isoformat(),
+            "current_version": self._current_version,
+            "policy_hash": self._policy_hash,
+            "memory_drift": memory_drift,
+            "file_drift": file_drift,
+            "overall_status": "ok" if not (memory_drift["drift_detected"] or file_drift["drift_detected"]) else "drift_detected",
+        }
 
     # =========================================================================
     # Policy Query & Evaluation
@@ -547,20 +1202,35 @@ class GovernanceManager:
         self._policy_set.department_rules[department].defaults.append(rule)
         self._save_policies()
 
-    def remove_rule(self, rule_id: str) -> bool:
-        """Remove a rule by ID from any tier."""
+    def remove_rule(self, rule_id: str, force: bool = False) -> bool:
+        """Remove a rule by ID from any tier.
+
+        Args:
+            rule_id: The ID of the rule to remove
+            force: If True, allows removing immutable rules (use with caution)
+
+        Returns:
+            True if rule was removed, False if not found
+
+        Raises:
+            ValueError: If trying to remove an immutable rule without force=True
+        """
+        # Check if rule is immutable
+        if self.is_rule_immutable(rule_id) and not force:
+            raise ValueError(f"Cannot remove immutable rule: {rule_id}. Use force=True to override.")
+
         # Check constitutional
         for i, rule in enumerate(self._policy_set.constitutional_rules):
             if rule.id == rule_id:
                 self._policy_set.constitutional_rules.pop(i)
-                self._save_policies()
+                self._save_policies(f"Removed constitutional rule: {rule_id}", "admin")
                 return True
 
         # Check organization
         for i, rule in enumerate(self._policy_set.organization_rules.default):
             if rule.id == rule_id:
                 self._policy_set.organization_rules.default.pop(i)
-                self._save_policies()
+                self._save_policies(f"Removed organization rule: {rule_id}", "admin")
                 return True
 
         # Check departments
@@ -568,7 +1238,7 @@ class GovernanceManager:
             for i, rule in enumerate(dept_rules.defaults):
                 if rule.id == rule_id:
                     dept_rules.defaults.pop(i)
-                    self._save_policies()
+                    self._save_policies(f"Removed department rule: {rule_id}", "admin")
                     return True
 
         return False
@@ -598,4 +1268,7 @@ __all__ = [
     "GovernanceManager",
     "get_governance_manager",
     "RISK_PATTERNS",
+    "PolicyChange",
+    "PolicyChangeType",
+    "PolicyVersion",
 ]

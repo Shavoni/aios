@@ -408,3 +408,280 @@ async def reload_policies() -> dict[str, str]:
     governance = get_governance_manager()
     governance.reload_policies()
     return {"status": "reloaded"}
+
+
+# =============================================================================
+# B) Override Prevention - Immutable Rules
+# =============================================================================
+
+
+class ImmutableRuleRequest(BaseModel):
+    """Request to mark/unmark a rule as immutable."""
+    rule_id: str = Field(..., min_length=1)
+    override_key: str | None = Field(default=None, description="Required to unmark immutable rules")
+
+
+@router.post("/rules/{rule_id}/immutable")
+async def mark_rule_immutable(rule_id: str) -> dict:
+    """Mark a rule as immutable (cannot be modified or deleted)."""
+    governance = get_governance_manager()
+    success = governance.mark_rule_immutable(rule_id)
+    if not success:
+        raise HTTPException(status_code=404, detail=f"Rule {rule_id} not found")
+    return {"success": True, "rule_id": rule_id, "immutable": True}
+
+
+@router.delete("/rules/{rule_id}/immutable")
+async def unmark_rule_immutable(rule_id: str, override_key: str = "") -> dict:
+    """Unmark a rule as immutable."""
+    governance = get_governance_manager()
+    success = governance.unmark_rule_immutable(rule_id, override_key)
+    if not success:
+        raise HTTPException(status_code=404, detail=f"Rule {rule_id} is not immutable")
+    return {"success": True, "rule_id": rule_id, "immutable": False}
+
+
+@router.get("/rules/immutable")
+async def list_immutable_rules() -> dict:
+    """List all immutable rule IDs."""
+    governance = get_governance_manager()
+    return {"immutable_rules": governance.get_immutable_rules()}
+
+
+class ConflictCheckRequest(BaseModel):
+    """Request to check for rule conflicts."""
+    name: str
+    priority: int
+    conditions: list[dict[str, Any]]
+
+
+@router.post("/rules/check-conflict")
+async def check_rule_conflict(request: ConflictCheckRequest) -> dict:
+    """Check if a proposed rule would conflict with existing rules."""
+    governance = get_governance_manager()
+
+    # Create a temporary rule for checking
+    temp_rule = PolicyRule(
+        id="temp-check",
+        name=request.name,
+        description="",
+        conditions=[
+            RuleCondition(
+                field=c.get("field", ""),
+                operator=ConditionOperator(c.get("operator", "eq")),
+                value=c.get("value", ""),
+            )
+            for c in request.conditions
+        ],
+        action=RuleAction(),
+        priority=request.priority,
+    )
+
+    conflict = governance.check_override_conflict(temp_rule)
+    return {
+        "has_conflict": conflict is not None,
+        "conflict": conflict,
+    }
+
+
+# =============================================================================
+# C) Policy Versioning
+# =============================================================================
+
+
+@router.get("/versions")
+async def list_versions(limit: int = 50) -> dict:
+    """Get policy version history."""
+    governance = get_governance_manager()
+    return {
+        "current_version": governance.get_current_version(),
+        "versions": governance.get_version_history(limit),
+    }
+
+
+@router.get("/versions/{version_id}")
+async def get_version(version_id: str) -> dict:
+    """Get a specific policy version."""
+    governance = get_governance_manager()
+    version = governance.get_version(version_id)
+    if not version:
+        raise HTTPException(status_code=404, detail=f"Version {version_id} not found")
+    return version.to_dict()
+
+
+class RollbackRequest(BaseModel):
+    """Request to rollback to a previous version."""
+    rolled_back_by: str = Field(default="admin")
+
+
+@router.post("/versions/{version_id}/rollback")
+async def rollback_to_version(version_id: str, request: RollbackRequest) -> dict:
+    """Rollback policies to a previous version."""
+    governance = get_governance_manager()
+    success = governance.rollback_to_version(version_id, request.rolled_back_by)
+    if not success:
+        raise HTTPException(status_code=404, detail=f"Version {version_id} not found")
+    return {
+        "success": True,
+        "rolled_back_to": version_id,
+        "new_version": governance.get_current_version(),
+    }
+
+
+@router.get("/versions/compare/{version_id_1}/{version_id_2}")
+async def compare_versions(version_id_1: str, version_id_2: str) -> dict:
+    """Compare two policy versions."""
+    governance = get_governance_manager()
+    return governance.compare_versions(version_id_1, version_id_2)
+
+
+# =============================================================================
+# D) Approval Workflow
+# =============================================================================
+
+
+class ProposeChangeRequest(BaseModel):
+    """Request to propose a policy change."""
+    change_type: str = Field(..., description="add_rule, remove_rule, add_prohibition, remove_prohibition")
+    description: str
+    proposed_by: str = Field(default="system")
+    data: dict[str, Any] = Field(default_factory=dict)
+
+
+@router.get("/approval/settings")
+async def get_approval_settings() -> dict:
+    """Get approval workflow settings."""
+    governance = get_governance_manager()
+    return {
+        "require_approval": governance.is_approval_required(),
+    }
+
+
+@router.put("/approval/settings")
+async def update_approval_settings(require_approval: bool = True) -> dict:
+    """Update approval workflow settings."""
+    governance = get_governance_manager()
+    governance.set_require_approval(require_approval)
+    return {
+        "require_approval": governance.is_approval_required(),
+    }
+
+
+@router.post("/approval/propose")
+async def propose_change(request: ProposeChangeRequest) -> dict:
+    """Propose a policy change for approval."""
+    governance = get_governance_manager()
+    change = governance.propose_rule_change(
+        change_type=request.change_type,
+        description=request.description,
+        data=request.data,
+        proposed_by=request.proposed_by,
+    )
+    return change.to_dict()
+
+
+@router.get("/approval/pending")
+async def list_pending_changes() -> dict:
+    """List all pending policy changes."""
+    governance = get_governance_manager()
+    return {"pending": governance.get_pending_changes()}
+
+
+@router.get("/approval/changes/{change_id}")
+async def get_change(change_id: str) -> dict:
+    """Get a specific policy change."""
+    governance = get_governance_manager()
+    change = governance.get_change(change_id)
+    if not change:
+        raise HTTPException(status_code=404, detail=f"Change {change_id} not found")
+    return change.to_dict()
+
+
+class ReviewChangeRequest(BaseModel):
+    """Request to review a policy change."""
+    reviewed_by: str
+    review_notes: str = ""
+
+
+@router.post("/approval/changes/{change_id}/approve")
+async def approve_change(change_id: str, request: ReviewChangeRequest) -> dict:
+    """Approve and apply a pending policy change."""
+    governance = get_governance_manager()
+    result = governance.approve_change(
+        change_id=change_id,
+        reviewed_by=request.reviewed_by,
+        review_notes=request.review_notes,
+    )
+    if not result["success"]:
+        raise HTTPException(status_code=400, detail=result.get("error"))
+    return result
+
+
+@router.post("/approval/changes/{change_id}/reject")
+async def reject_change(change_id: str, request: ReviewChangeRequest) -> dict:
+    """Reject a pending policy change."""
+    governance = get_governance_manager()
+    result = governance.reject_change(
+        change_id=change_id,
+        reviewed_by=request.reviewed_by,
+        review_notes=request.review_notes,
+    )
+    if not result["success"]:
+        raise HTTPException(status_code=400, detail=result.get("error"))
+    return result
+
+
+# =============================================================================
+# E) Drift Detection
+# =============================================================================
+
+
+@router.get("/drift")
+async def check_drift() -> dict:
+    """Check for policy drift."""
+    governance = get_governance_manager()
+    return governance.get_drift_report()
+
+
+@router.get("/drift/hash")
+async def get_policy_hash() -> dict:
+    """Get the current policy hash."""
+    governance = get_governance_manager()
+    return {
+        "hash": governance.get_policy_hash(),
+        "version": governance.get_current_version(),
+    }
+
+
+@router.post("/drift/sync")
+async def sync_from_file() -> dict:
+    """Sync policies from file to resolve drift."""
+    governance = get_governance_manager()
+    return governance.sync_from_file()
+
+
+# =============================================================================
+# Governance Summary
+# =============================================================================
+
+
+@router.get("/summary")
+async def get_governance_summary() -> dict:
+    """Get a comprehensive summary of governance state."""
+    governance = get_governance_manager()
+    all_rules = governance.get_all_rules()
+
+    return {
+        "version": governance.get_current_version(),
+        "policy_hash": governance.get_policy_hash(),
+        "require_approval": governance.is_approval_required(),
+        "rules": {
+            "constitutional": len(all_rules["constitutional"]),
+            "organization": len(all_rules["organization"]),
+            "department": sum(len(rules) for rules in all_rules.get("department", {}).values()),
+        },
+        "immutable_rules": len(governance.get_immutable_rules()),
+        "pending_changes": len(governance.get_pending_changes()),
+        "prohibited_topics": len(governance.list_prohibited_topics()),
+        "drift_status": governance.get_drift_report()["overall_status"],
+    }
