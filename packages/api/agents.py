@@ -479,7 +479,8 @@ async def query_agent(agent_id: str, request: AgentQueryRequest) -> AgentQueryRe
 
     if request.use_knowledge_base:
         knowledge_manager = get_knowledge_manager()
-        results = knowledge_manager.query(agent_id, request.query, n_results=5)
+        # Query both shared canon AND agent-specific knowledge
+        results = knowledge_manager.query_with_canon(agent_id, request.query, n_results=5)
         sources = results
 
         if results:

@@ -1099,3 +1099,105 @@ export function getLogoUrl(logoPath: string): string {
   if (logoPath.startsWith("http")) return logoPath;
   return `${API_BASE}${logoPath}`;
 }
+
+// =============================================================================
+// Shared Canon (Organization-wide Knowledge)
+// =============================================================================
+
+export interface CanonStats {
+  document_count: number;
+  web_source_count: number;
+  total_document_chunks: number;
+  total_web_chunks: number;
+  total_chunks: number;
+  documents: Array<{ id: string; filename: string; chunks: number }>;
+  web_sources: Array<{ id: string; name: string; url: string; chunks: number }>;
+}
+
+export interface CanonDocument {
+  id: string;
+  agent_id: string;
+  filename: string;
+  file_type: string;
+  file_size: number;
+  chunk_count: number;
+  uploaded_at: string;
+  metadata: Record<string, unknown>;
+}
+
+export interface CanonWebSource {
+  id: string;
+  agent_id: string;
+  url: string;
+  name: string;
+  description: string;
+  refresh_interval_hours: number;
+  last_refreshed: string | null;
+  last_refresh_status: string;
+  chunk_count: number;
+  created_at: string;
+  auto_refresh: boolean;
+  selector: string | null;
+}
+
+export async function getCanonStats(): Promise<CanonStats> {
+  return apiFetch("/system/canon");
+}
+
+export async function listCanonDocuments(): Promise<{ documents: CanonDocument[]; total: number }> {
+  return apiFetch("/system/canon/documents");
+}
+
+export async function uploadCanonDocument(file: File): Promise<{ success: boolean; document: CanonDocument; message: string }> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const url = `${API_BASE}/system/canon/documents`;
+  const res = await fetch(url, {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ detail: res.statusText }));
+    throw new Error(error.detail || `Upload failed: ${res.status}`);
+  }
+
+  return res.json();
+}
+
+export async function deleteCanonDocument(documentId: string): Promise<{ success: boolean; message: string }> {
+  return apiFetch(`/system/canon/documents/${documentId}`, { method: "DELETE" });
+}
+
+export async function clearCanon(): Promise<{ success: boolean; cleared: number; message: string }> {
+  return apiFetch("/system/canon", { method: "DELETE" });
+}
+
+export async function listCanonWebSources(): Promise<{ sources: CanonWebSource[]; total: number }> {
+  return apiFetch("/system/canon/web-sources");
+}
+
+export interface AddCanonWebSourceRequest {
+  url: string;
+  name?: string;
+  description?: string;
+  refresh_interval_hours?: number;
+  selector?: string;
+  auto_refresh?: boolean;
+}
+
+export async function addCanonWebSource(request: AddCanonWebSourceRequest): Promise<{ success: boolean; source: CanonWebSource; message: string }> {
+  return apiFetch("/system/canon/web-sources", {
+    method: "POST",
+    body: JSON.stringify(request),
+  });
+}
+
+export async function refreshCanonWebSource(sourceId: string): Promise<{ success: boolean; source: CanonWebSource; message: string }> {
+  return apiFetch(`/system/canon/web-sources/${sourceId}/refresh`, { method: "POST" });
+}
+
+export async function deleteCanonWebSource(sourceId: string): Promise<{ success: boolean; message: string }> {
+  return apiFetch(`/system/canon/web-sources/${sourceId}`, { method: "DELETE" });
+}

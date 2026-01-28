@@ -85,11 +85,23 @@ import {
   uploadLogo,
   deleteLogo,
   getLogoUrl,
+  getCanonStats,
+  listCanonDocuments,
+  uploadCanonDocument,
+  deleteCanonDocument,
+  clearCanon,
+  listCanonWebSources,
+  addCanonWebSource,
+  refreshCanonWebSource,
+  deleteCanonWebSource,
   type GovernanceSummary,
   type PolicyVersion,
   type PolicyChange,
   type DriftReport,
   type BrandingSettings,
+  type CanonStats,
+  type CanonDocument,
+  type CanonWebSource,
 } from "@/lib/api";
 import { config } from "@/lib/config";
 import { History, GitBranch, AlertCircle, RotateCcw, FileCheck, ShieldCheck } from "lucide-react";
@@ -297,6 +309,10 @@ export default function SettingsPage() {
           <TabsTrigger value="branding" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-rose-500 data-[state=active]:text-white">
             <Palette className="mr-2 h-4 w-4" />
             Branding
+          </TabsTrigger>
+          <TabsTrigger value="canon" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-500 data-[state=active]:to-teal-500 data-[state=active]:text-white">
+            <Database className="mr-2 h-4 w-4" />
+            Shared Canon
           </TabsTrigger>
         </TabsList>
 
@@ -718,6 +734,11 @@ export default function SettingsPage() {
         {/* Branding Tab */}
         <TabsContent value="branding" className="space-y-6">
           <BrandingTab />
+        </TabsContent>
+
+        {/* Shared Canon Tab */}
+        <TabsContent value="canon" className="space-y-6">
+          <CanonTab />
         </TabsContent>
       </Tabs>
     </div>
@@ -1407,6 +1428,362 @@ function BrandingTab() {
               </a>{" "}
               section
             </p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+// =============================================================================
+// Canon Tab Component (Shared Knowledge Base)
+// =============================================================================
+
+function CanonTab() {
+  const [stats, setStats] = useState<CanonStats | null>(null);
+  const [documents, setDocuments] = useState<CanonDocument[]>([]);
+  const [webSources, setWebSources] = useState<CanonWebSource[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
+  const [addingUrl, setAddingUrl] = useState(false);
+  const [newUrl, setNewUrl] = useState("");
+  const [newUrlName, setNewUrlName] = useState("");
+
+  useEffect(() => {
+    loadCanonData();
+  }, []);
+
+  async function loadCanonData() {
+    try {
+      setLoading(true);
+      const [statsData, docsData, sourcesData] = await Promise.all([
+        getCanonStats(),
+        listCanonDocuments(),
+        listCanonWebSources(),
+      ]);
+      setStats(statsData);
+      setDocuments(docsData.documents);
+      setWebSources(sourcesData.sources);
+    } catch (error) {
+      console.error("Failed to load canon data:", error);
+      toast.error("Failed to load canon data");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleFileUpload(file: File) {
+    setUploading(true);
+    try {
+      const result = await uploadCanonDocument(file);
+      toast.success(result.message);
+      loadCanonData();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Upload failed";
+      toast.error(message);
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  async function handleAddWebSource() {
+    if (!newUrl.trim()) {
+      toast.error("Please enter a URL");
+      return;
+    }
+
+    setAddingUrl(true);
+    try {
+      const result = await addCanonWebSource({
+        url: newUrl.trim(),
+        name: newUrlName.trim() || undefined,
+      });
+      toast.success(result.message);
+      setNewUrl("");
+      setNewUrlName("");
+      loadCanonData();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to add web source";
+      toast.error(message);
+    } finally {
+      setAddingUrl(false);
+    }
+  }
+
+  async function handleDeleteDocument(docId: string) {
+    try {
+      await deleteCanonDocument(docId);
+      toast.success("Document deleted from canon");
+      loadCanonData();
+    } catch (error) {
+      toast.error("Failed to delete document");
+    }
+  }
+
+  async function handleDeleteWebSource(sourceId: string) {
+    try {
+      await deleteCanonWebSource(sourceId);
+      toast.success("Web source deleted from canon");
+      loadCanonData();
+    } catch (error) {
+      toast.error("Failed to delete web source");
+    }
+  }
+
+  async function handleRefreshWebSource(sourceId: string) {
+    try {
+      const result = await refreshCanonWebSource(sourceId);
+      toast.success(result.message);
+      loadCanonData();
+    } catch (error) {
+      toast.error("Failed to refresh web source");
+    }
+  }
+
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      handleFileUpload(file);
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Canon Overview */}
+      <Card className="border-0 shadow-lg">
+        <CardHeader className="border-b bg-muted/30">
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-500 to-teal-500 text-white">
+                  <Database className="h-4 w-4" />
+                </div>
+                Shared Canon
+              </CardTitle>
+              <CardDescription>
+                Organization-wide knowledge accessible to ALL agents. Add policies, FAQs, and public information here.
+              </CardDescription>
+            </div>
+            <Button variant="outline" size="sm" onClick={loadCanonData}>
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Refresh
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="p-6">
+          {stats && (
+            <div className="grid gap-4 md:grid-cols-4">
+              <div className="rounded-lg border bg-muted/30 p-4">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <FileText className="h-4 w-4" />
+                  Documents
+                </div>
+                <p className="text-2xl font-bold mt-1">{stats.document_count}</p>
+                <p className="text-xs text-muted-foreground">{stats.total_document_chunks} chunks</p>
+              </div>
+              <div className="rounded-lg border bg-muted/30 p-4">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Cloud className="h-4 w-4" />
+                  Web Sources
+                </div>
+                <p className="text-2xl font-bold mt-1">{stats.web_source_count}</p>
+                <p className="text-xs text-muted-foreground">{stats.total_web_chunks} chunks</p>
+              </div>
+              <div className="rounded-lg border bg-muted/30 p-4">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Zap className="h-4 w-4" />
+                  Total Chunks
+                </div>
+                <p className="text-2xl font-bold mt-1">{stats.total_chunks}</p>
+                <p className="text-xs text-muted-foreground">searchable segments</p>
+              </div>
+              <div className="rounded-lg border bg-gradient-to-br from-cyan-50 to-teal-50 dark:from-cyan-950/30 dark:to-teal-950/30 p-4">
+                <div className="flex items-center gap-2 text-sm text-cyan-600 dark:text-cyan-400">
+                  <CheckCircle2 className="h-4 w-4" />
+                  Coverage
+                </div>
+                <p className="text-2xl font-bold mt-1 text-cyan-700 dark:text-cyan-300">All Agents</p>
+                <p className="text-xs text-cyan-600/70 dark:text-cyan-400/70">have access</p>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Upload Documents */}
+      <Card className="border-0 shadow-lg">
+        <CardHeader className="border-b bg-muted/30">
+          <CardTitle className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-500 text-white">
+              <Upload className="h-4 w-4" />
+            </div>
+            Add Documents
+          </CardTitle>
+          <CardDescription>
+            Upload documents that ALL agents should know about
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="pt-6 space-y-4">
+          <label
+            className={`flex flex-col items-center justify-center h-32 rounded-xl border-2 border-dashed transition-colors cursor-pointer ${
+              dragOver
+                ? "border-cyan-500 bg-cyan-100 dark:bg-cyan-950/50"
+                : "border-cyan-200 dark:border-cyan-800 bg-cyan-50/50 dark:bg-cyan-950/20 hover:bg-cyan-100/50 dark:hover:bg-cyan-950/30"
+            }`}
+            onDrop={handleDrop}
+            onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+            onDragLeave={(e) => { e.preventDefault(); setDragOver(false); }}
+          >
+            <input
+              type="file"
+              accept=".txt,.pdf,.docx,.doc"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handleFileUpload(file);
+              }}
+              disabled={uploading}
+            />
+            {uploading ? (
+              <Loader2 className="h-8 w-8 text-cyan-500 animate-spin" />
+            ) : (
+              <>
+                <Upload className="h-8 w-8 text-cyan-400 mb-2" />
+                <p className="text-sm text-muted-foreground">Drop files here or click to upload</p>
+                <p className="text-xs text-muted-foreground">PDF, DOCX, TXT</p>
+              </>
+            )}
+          </label>
+
+          {/* Document List */}
+          {documents.length > 0 && (
+            <div className="space-y-2">
+              <p className="text-sm font-medium">Canon Documents</p>
+              <div className="space-y-2">
+                {documents.map((doc) => (
+                  <div key={doc.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
+                    <div className="flex items-center gap-3">
+                      <FileText className="h-4 w-4 text-muted-foreground" />
+                      <div>
+                        <p className="font-medium text-sm">{doc.filename}</p>
+                        <p className="text-xs text-muted-foreground">{doc.chunk_count} chunks • {(doc.file_size / 1024).toFixed(1)}KB</p>
+                      </div>
+                    </div>
+                    <Button variant="ghost" size="icon" onClick={() => handleDeleteDocument(doc.id)}>
+                      <Trash2 className="h-4 w-4 text-red-500" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Web Sources */}
+      <Card className="border-0 shadow-lg">
+        <CardHeader className="border-b bg-muted/30">
+          <CardTitle className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 text-white">
+              <Cloud className="h-4 w-4" />
+            </div>
+            Web Sources
+          </CardTitle>
+          <CardDescription>
+            Add your organization's website, policy pages, or public information URLs
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="pt-6 space-y-4">
+          {/* Add URL Form */}
+          <div className="flex gap-2">
+            <Input
+              placeholder="https://example.com/policies"
+              value={newUrl}
+              onChange={(e) => setNewUrl(e.target.value)}
+              className="flex-1 bg-muted/50"
+            />
+            <Input
+              placeholder="Name (optional)"
+              value={newUrlName}
+              onChange={(e) => setNewUrlName(e.target.value)}
+              className="w-48 bg-muted/50"
+            />
+            <Button
+              onClick={handleAddWebSource}
+              disabled={addingUrl || !newUrl.trim()}
+              className="bg-gradient-to-r from-purple-500 to-pink-500"
+            >
+              {addingUrl ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
+            </Button>
+          </div>
+
+          {/* Web Sources List */}
+          {webSources.length > 0 && (
+            <div className="space-y-2">
+              {webSources.map((source) => (
+                <div key={source.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
+                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                    <Cloud className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                    <div className="min-w-0">
+                      <p className="font-medium text-sm truncate">{source.name}</p>
+                      <p className="text-xs text-muted-foreground truncate">{source.url}</p>
+                      <p className="text-xs text-muted-foreground">{source.chunk_count} chunks • {source.last_refresh_status}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 flex-shrink-0">
+                    <Button variant="ghost" size="icon" onClick={() => handleRefreshWebSource(source.id)}>
+                      <RefreshCw className="h-4 w-4" />
+                    </Button>
+                    <Button variant="ghost" size="icon" onClick={() => handleDeleteWebSource(source.id)}>
+                      <Trash2 className="h-4 w-4 text-red-500" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {webSources.length === 0 && (
+            <div className="text-center py-8 text-muted-foreground">
+              <Cloud className="h-12 w-12 mx-auto mb-3 opacity-50" />
+              <p className="text-sm">No web sources yet</p>
+              <p className="text-xs">Add your organization's website to populate the shared canon</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Info Card */}
+      <Card className="border-0 shadow-lg border-l-4 border-l-cyan-500">
+        <CardContent className="pt-6">
+          <div className="flex items-start gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-100 dark:bg-cyan-900 flex-shrink-0">
+              <CheckCircle2 className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
+            </div>
+            <div>
+              <p className="font-medium text-cyan-700 dark:text-cyan-300">How the Shared Canon Works</p>
+              <p className="text-sm text-muted-foreground mt-1">
+                When any agent receives a query, it automatically searches both its own knowledge base AND the shared canon.
+                This ensures consistent answers across all agents without duplicate uploads.
+              </p>
+              <ul className="text-sm text-muted-foreground mt-2 list-disc list-inside space-y-1">
+                <li>Upload documents once, available to all agents</li>
+                <li>Add your organization's website for consistent information</li>
+                <li>Results are merged and ranked by relevance</li>
+                <li>Citations show whether info came from canon or agent-specific knowledge</li>
+              </ul>
+            </div>
           </div>
         </CardContent>
       </Card>

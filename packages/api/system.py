@@ -856,3 +856,207 @@ async def update_branding(settings: BrandingSettings) -> dict:
         "message": "Branding settings updated",
         **config
     }
+
+
+# =============================================================================
+# Shared Canon (Organization-wide Knowledge Base)
+# =============================================================================
+
+
+class CanonWebSourceRequest(BaseModel):
+    """Request to add a web source to the canon."""
+    url: str = Field(..., description="URL to ingest")
+    name: str = Field(default="", description="Optional name for the source")
+    description: str = Field(default="", description="Optional description")
+    refresh_interval_hours: int = Field(default=24, description="How often to refresh (hours)")
+    selector: str = Field(default="", description="Optional CSS selector for content extraction")
+    auto_refresh: bool = Field(default=True, description="Whether to auto-refresh")
+
+
+@router.get("/canon")
+async def get_canon_stats() -> dict:
+    """Get statistics about the shared canon.
+
+    The shared canon contains organization-wide knowledge that ALL agents can access.
+    This ensures consistent answers across all agents and eliminates duplicate uploads.
+    """
+    knowledge_manager = get_knowledge_manager()
+    return knowledge_manager.get_canon_stats()
+
+
+@router.get("/canon/documents")
+async def list_canon_documents() -> dict:
+    """List all documents in the shared canon."""
+    knowledge_manager = get_knowledge_manager()
+    docs = knowledge_manager.list_canon_documents()
+    return {
+        "documents": [doc.model_dump() for doc in docs],
+        "total": len(docs),
+    }
+
+
+@router.post("/canon/documents")
+async def upload_canon_document(file: UploadFile = File(...)) -> dict:
+    """Upload a document to the shared canon.
+
+    Documents in the canon are accessible to ALL agents when they query.
+    Use this for organization-wide policies, FAQs, public information, etc.
+    """
+    knowledge_manager = get_knowledge_manager()
+
+    content = await file.read()
+    filename = file.filename or "document.txt"
+
+    doc = knowledge_manager.add_to_canon(
+        filename=filename,
+        content=content,
+        metadata={"uploaded_via": "api"},
+    )
+
+    return {
+        "success": True,
+        "document": doc.model_dump(),
+        "message": f"Document '{filename}' added to canon ({doc.chunk_count} chunks)",
+    }
+
+
+@router.delete("/canon/documents/{document_id}")
+async def delete_canon_document(document_id: str) -> dict:
+    """Delete a document from the shared canon."""
+    knowledge_manager = get_knowledge_manager()
+
+    # Verify it's a canon document
+    doc = knowledge_manager.get_document(document_id)
+    if not doc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Document '{document_id}' not found"
+        )
+
+    from packages.core.knowledge import SHARED_CANON_ID
+    if doc.agent_id != SHARED_CANON_ID:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="This document is not in the shared canon"
+        )
+
+    success = knowledge_manager.delete_document(document_id)
+    return {
+        "success": success,
+        "message": f"Document '{document_id}' deleted from canon" if success else "Delete failed",
+    }
+
+
+@router.delete("/canon")
+async def clear_canon() -> dict:
+    """Clear ALL documents from the shared canon.
+
+    WARNING: This removes all shared organizational knowledge.
+    """
+    knowledge_manager = get_knowledge_manager()
+    count = knowledge_manager.clear_canon()
+    return {
+        "success": True,
+        "cleared": count,
+        "message": f"Cleared {count} documents from canon",
+    }
+
+
+@router.get("/canon/web-sources")
+async def list_canon_web_sources() -> dict:
+    """List all web sources in the shared canon."""
+    knowledge_manager = get_knowledge_manager()
+    sources = knowledge_manager.list_canon_web_sources()
+    return {
+        "sources": [s.model_dump() for s in sources],
+        "total": len(sources),
+    }
+
+
+@router.post("/canon/web-sources")
+async def add_canon_web_source(request: CanonWebSourceRequest) -> dict:
+    """Add a web source to the shared canon.
+
+    The web content will be automatically ingested and made available to ALL agents.
+    This is ideal for your organization's main website, policy pages, FAQ, etc.
+    """
+    knowledge_manager = get_knowledge_manager()
+
+    try:
+        source = knowledge_manager.add_canon_web_source(
+            url=request.url,
+            name=request.name or None,
+            description=request.description,
+            refresh_interval_hours=request.refresh_interval_hours,
+            selector=request.selector or None,
+            auto_refresh=request.auto_refresh,
+        )
+        return {
+            "success": True,
+            "source": source.model_dump(),
+            "message": f"Web source '{source.name}' added to canon ({source.chunk_count} chunks)",
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.post("/canon/web-sources/{source_id}/refresh")
+async def refresh_canon_web_source(source_id: str) -> dict:
+    """Refresh a web source in the canon."""
+    knowledge_manager = get_knowledge_manager()
+
+    source = knowledge_manager.get_web_source(source_id)
+    if not source:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Web source '{source_id}' not found"
+        )
+
+    from packages.core.knowledge import SHARED_CANON_ID
+    if source.agent_id != SHARED_CANON_ID:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="This web source is not in the shared canon"
+        )
+
+    try:
+        refreshed = knowledge_manager.refresh_web_source(source_id)
+        return {
+            "success": True,
+            "source": refreshed.model_dump(),
+            "message": f"Refreshed '{refreshed.name}' ({refreshed.chunk_count} chunks)",
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.delete("/canon/web-sources/{source_id}")
+async def delete_canon_web_source(source_id: str) -> dict:
+    """Delete a web source from the shared canon."""
+    knowledge_manager = get_knowledge_manager()
+
+    source = knowledge_manager.get_web_source(source_id)
+    if not source:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Web source '{source_id}' not found"
+        )
+
+    from packages.core.knowledge import SHARED_CANON_ID
+    if source.agent_id != SHARED_CANON_ID:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="This web source is not in the shared canon"
+        )
+
+    success = knowledge_manager.delete_web_source(source_id)
+    return {
+        "success": success,
+        "message": f"Web source '{source_id}' deleted from canon" if success else "Delete failed",
+    }

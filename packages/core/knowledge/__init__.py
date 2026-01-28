@@ -77,8 +77,16 @@ class KnowledgeChunk(BaseModel):
     metadata: dict[str, Any] = Field(default_factory=dict)
 
 
+# Shared Canon ID - used for organization-wide knowledge
+SHARED_CANON_ID = "shared_canon"
+
+
 class KnowledgeManager:
-    """Manages knowledge bases for agents using Chroma."""
+    """Manages knowledge bases for agents using Chroma.
+
+    Supports a "Shared Canon" - organization-wide knowledge that all agents can access.
+    When querying, agents get results from both their specific knowledge AND the shared canon.
+    """
 
     def __init__(self, storage_path: str | None = None):
         if storage_path is None:
@@ -291,7 +299,7 @@ class KnowledgeManager:
         query_text: str,
         n_results: int = 5,
     ) -> list[dict[str, Any]]:
-        """Query an agent's knowledge base."""
+        """Query an agent's knowledge base (agent-specific only)."""
         collection = self._get_collection(agent_id)
 
         try:
@@ -315,6 +323,154 @@ class KnowledgeManager:
                 })
 
         return formatted
+
+    def query_with_canon(
+        self,
+        agent_id: str,
+        query_text: str,
+        n_results: int = 5,
+        canon_weight: float = 0.5,
+    ) -> list[dict[str, Any]]:
+        """Query both the shared canon AND agent-specific knowledge.
+
+        This ensures all agents have access to shared organizational knowledge
+        while also accessing their domain-specific knowledge.
+
+        Args:
+            agent_id: The agent's ID
+            query_text: The query string
+            n_results: Total number of results to return
+            canon_weight: Fraction of results from canon (0.0-1.0). Default 0.5 = half from each.
+
+        Returns:
+            Combined results from both canon and agent knowledge, sorted by relevance.
+        """
+        # Calculate how many results to get from each source
+        canon_count = max(1, int(n_results * canon_weight))
+        agent_count = max(1, n_results - canon_count)
+
+        all_results = []
+
+        # Query shared canon (if it exists and has content)
+        if agent_id != SHARED_CANON_ID:  # Don't double-query canon from canon itself
+            try:
+                canon_collection = self._get_collection(SHARED_CANON_ID)
+                canon_results = canon_collection.query(
+                    query_texts=[query_text],
+                    n_results=canon_count,
+                )
+                if canon_results["documents"] and canon_results["documents"][0]:
+                    for i, doc_text in enumerate(canon_results["documents"][0]):
+                        metadata = canon_results["metadatas"][0][i] if canon_results["metadatas"] else {}
+                        distance = canon_results["distances"][0][i] if canon_results["distances"] else 0
+                        metadata["source_type"] = "canon"  # Mark as canon source
+                        all_results.append({
+                            "text": doc_text,
+                            "metadata": metadata,
+                            "relevance": 1 - distance,
+                        })
+            except Exception:
+                pass  # Canon might not exist yet
+
+        # Query agent-specific knowledge
+        try:
+            agent_collection = self._get_collection(agent_id)
+            agent_results = agent_collection.query(
+                query_texts=[query_text],
+                n_results=agent_count,
+            )
+            if agent_results["documents"] and agent_results["documents"][0]:
+                for i, doc_text in enumerate(agent_results["documents"][0]):
+                    metadata = agent_results["metadatas"][0][i] if agent_results["metadatas"] else {}
+                    distance = agent_results["distances"][0][i] if agent_results["distances"] else 0
+                    metadata["source_type"] = "agent"  # Mark as agent-specific source
+                    all_results.append({
+                        "text": doc_text,
+                        "metadata": metadata,
+                        "relevance": 1 - distance,
+                    })
+        except Exception:
+            pass
+
+        # Sort by relevance (highest first) and return top n_results
+        all_results.sort(key=lambda x: x["relevance"], reverse=True)
+        return all_results[:n_results]
+
+    # =========================================================================
+    # Shared Canon Management
+    # =========================================================================
+
+    def add_to_canon(
+        self,
+        filename: str,
+        content: bytes,
+        metadata: dict[str, Any] | None = None,
+    ) -> KnowledgeDocument:
+        """Add a document to the shared organizational canon.
+
+        Documents in the canon are accessible to ALL agents when they query.
+        Use this for organization-wide policies, FAQs, public information, etc.
+        """
+        return self.add_document(
+            agent_id=SHARED_CANON_ID,
+            filename=filename,
+            content=content,
+            metadata={"is_canon": True, **(metadata or {})},
+        )
+
+    def list_canon_documents(self) -> list[KnowledgeDocument]:
+        """List all documents in the shared canon."""
+        return self.list_documents(SHARED_CANON_ID)
+
+    def clear_canon(self) -> int:
+        """Clear all documents from the shared canon."""
+        return self.clear_agent_knowledge(SHARED_CANON_ID)
+
+    def add_canon_web_source(
+        self,
+        url: str,
+        name: str | None = None,
+        description: str = "",
+        refresh_interval_hours: int = 24,
+        selector: str | None = None,
+        auto_refresh: bool = True,
+    ) -> WebSource:
+        """Add a web source to the shared canon.
+
+        Web content in the canon is accessible to ALL agents.
+        Use this for the organization's main website, policy pages, etc.
+        """
+        return self.add_web_source(
+            agent_id=SHARED_CANON_ID,
+            url=url,
+            name=name,
+            description=description,
+            refresh_interval_hours=refresh_interval_hours,
+            selector=selector,
+            auto_refresh=auto_refresh,
+        )
+
+    def list_canon_web_sources(self) -> list[WebSource]:
+        """List all web sources in the shared canon."""
+        return self.list_web_sources(SHARED_CANON_ID)
+
+    def get_canon_stats(self) -> dict[str, Any]:
+        """Get statistics about the shared canon."""
+        docs = self.list_canon_documents()
+        web_sources = self.list_canon_web_sources()
+
+        total_chunks = sum(d.chunk_count for d in docs)
+        web_chunks = sum(s.chunk_count for s in web_sources)
+
+        return {
+            "document_count": len(docs),
+            "web_source_count": len(web_sources),
+            "total_document_chunks": total_chunks,
+            "total_web_chunks": web_chunks,
+            "total_chunks": total_chunks + web_chunks,
+            "documents": [{"id": d.id, "filename": d.filename, "chunks": d.chunk_count} for d in docs],
+            "web_sources": [{"id": s.id, "name": s.name, "url": s.url, "chunks": s.chunk_count} for s in web_sources],
+        }
 
     def clear_agent_knowledge(self, agent_id: str) -> int:
         """Clear all knowledge for an agent."""
@@ -700,6 +856,7 @@ def stop_knowledge_scheduler() -> None:
 
 
 __all__ = [
+    "SHARED_CANON_ID",
     "KnowledgeDocument",
     "WebSource",
     "KnowledgeManager",
