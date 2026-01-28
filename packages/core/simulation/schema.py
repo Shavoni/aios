@@ -168,6 +168,10 @@ class DecisionTraceV1(BaseModel):
     created_at: str  # ISO format
     completed_at: str | None = None
 
+    # Governance policy state at time of decision
+    policy_version: int = Field(default=1, description="Governance policy version at decision time")
+    policy_hash: str = Field(default="", description="Hash of governance policies at decision time")
+
     # Classification results
     intent: IntentResultV1 | None = None
     risk: RiskResultV1 | None = None
@@ -210,6 +214,8 @@ class DecisionTraceV1(BaseModel):
             "request_text": self.request_text,
             "tenant_id": self.tenant_id,
             "user_id": self.user_id,
+            "policy_version": self.policy_version,
+            "policy_hash": self.policy_hash,
             "intent": self._serialize_for_hash(self.intent),
             "risk": self._serialize_for_hash(self.risk),
             "governance": self._serialize_for_hash(self.governance),
@@ -290,6 +296,179 @@ class DecisionTraceV1(BaseModel):
         """Export to canonical JSON string."""
         return self._to_canonical_json(self.to_canonical_dict())
 
+    def to_csv_row(self) -> dict[str, Any]:
+        """Export trace as a flat CSV-compatible row.
+
+        Returns a dictionary suitable for CSV DictWriter.
+        """
+        return {
+            "trace_id": self.trace_id,
+            "trace_version": self.trace_version,
+            "trace_hash": self.trace_hash,
+            "request_id": self.request_id,
+            "request_text": self.request_text[:500],  # Truncate for CSV
+            "tenant_id": self.tenant_id,
+            "user_id": self.user_id,
+            "created_at": self.created_at,
+            "completed_at": self.completed_at or "",
+            "policy_version": self.policy_version,
+            "policy_hash": self.policy_hash,
+            "intent_primary": self.intent.primary_intent if self.intent else "",
+            "intent_confidence": self.intent.confidence.score if self.intent else 0.0,
+            "risk_level": self.risk.level if self.risk else "",
+            "risk_score": self.risk.score if self.risk else 0.0,
+            "risk_factors": ";".join(self.risk.factors) if self.risk else "",
+            "governance_requires_hitl": self.governance.requires_hitl if self.governance else False,
+            "governance_hitl_reason": self.governance.hitl_reason if self.governance else "",
+            "governance_policy_ids": ";".join(self.governance.policy_ids) if self.governance else "",
+            "routing_agent": self.routing.selected_agent if self.routing else "",
+            "routing_confidence": self.routing.confidence.score if self.routing else 0.0,
+            "model_id": self.model_selection.model_id if self.model_selection else "",
+            "model_tier": self.model_selection.tier if self.model_selection else "",
+            "model_cost_usd": self.model_selection.estimated_cost_usd if self.model_selection else 0.0,
+            "response_type": self.response_type,
+            "response_length": len(self.response_text),
+            "blocked_tools_count": len(self.blocked_tools),
+            "blocked_tool_names": ";".join(t.tool_name for t in self.blocked_tools),
+            "steps_count": len(self.steps),
+            "success": self.success,
+            "error_message": self.error_message,
+            "is_simulation": self.is_simulation,
+        }
+
+    @staticmethod
+    def csv_headers() -> list[str]:
+        """Get CSV column headers in order."""
+        return [
+            "trace_id", "trace_version", "trace_hash", "request_id", "request_text",
+            "tenant_id", "user_id", "created_at", "completed_at",
+            "policy_version", "policy_hash",
+            "intent_primary", "intent_confidence",
+            "risk_level", "risk_score", "risk_factors",
+            "governance_requires_hitl", "governance_hitl_reason", "governance_policy_ids",
+            "routing_agent", "routing_confidence",
+            "model_id", "model_tier", "model_cost_usd",
+            "response_type", "response_length",
+            "blocked_tools_count", "blocked_tool_names",
+            "steps_count", "success", "error_message", "is_simulation",
+        ]
+
+    def to_siem_cef(self) -> str:
+        """Export trace in CEF (Common Event Format) for SIEM integration.
+
+        CEF format: CEF:Version|Device Vendor|Device Product|Device Version|Signature ID|Name|Severity|Extension
+        """
+        # Determine severity (0-10) based on risk level
+        severity_map = {"low": 3, "medium": 5, "high": 7, "critical": 10}
+        severity = severity_map.get(self.risk.level, 3) if self.risk else 3
+
+        # Build CEF header
+        cef_header = (
+            f"CEF:0|HAAIS|AIOS|1.0|"
+            f"{self.trace_id}|"
+            f"AI Decision Trace|"
+            f"{severity}|"
+        )
+
+        # Build extension (key=value pairs)
+        extensions = {
+            "rt": self.created_at,
+            "src": self.tenant_id,
+            "suser": self.user_id,
+            "msg": self.request_text[:200].replace("=", "\\=").replace("|", "\\|"),
+            "outcome": "Success" if self.success else "Failure",
+            "cs1": self.intent.primary_intent if self.intent else "",
+            "cs1Label": "Intent",
+            "cs2": self.risk.level if self.risk else "",
+            "cs2Label": "RiskLevel",
+            "cs3": self.routing.selected_agent if self.routing else "",
+            "cs3Label": "RoutedAgent",
+            "cs4": str(self.governance.requires_hitl) if self.governance else "False",
+            "cs4Label": "RequiresHITL",
+            "cs5": self.policy_hash[:16] if self.policy_hash else "",
+            "cs5Label": "PolicyHash",
+            "cn1": self.policy_version,
+            "cn1Label": "PolicyVersion",
+            "cn2": len(self.blocked_tools),
+            "cn2Label": "BlockedToolsCount",
+            "cfp1": self.risk.score if self.risk else 0.0,
+            "cfp1Label": "RiskScore",
+        }
+
+        # Format extension string
+        ext_str = " ".join(f"{k}={v}" for k, v in extensions.items() if v)
+
+        return cef_header + ext_str
+
+    def to_siem_json(self) -> dict[str, Any]:
+        """Export trace in JSON format optimized for SIEM ingestion.
+
+        Includes normalized fields common across SIEM platforms.
+        """
+        return {
+            # Standard SIEM fields
+            "@timestamp": self.created_at,
+            "event.kind": "event",
+            "event.category": ["process"],
+            "event.type": ["info"],
+            "event.outcome": "success" if self.success else "failure",
+            "event.id": self.trace_id,
+            "event.hash": self.trace_hash,
+
+            # Source identification
+            "observer.vendor": "HAAIS",
+            "observer.product": "AIOS",
+            "observer.version": self.trace_version,
+
+            # User context
+            "user.id": self.user_id,
+            "organization.id": self.tenant_id,
+
+            # AI-specific fields
+            "aios.request.id": self.request_id,
+            "aios.request.text": self.request_text[:1000],
+            "aios.response.type": self.response_type,
+            "aios.response.length": len(self.response_text),
+
+            # Policy context
+            "aios.policy.version": self.policy_version,
+            "aios.policy.hash": self.policy_hash,
+
+            # Classification
+            "aios.intent.primary": self.intent.primary_intent if self.intent else None,
+            "aios.intent.confidence": self.intent.confidence.score if self.intent else None,
+
+            # Risk assessment
+            "aios.risk.level": self.risk.level if self.risk else None,
+            "aios.risk.score": self.risk.score if self.risk else None,
+            "aios.risk.factors": self.risk.factors if self.risk else [],
+
+            # Governance
+            "aios.governance.requires_hitl": self.governance.requires_hitl if self.governance else False,
+            "aios.governance.hitl_reason": self.governance.hitl_reason if self.governance else None,
+            "aios.governance.policy_ids": self.governance.policy_ids if self.governance else [],
+
+            # Routing
+            "aios.routing.agent": self.routing.selected_agent if self.routing else None,
+            "aios.routing.confidence": self.routing.confidence.score if self.routing else None,
+
+            # Model
+            "aios.model.id": self.model_selection.model_id if self.model_selection else None,
+            "aios.model.tier": self.model_selection.tier if self.model_selection else None,
+            "aios.model.cost_usd": self.model_selection.estimated_cost_usd if self.model_selection else None,
+
+            # Security
+            "aios.blocked_tools": [t.tool_name for t in self.blocked_tools],
+            "aios.blocked_tools_count": len(self.blocked_tools),
+
+            # Execution
+            "aios.steps_count": len(self.steps),
+            "aios.is_simulation": self.is_simulation,
+
+            # Error handling
+            "error.message": self.error_message if not self.success else None,
+        }
+
 
 def create_trace(
     request_text: str,
@@ -297,8 +476,20 @@ def create_trace(
     user_id: str = "anonymous",
     trace_id: str | None = None,
     request_id: str | None = None,
+    policy_version: int = 1,
+    policy_hash: str = "",
 ) -> DecisionTraceV1:
-    """Create a new decision trace."""
+    """Create a new decision trace.
+
+    Args:
+        request_text: The user's request text
+        tenant_id: Tenant identifier
+        user_id: User identifier
+        trace_id: Optional trace ID (generated if not provided)
+        request_id: Optional request ID (generated if not provided)
+        policy_version: Current governance policy version
+        policy_hash: Hash of current governance policies
+    """
     import uuid
 
     now = datetime.now(UTC).isoformat()
@@ -312,6 +503,8 @@ def create_trace(
         tenant_id=tenant_id,
         user_id=user_id,
         created_at=now,
+        policy_version=policy_version,
+        policy_hash=policy_hash,
     )
 
 
