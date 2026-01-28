@@ -94,6 +94,11 @@ import {
   addCanonWebSource,
   refreshCanonWebSource,
   deleteCanonWebSource,
+  getLLMConfig,
+  updateLLMConfig,
+  getLLMUsageStats,
+  getNotificationPreferences,
+  updateNotificationPreferences,
   type GovernanceSummary,
   type PolicyVersion,
   type PolicyChange,
@@ -102,6 +107,9 @@ import {
   type CanonStats,
   type CanonDocument,
   type CanonWebSource,
+  type LLMConfig,
+  type LLMUsageStats,
+  type NotificationPreferences,
 } from "@/lib/api";
 import { config } from "@/lib/config";
 import { History, GitBranch, AlertCircle, RotateCcw, FileCheck, ShieldCheck } from "lucide-react";
@@ -198,9 +206,23 @@ export default function SettingsPage() {
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [agentCount, setAgentCount] = useState(0);
 
-  // Load current agent count
+  // LLM config state
+  const [llmConfig, setLlmConfig] = useState<LLMConfig | null>(null);
+  const [llmUsage, setLlmUsage] = useState<LLMUsageStats | null>(null);
+  const [apiKeyInput, setApiKeyInput] = useState("");
+  const [defaultModel, setDefaultModel] = useState("");
+  const [endpointUrl, setEndpointUrl] = useState("");
+  const [isSavingLLM, setIsSavingLLM] = useState(false);
+
+  // Notification preferences state
+  const [notificationPrefs, setNotificationPrefs] = useState<NotificationPreferences | null>(null);
+  const [isSavingNotifs, setIsSavingNotifs] = useState(false);
+
+  // Load current agent count and LLM config
   useEffect(() => {
     loadAgentCount();
+    loadLLMConfig();
+    loadNotificationPreferences();
   }, []);
 
   async function loadAgentCount() {
@@ -209,6 +231,96 @@ export default function SettingsPage() {
       setAgentCount(data.total);
     } catch (error) {
       console.error("Failed to load agents:", error);
+    }
+  }
+
+  async function loadLLMConfig() {
+    try {
+      const [configData, usageData] = await Promise.all([
+        getLLMConfig(),
+        getLLMUsageStats(),
+      ]);
+      setLlmConfig(configData);
+      setLlmUsage(usageData);
+      setProvider(configData.provider);
+      setDefaultModel(configData.default_model);
+      setEndpointUrl(configData.endpoint_url || "");
+    } catch (error) {
+      console.error("Failed to load LLM config:", error);
+    }
+  }
+
+  async function loadNotificationPreferences() {
+    try {
+      // Use "current" as placeholder - in production, get from auth context
+      const prefs = await getNotificationPreferences("current");
+      setNotificationPrefs(prefs);
+    } catch (error) {
+      console.error("Failed to load notification preferences:", error);
+      // Set defaults if API not available
+      setNotificationPrefs({
+        escalation_alerts: { email: true, push: true, in_app: true },
+        draft_pending: { email: false, push: true, in_app: true },
+        policy_changes: { email: true, push: false, in_app: true },
+        weekly_summary: { email: false, push: false, in_app: false },
+        sla_warnings: { email: true, push: true, in_app: true },
+        agent_errors: { email: true, push: false, in_app: true },
+        enabled: true,
+        quiet_hours_start: null,
+        quiet_hours_end: null,
+      });
+    }
+  }
+
+  async function handleSaveLLMConfig() {
+    setIsSavingLLM(true);
+    try {
+      await updateLLMConfig({
+        provider,
+        api_key: apiKeyInput || undefined,
+        default_model: defaultModel || undefined,
+        endpoint_url: endpointUrl || undefined,
+      });
+      toast.success("LLM configuration saved");
+      setApiKeyInput(""); // Clear the input after save
+      loadLLMConfig(); // Reload to get updated state
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Failed to save LLM config";
+      toast.error(message);
+    } finally {
+      setIsSavingLLM(false);
+    }
+  }
+
+  async function handleToggleNotification(
+    notificationType: keyof NotificationPreferences,
+    channel?: "email" | "push" | "in_app"
+  ) {
+    if (!notificationPrefs) return;
+    setIsSavingNotifs(true);
+
+    try {
+      let updates: Record<string, unknown> = {};
+
+      if (notificationType === "enabled") {
+        updates = { enabled: !notificationPrefs.enabled };
+      } else if (channel && typeof notificationPrefs[notificationType] === "object") {
+        const currentChannel = notificationPrefs[notificationType] as { email: boolean; push: boolean; in_app: boolean };
+        updates = {
+          [notificationType]: {
+            [channel]: !currentChannel[channel],
+          },
+        };
+      }
+
+      const updated = await updateNotificationPreferences("current", updates);
+      setNotificationPrefs(updated);
+      toast.success("Notification preferences updated");
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Failed to update notifications";
+      toast.error(message);
+    } finally {
+      setIsSavingNotifs(false);
     }
   }
 
@@ -558,6 +670,12 @@ export default function SettingsPage() {
                       : provider === "anthropic"
                       ? "Anthropic API Key"
                       : "Ollama Endpoint"}
+                    {llmConfig?.api_key_set && provider !== "local" && (
+                      <Badge className="bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300 border-0">
+                        <CheckCircle2 className="h-3 w-3 mr-1" />
+                        Configured
+                      </Badge>
+                    )}
                   </label>
                   <div className="flex gap-2">
                     <div className="relative flex-1">
@@ -566,10 +684,15 @@ export default function SettingsPage() {
                         placeholder={
                           provider === "local"
                             ? "http://localhost:11434"
+                            : llmConfig?.api_key_set
+                            ? "••••••••••••••••"
                             : "sk-..."
                         }
-                        defaultValue={
-                          provider === "local" ? "http://localhost:11434" : ""
+                        value={provider === "local" ? endpointUrl : apiKeyInput}
+                        onChange={(e) =>
+                          provider === "local"
+                            ? setEndpointUrl(e.target.value)
+                            : setApiKeyInput(e.target.value)
                         }
                         className="bg-background"
                       />
@@ -586,8 +709,16 @@ export default function SettingsPage() {
                         )}
                       </Button>
                     </div>
-                    <Button className={`bg-gradient-to-r ${currentProviderConfig.gradient}`}>
-                      <Save className="mr-2 h-4 w-4" />
+                    <Button
+                      className={`bg-gradient-to-r ${currentProviderConfig.gradient}`}
+                      onClick={handleSaveLLMConfig}
+                      disabled={isSavingLLM}
+                    >
+                      {isSavingLLM ? (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      ) : (
+                        <Save className="mr-2 h-4 w-4" />
+                      )}
                       Save
                     </Button>
                   </div>
@@ -602,9 +733,22 @@ export default function SettingsPage() {
                       placeholder={
                         provider === "openai" ? "gpt-4o" : "claude-sonnet-4-20250514"
                       }
-                      defaultValue={
-                        provider === "openai" ? "gpt-4o" : "claude-sonnet-4-20250514"
-                      }
+                      value={defaultModel}
+                      onChange={(e) => setDefaultModel(e.target.value)}
+                      className="bg-background"
+                    />
+                  </div>
+                )}
+                {provider === "local" && (
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium flex items-center gap-2">
+                      <Cpu className="h-4 w-4 text-primary" />
+                      Model Name
+                    </label>
+                    <Input
+                      placeholder="llama3"
+                      value={defaultModel}
+                      onChange={(e) => setDefaultModel(e.target.value)}
                       className="bg-background"
                     />
                   </div>
@@ -621,32 +765,50 @@ export default function SettingsPage() {
                 </div>
                 API Usage
               </CardTitle>
-              <CardDescription>Current billing period usage</CardDescription>
+              <CardDescription>Last 30 days usage statistics</CardDescription>
             </CardHeader>
             <CardContent className="pt-6">
               <div className="grid gap-4 sm:grid-cols-3">
                 <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-950/50 dark:to-emerald-900/30 p-4">
                   <div className="absolute right-0 top-0 h-16 w-16 translate-x-4 -translate-y-4 rounded-full bg-green-500/20"></div>
                   <div className="relative">
-                    <div className="text-3xl font-bold text-green-700 dark:text-green-300">$47.82</div>
-                    <div className="text-sm text-green-600/70 dark:text-green-400">Total spend this month</div>
+                    <div className="text-3xl font-bold text-green-700 dark:text-green-300">
+                      ${llmUsage?.total_cost_usd?.toFixed(2) ?? "0.00"}
+                    </div>
+                    <div className="text-sm text-green-600/70 dark:text-green-400">Total spend (30 days)</div>
                   </div>
                 </div>
                 <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-purple-50 to-violet-100 dark:from-purple-950/50 dark:to-violet-900/30 p-4">
                   <div className="absolute right-0 top-0 h-16 w-16 translate-x-4 -translate-y-4 rounded-full bg-purple-500/20"></div>
                   <div className="relative">
-                    <div className="text-3xl font-bold text-purple-700 dark:text-purple-300">1.2M</div>
+                    <div className="text-3xl font-bold text-purple-700 dark:text-purple-300">
+                      {llmUsage?.total_tokens
+                        ? llmUsage.total_tokens >= 1000000
+                          ? `${(llmUsage.total_tokens / 1000000).toFixed(1)}M`
+                          : llmUsage.total_tokens >= 1000
+                          ? `${(llmUsage.total_tokens / 1000).toFixed(1)}K`
+                          : llmUsage.total_tokens.toLocaleString()
+                        : "0"}
+                    </div>
                     <div className="text-sm text-purple-600/70 dark:text-purple-400">Tokens used</div>
                   </div>
                 </div>
                 <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-950/50 dark:to-indigo-900/30 p-4">
                   <div className="absolute right-0 top-0 h-16 w-16 translate-x-4 -translate-y-4 rounded-full bg-blue-500/20"></div>
                   <div className="relative">
-                    <div className="text-3xl font-bold text-blue-700 dark:text-blue-300">2,847</div>
+                    <div className="text-3xl font-bold text-blue-700 dark:text-blue-300">
+                      {llmUsage?.total_queries?.toLocaleString() ?? "0"}
+                    </div>
                     <div className="text-sm text-blue-600/70 dark:text-blue-400">API calls</div>
                   </div>
                 </div>
               </div>
+              {llmUsage && llmUsage.avg_cost_per_query > 0 && (
+                <div className="mt-4 p-3 rounded-lg bg-muted/50 text-sm text-muted-foreground">
+                  <span className="font-medium">Avg cost per query:</span> ${llmUsage.avg_cost_per_query.toFixed(4)} |{" "}
+                  <span className="font-medium">Avg tokens:</span> {llmUsage.avg_tokens_per_query.toFixed(0)}
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
@@ -671,62 +833,119 @@ export default function SettingsPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-6 space-y-4">
+              {/* Global Toggle */}
+              <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100 dark:bg-amber-900">
+                    <Bell className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                  </div>
+                  <div>
+                    <div className="font-medium">All Notifications</div>
+                    <div className="text-sm text-muted-foreground">
+                      Master toggle for all notification types
+                    </div>
+                  </div>
+                </div>
+                <Switch
+                  checked={notificationPrefs?.enabled ?? true}
+                  onCheckedChange={() => handleToggleNotification("enabled")}
+                  disabled={isSavingNotifs}
+                />
+              </div>
+
+              <Separator />
+
+              {/* Individual notification types */}
               {[
                 {
+                  key: "escalation_alerts" as const,
                   title: "Escalation Alerts",
                   description: "Get notified when requests are escalated for review",
-                  badge: "Email + Push",
-                  badgeColor: "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300",
                   icon: AlertTriangle,
                   iconColor: "text-amber-500",
-                  enabled: true,
                 },
                 {
+                  key: "draft_pending" as const,
                   title: "Draft Pending",
                   description: "Notifications for drafts awaiting approval",
-                  badge: "Push only",
-                  badgeColor: "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300",
                   icon: FileText,
                   iconColor: "text-blue-500",
-                  enabled: true,
                 },
                 {
+                  key: "policy_changes" as const,
                   title: "Policy Changes",
                   description: "Alerts when governance policies are modified",
-                  badge: "Email only",
-                  badgeColor: "bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300",
                   icon: Shield,
                   iconColor: "text-purple-500",
-                  enabled: true,
                 },
                 {
+                  key: "sla_warnings" as const,
+                  title: "SLA Warnings",
+                  description: "Alerts when approval requests approach SLA deadlines",
+                  icon: Zap,
+                  iconColor: "text-red-500",
+                },
+                {
+                  key: "weekly_summary" as const,
                   title: "Weekly Summary",
                   description: "Weekly digest of AI activity and metrics",
-                  badge: "Disabled",
-                  badgeColor: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
                   icon: Mail,
-                  iconColor: "text-slate-400",
-                  enabled: false,
+                  iconColor: "text-slate-500",
                 },
-              ].map((item, index) => (
-                <div key={index} className={`flex items-center justify-between p-4 rounded-xl ${item.enabled ? "bg-muted/30" : "bg-muted/10"}`}>
-                  <div className="flex items-center gap-3">
-                    <div className={`flex h-10 w-10 items-center justify-center rounded-lg bg-muted`}>
-                      <item.icon className={`h-5 w-5 ${item.iconColor}`} />
+              ].map((item) => {
+                const prefs = notificationPrefs?.[item.key];
+                const hasAnyEnabled = prefs ? (prefs.email || prefs.push || prefs.in_app) : false;
+                const channelBadge = prefs
+                  ? [prefs.email && "Email", prefs.push && "Push", prefs.in_app && "In-App"]
+                      .filter(Boolean)
+                      .join(" + ") || "Disabled"
+                  : "Loading...";
+                const badgeColor = hasAnyEnabled
+                  ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
+                  : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400";
+
+                return (
+                  <div
+                    key={item.key}
+                    className={`flex items-center justify-between p-4 rounded-xl ${
+                      hasAnyEnabled ? "bg-muted/30" : "bg-muted/10"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
+                        <item.icon className={`h-5 w-5 ${item.iconColor}`} />
+                      </div>
+                      <div>
+                        <div className="font-medium">{item.title}</div>
+                        <div className="text-sm text-muted-foreground">{item.description}</div>
+                      </div>
                     </div>
-                    <div>
-                      <div className="font-medium">{item.title}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {item.description}
+                    <div className="flex items-center gap-3">
+                      <Badge className={`${badgeColor} border-0`}>{channelBadge}</Badge>
+                      <div className="flex gap-1">
+                        <Button
+                          variant={prefs?.email ? "default" : "outline"}
+                          size="sm"
+                          className="h-7 px-2 text-xs"
+                          onClick={() => handleToggleNotification(item.key, "email")}
+                          disabled={isSavingNotifs || !notificationPrefs?.enabled}
+                        >
+                          <Mail className="h-3 w-3" />
+                        </Button>
+                        <Button
+                          variant={prefs?.push ? "default" : "outline"}
+                          size="sm"
+                          className="h-7 px-2 text-xs"
+                          onClick={() => handleToggleNotification(item.key, "push")}
+                          disabled={isSavingNotifs || !notificationPrefs?.enabled}
+                        >
+                          <Bell className="h-3 w-3" />
+                        </Button>
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <Badge className={`${item.badgeColor} border-0`}>{item.badge}</Badge>
-                    <Switch checked={item.enabled} />
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </CardContent>
           </Card>
         </TabsContent>

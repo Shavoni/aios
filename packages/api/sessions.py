@@ -10,6 +10,8 @@ from pydantic import BaseModel, Field
 from packages.core.sessions import (
     Conversation,
     Message,
+    NotificationChannel,
+    NotificationPreferences,
     UserPreferences,
     get_session_manager,
 )
@@ -266,6 +268,132 @@ async def update_user_preferences(
     manager = get_session_manager()
     updates = {k: v for k, v in request.model_dump().items() if v is not None}
     return manager.update_user_preferences(user_id, updates, tenant_id=tenant_id)
+
+
+# =============================================================================
+# Notification Preferences Endpoints
+# ENTERPRISE: Per-user notification configuration for HITL and system events
+# =============================================================================
+
+
+class NotificationChannelUpdate(BaseModel):
+    """Update model for a single notification channel."""
+
+    email: bool | None = None
+    push: bool | None = None
+    in_app: bool | None = None
+
+
+class UpdateNotificationPreferencesRequest(BaseModel):
+    """Request to update notification preferences."""
+
+    escalation_alerts: NotificationChannelUpdate | None = None
+    draft_pending: NotificationChannelUpdate | None = None
+    policy_changes: NotificationChannelUpdate | None = None
+    weekly_summary: NotificationChannelUpdate | None = None
+    sla_warnings: NotificationChannelUpdate | None = None
+    agent_errors: NotificationChannelUpdate | None = None
+    enabled: bool | None = None
+    quiet_hours_start: str | None = None
+    quiet_hours_end: str | None = None
+
+
+@router.get("/users/{user_id}/notifications", response_model=NotificationPreferences)
+async def get_notification_preferences(user_id: str, req: Request) -> NotificationPreferences:
+    """Get user notification preferences.
+
+    ENTERPRISE: Returns the user's notification configuration for all event types.
+    """
+    _validate_user_access(req, user_id)
+
+    tenant_id = _get_tenant_id(req)
+    manager = get_session_manager()
+    prefs = manager.get_user_preferences(user_id, tenant_id=tenant_id)
+    return prefs.notifications
+
+
+@router.put("/users/{user_id}/notifications", response_model=NotificationPreferences)
+async def update_notification_preferences(
+    user_id: str,
+    request: UpdateNotificationPreferencesRequest,
+    req: Request,
+) -> NotificationPreferences:
+    """Update user notification preferences.
+
+    ENTERPRISE: Allows granular control over which notifications a user receives
+    and through which channels (email, push, in-app).
+    """
+    _validate_user_access(req, user_id)
+
+    tenant_id = _get_tenant_id(req)
+    manager = get_session_manager()
+    prefs = manager.get_user_preferences(user_id, tenant_id=tenant_id)
+
+    # Update notification preferences
+    notif = prefs.notifications
+
+    # Helper to update a channel
+    def update_channel(
+        current: NotificationChannel, updates: NotificationChannelUpdate | None
+    ) -> NotificationChannel:
+        if updates is None:
+            return current
+        return NotificationChannel(
+            email=updates.email if updates.email is not None else current.email,
+            push=updates.push if updates.push is not None else current.push,
+            in_app=updates.in_app if updates.in_app is not None else current.in_app,
+        )
+
+    # Apply updates to each channel
+    notif.escalation_alerts = update_channel(notif.escalation_alerts, request.escalation_alerts)
+    notif.draft_pending = update_channel(notif.draft_pending, request.draft_pending)
+    notif.policy_changes = update_channel(notif.policy_changes, request.policy_changes)
+    notif.weekly_summary = update_channel(notif.weekly_summary, request.weekly_summary)
+    notif.sla_warnings = update_channel(notif.sla_warnings, request.sla_warnings)
+    notif.agent_errors = update_channel(notif.agent_errors, request.agent_errors)
+
+    # Apply global settings
+    if request.enabled is not None:
+        notif.enabled = request.enabled
+    if request.quiet_hours_start is not None:
+        notif.quiet_hours_start = request.quiet_hours_start or None
+    if request.quiet_hours_end is not None:
+        notif.quiet_hours_end = request.quiet_hours_end or None
+
+    # Save updated preferences
+    prefs.notifications = notif
+    manager.update_user_preferences(
+        user_id,
+        {"notifications": notif.model_dump()},
+        tenant_id=tenant_id,
+    )
+
+    return notif
+
+
+@router.post("/users/{user_id}/notifications/reset")
+async def reset_notification_preferences(user_id: str, req: Request) -> dict[str, Any]:
+    """Reset notification preferences to defaults.
+
+    ENTERPRISE: Allows users to restore default notification settings.
+    """
+    _validate_user_access(req, user_id)
+
+    tenant_id = _get_tenant_id(req)
+    manager = get_session_manager()
+
+    # Reset to defaults
+    default_notif = NotificationPreferences()
+    manager.update_user_preferences(
+        user_id,
+        {"notifications": default_notif.model_dump()},
+        tenant_id=tenant_id,
+    )
+
+    return {
+        "status": "ok",
+        "message": "Notification preferences reset to defaults",
+    }
 
 
 # =============================================================================

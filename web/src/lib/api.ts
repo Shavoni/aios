@@ -1201,3 +1201,119 @@ export async function refreshCanonWebSource(sourceId: string): Promise<{ success
 export async function deleteCanonWebSource(sourceId: string): Promise<{ success: boolean; message: string }> {
   return apiFetch(`/system/canon/web-sources/${sourceId}`, { method: "DELETE" });
 }
+
+// =============================================================================
+// LLM Configuration
+// =============================================================================
+
+export interface LLMConfig {
+  provider: "openai" | "anthropic" | "local";
+  default_model: string;
+  api_key_set: boolean;
+  endpoint_url: string;
+  max_tokens: number;
+  temperature: number;
+}
+
+export interface LLMConfigUpdate {
+  provider?: "openai" | "anthropic" | "local";
+  api_key?: string;
+  default_model?: string;
+  endpoint_url?: string;
+  max_tokens?: number;
+  temperature?: number;
+}
+
+export interface LLMUsageStats {
+  period: string;
+  total_cost_usd: number;
+  total_tokens: number;
+  total_queries: number;
+  avg_cost_per_query: number;
+  avg_tokens_per_query: number;
+  cost_by_day: Array<{ date: string; cost: number }>;
+}
+
+export async function getLLMConfig(): Promise<LLMConfig> {
+  return apiFetch("/system/llm-config");
+}
+
+export async function updateLLMConfig(config: LLMConfigUpdate): Promise<{
+  success: boolean;
+  message: string;
+  provider: string;
+  default_model: string;
+  api_key_set: boolean;
+  endpoint_url: string;
+}> {
+  return apiFetch("/system/llm-config", {
+    method: "PUT",
+    body: JSON.stringify(config),
+  });
+}
+
+export async function deleteLLMApiKey(): Promise<{ success: boolean; message: string }> {
+  return apiFetch("/system/llm-config/api-key", { method: "DELETE" });
+}
+
+export async function getLLMUsageStats(): Promise<LLMUsageStats> {
+  return apiFetch("/system/llm-config/usage");
+}
+
+// =============================================================================
+// Notification Preferences
+// =============================================================================
+
+export interface NotificationChannel {
+  email: boolean;
+  push: boolean;
+  in_app: boolean;
+}
+
+export interface NotificationPreferences {
+  escalation_alerts: NotificationChannel;
+  draft_pending: NotificationChannel;
+  policy_changes: NotificationChannel;
+  weekly_summary: NotificationChannel;
+  sla_warnings: NotificationChannel;
+  agent_errors: NotificationChannel;
+  enabled: boolean;
+  quiet_hours_start: string | null;
+  quiet_hours_end: string | null;
+}
+
+export interface NotificationChannelUpdate {
+  email?: boolean;
+  push?: boolean;
+  in_app?: boolean;
+}
+
+export interface NotificationPreferencesUpdate {
+  escalation_alerts?: NotificationChannelUpdate;
+  draft_pending?: NotificationChannelUpdate;
+  policy_changes?: NotificationChannelUpdate;
+  weekly_summary?: NotificationChannelUpdate;
+  sla_warnings?: NotificationChannelUpdate;
+  agent_errors?: NotificationChannelUpdate;
+  enabled?: boolean;
+  quiet_hours_start?: string | null;
+  quiet_hours_end?: string | null;
+}
+
+export async function getNotificationPreferences(userId: string): Promise<NotificationPreferences> {
+  return apiFetch(`/sessions/users/${userId}/notifications`);
+}
+
+export async function updateNotificationPreferences(
+  userId: string,
+  prefs: NotificationPreferencesUpdate
+): Promise<NotificationPreferences> {
+  return apiFetch(`/sessions/users/${userId}/notifications`, {
+    method: "PUT",
+    body: JSON.stringify(prefs),
+  });
+}
+
+export async function resetNotificationPreferences(userId: string): Promise<{ status: string; message: string }> {
+  return apiFetch(`/sessions/users/${userId}/notifications/reset`, { method: "POST" });
+}

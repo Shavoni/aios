@@ -40,6 +40,46 @@ class Conversation(BaseModel):
     title: str | None = None  # Auto-generated from first message
 
 
+class NotificationChannel(BaseModel):
+    """Notification channel configuration."""
+
+    email: bool = True
+    push: bool = True
+    in_app: bool = True
+
+
+class NotificationPreferences(BaseModel):
+    """User notification preferences.
+
+    ENTERPRISE: Controls how users receive alerts for HITL workflows,
+    policy changes, and system events.
+    """
+
+    escalation_alerts: NotificationChannel = Field(
+        default_factory=lambda: NotificationChannel(email=True, push=True, in_app=True)
+    )
+    draft_pending: NotificationChannel = Field(
+        default_factory=lambda: NotificationChannel(email=False, push=True, in_app=True)
+    )
+    policy_changes: NotificationChannel = Field(
+        default_factory=lambda: NotificationChannel(email=True, push=False, in_app=True)
+    )
+    weekly_summary: NotificationChannel = Field(
+        default_factory=lambda: NotificationChannel(email=False, push=False, in_app=False)
+    )
+    sla_warnings: NotificationChannel = Field(
+        default_factory=lambda: NotificationChannel(email=True, push=True, in_app=True)
+    )
+    agent_errors: NotificationChannel = Field(
+        default_factory=lambda: NotificationChannel(email=True, push=False, in_app=True)
+    )
+
+    # Global enable/disable
+    enabled: bool = True
+    quiet_hours_start: str | None = None  # e.g., "22:00"
+    quiet_hours_end: str | None = None  # e.g., "08:00"
+
+
 class UserPreferences(BaseModel):
     """User preferences and learned context."""
 
@@ -50,6 +90,9 @@ class UserPreferences(BaseModel):
     frequently_used_agents: list[str] = Field(default_factory=list)
     custom_settings: dict[str, Any] = Field(default_factory=dict)
     last_active: str = Field(default_factory=lambda: datetime.utcnow().isoformat())
+
+    # ENTERPRISE: Notification preferences
+    notifications: NotificationPreferences = Field(default_factory=NotificationPreferences)
 
 
 class SessionManager:
@@ -365,6 +408,8 @@ __all__ = [
     "Message",
     "Conversation",
     "UserPreferences",
+    "NotificationPreferences",
+    "NotificationChannel",
     "SessionManager",
     "get_session_manager",
 ]

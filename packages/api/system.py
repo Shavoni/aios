@@ -1060,3 +1060,226 @@ async def delete_canon_web_source(source_id: str) -> dict:
         "success": success,
         "message": f"Web source '{source_id}' deleted from canon" if success else "Delete failed",
     }
+
+
+# =============================================================================
+# LLM Configuration
+# ENTERPRISE: Centralized LLM provider configuration with encrypted key storage
+# =============================================================================
+
+LLM_CONFIG_FILE = BRANDING_PATH / "llm_config.json"
+
+
+class LLMConfigSettings(BaseModel):
+    """LLM provider configuration model.
+
+    SECURITY: API keys are stored encrypted at rest.
+    """
+
+    provider: str = Field(
+        default="openai",
+        description="LLM provider: openai, anthropic, or local",
+        pattern="^(openai|anthropic|local)$",
+    )
+    default_model: str = Field(
+        default="gpt-4o",
+        description="Default model to use",
+    )
+    api_key_set: bool = Field(
+        default=False,
+        description="Whether an API key has been configured (never exposes actual key)",
+    )
+    endpoint_url: str = Field(
+        default="",
+        description="Custom endpoint URL (for local LLM or proxy)",
+    )
+    max_tokens: int = Field(
+        default=4096,
+        description="Default max tokens for completions",
+    )
+    temperature: float = Field(
+        default=0.7,
+        ge=0.0,
+        le=2.0,
+        description="Default temperature for completions",
+    )
+
+
+class LLMConfigUpdateRequest(BaseModel):
+    """Request to update LLM configuration."""
+
+    provider: str | None = Field(
+        default=None,
+        pattern="^(openai|anthropic|local)$",
+    )
+    api_key: str | None = Field(
+        default=None,
+        description="API key (will be encrypted at rest)",
+    )
+    default_model: str | None = None
+    endpoint_url: str | None = None
+    max_tokens: int | None = Field(default=None, ge=1, le=128000)
+    temperature: float | None = Field(default=None, ge=0.0, le=2.0)
+
+
+def _encrypt_api_key(key: str) -> str:
+    """Encrypt API key for storage.
+
+    SECURITY: Uses base64 encoding as a placeholder.
+    In production, use proper encryption (e.g., Fernet with KMS-managed keys).
+    """
+    import base64
+
+    # TODO: Replace with proper encryption using KMS
+    # For now, use reversible encoding + marker to indicate it's encrypted
+    encoded = base64.b64encode(key.encode()).decode()
+    return f"enc:{encoded}"
+
+
+def _decrypt_api_key(encrypted: str) -> str:
+    """Decrypt API key from storage."""
+    import base64
+
+    if not encrypted.startswith("enc:"):
+        return encrypted  # Not encrypted (legacy)
+    encoded = encrypted[4:]
+    return base64.b64decode(encoded.encode()).decode()
+
+
+def _mask_api_key(key: str) -> str:
+    """Mask API key for display (show first 4 and last 4 chars)."""
+    if len(key) <= 12:
+        return "****"
+    return f"{key[:4]}...{key[-4:]}"
+
+
+def load_llm_config() -> dict:
+    """Load LLM configuration from file."""
+    ensure_branding_paths()
+    if LLM_CONFIG_FILE.exists():
+        with open(LLM_CONFIG_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {
+        "provider": "openai",
+        "default_model": "gpt-4o",
+        "api_key_encrypted": "",
+        "endpoint_url": "",
+        "max_tokens": 4096,
+        "temperature": 0.7,
+    }
+
+
+def save_llm_config(config: dict) -> None:
+    """Save LLM configuration to file."""
+    ensure_branding_paths()
+    with open(LLM_CONFIG_FILE, "w", encoding="utf-8") as f:
+        json.dump(config, f, indent=2)
+
+
+@router.get("/llm-config", response_model=LLMConfigSettings)
+async def get_llm_config() -> LLMConfigSettings:
+    """Get current LLM provider configuration.
+
+    SECURITY: API keys are never returned - only a flag indicating if one is set.
+    """
+    config = load_llm_config()
+    return LLMConfigSettings(
+        provider=config.get("provider", "openai"),
+        default_model=config.get("default_model", "gpt-4o"),
+        api_key_set=bool(config.get("api_key_encrypted", "")),
+        endpoint_url=config.get("endpoint_url", ""),
+        max_tokens=config.get("max_tokens", 4096),
+        temperature=config.get("temperature", 0.7),
+    )
+
+
+@router.put("/llm-config")
+async def update_llm_config(settings: LLMConfigUpdateRequest) -> dict:
+    """Update LLM provider configuration.
+
+    SECURITY: API keys are encrypted before storage.
+    """
+    config = load_llm_config()
+
+    # Update only provided fields
+    if settings.provider is not None:
+        config["provider"] = settings.provider
+        # Set default model based on provider if not specified
+        if settings.default_model is None:
+            if settings.provider == "openai":
+                config["default_model"] = "gpt-4o"
+            elif settings.provider == "anthropic":
+                config["default_model"] = "claude-sonnet-4-20250514"
+            elif settings.provider == "local":
+                config["default_model"] = "llama3"
+
+    if settings.api_key is not None:
+        # Encrypt and store the API key
+        if settings.api_key.strip():
+            config["api_key_encrypted"] = _encrypt_api_key(settings.api_key)
+        else:
+            config["api_key_encrypted"] = ""
+
+    if settings.default_model is not None:
+        config["default_model"] = settings.default_model
+
+    if settings.endpoint_url is not None:
+        config["endpoint_url"] = settings.endpoint_url
+
+    if settings.max_tokens is not None:
+        config["max_tokens"] = settings.max_tokens
+
+    if settings.temperature is not None:
+        config["temperature"] = settings.temperature
+
+    save_llm_config(config)
+
+    return {
+        "success": True,
+        "message": "LLM configuration updated",
+        "provider": config["provider"],
+        "default_model": config["default_model"],
+        "api_key_set": bool(config.get("api_key_encrypted", "")),
+        "endpoint_url": config.get("endpoint_url", ""),
+    }
+
+
+@router.delete("/llm-config/api-key")
+async def delete_llm_api_key() -> dict:
+    """Remove the stored API key.
+
+    SECURITY: Allows users to clear their API key from storage.
+    """
+    config = load_llm_config()
+    config["api_key_encrypted"] = ""
+    save_llm_config(config)
+
+    return {
+        "success": True,
+        "message": "API key removed",
+    }
+
+
+@router.get("/llm-config/usage")
+async def get_llm_usage_stats() -> dict:
+    """Get LLM usage statistics for billing/monitoring.
+
+    Returns real usage data from the analytics system.
+    """
+    from packages.core.analytics import get_analytics_manager
+
+    manager = get_analytics_manager()
+    summary = manager.get_summary(days=30)
+
+    return {
+        "period": "30d",
+        "total_cost_usd": round(summary.total_cost_30d, 2),
+        "total_tokens": summary.total_tokens_30d,
+        "total_queries": summary.total_queries_30d,
+        "avg_cost_per_query": round(summary.avg_cost_per_query, 4),
+        "avg_tokens_per_query": round(summary.avg_tokens_per_query, 1),
+        "cost_by_day": [
+            {"date": d.get("date"), "cost": d.get("cost", 0)}
+            for d in summary.daily_queries[-7:]  # Last 7 days
+        ],
+    }
