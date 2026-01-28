@@ -1183,14 +1183,63 @@ class GovernanceManager:
         return evaluate_governance(intent, risk, user_context, self._policy_set)
 
     def add_constitutional_rule(self, rule: PolicyRule) -> None:
-        """Add a new constitutional (Tier 1) rule."""
+        """Add a new constitutional (Tier 1) rule.
+
+        ENTERPRISE SECURITY: Prevents duplicate rule IDs and modification
+        of immutable rules to maintain constitutional integrity.
+
+        Raises:
+            ValueError: If rule ID already exists or is immutable
+        """
+        # Check if rule ID is immutable
+        if self.is_rule_immutable(rule.id):
+            raise ValueError(
+                f"Rule '{rule.id}' is marked as immutable and cannot be modified. "
+                "Contact a system administrator with override authority."
+            )
+
+        # Check if rule ID already exists in constitutional rules
+        existing_ids = {r.id for r in self._policy_set.constitutional_rules}
+        if rule.id in existing_ids:
+            raise ValueError(
+                f"Constitutional rule '{rule.id}' already exists. "
+                "Cannot add duplicate rules. Use update_constitutional_rule() to modify."
+            )
+
+        # Check for override conflict with higher-priority rules
+        conflict = self.check_override_conflict(rule)
+        if conflict:
+            # Log warning but allow (lower priority won't override higher)
+            pass  # In production, would log this warning
+
         self._policy_set.constitutional_rules.append(rule)
-        self._save_policies()
+        self._save_policies(f"Added constitutional rule: {rule.id}", "system")
 
     def add_organization_rule(self, rule: PolicyRule) -> None:
-        """Add a new organization-wide (Tier 2) rule."""
+        """Add a new organization-wide (Tier 2) rule.
+
+        ENTERPRISE SECURITY: Prevents duplicate rule IDs and modification
+        of immutable rules.
+
+        Raises:
+            ValueError: If rule ID already exists or is immutable
+        """
+        # Check if rule ID is immutable
+        if self.is_rule_immutable(rule.id):
+            raise ValueError(
+                f"Rule '{rule.id}' is marked as immutable and cannot be modified."
+            )
+
+        # Check if rule ID already exists
+        existing_ids = {r.id for r in self._policy_set.organization_rules.default}
+        if rule.id in existing_ids:
+            raise ValueError(
+                f"Organization rule '{rule.id}' already exists. "
+                "Cannot add duplicate rules."
+            )
+
         self._policy_set.organization_rules.default.append(rule)
-        self._save_policies()
+        self._save_policies(f"Added organization rule: {rule.id}", "system")
 
     def add_department_rule(self, department: str, rule: PolicyRule) -> None:
         """Add a new department-specific (Tier 3) rule."""

@@ -103,6 +103,34 @@ create index if not exists kb_query_logs_agent_idx on kb_query_logs(agent_id);
 alter table documents enable row level security;
 alter table document_chunks enable row level security;
 
+-- RLS policies for tenant isolation
+-- ENTERPRISE CRITICAL: These policies ensure data isolation between tenants
+
+-- Documents: Tenant can only see their own department's documents
+-- or citywide/shared documents based on visibility scope
+create policy kb_documents_isolation on documents
+  for all
+  using (
+    department_id = current_setting('app.org_id', true)
+    or visibility_scope = 'citywide'
+    or (visibility_scope = 'shared' and current_setting('app.org_id', true) = any(shared_with))
+  )
+  with check (department_id = current_setting('app.org_id', true));
+
+-- Document chunks: Follow parent document's department
+create policy kb_chunks_isolation on document_chunks
+  for all
+  using (
+    department_id = current_setting('app.org_id', true)
+    or department_id in (
+      select d.department_id from documents d
+      where d.id = document_chunks.document_id
+      and (d.visibility_scope = 'citywide'
+           or (d.visibility_scope = 'shared' and current_setting('app.org_id', true) = any(d.shared_with)))
+    )
+  )
+  with check (department_id = current_setting('app.org_id', true));
+
 -- =============================================================================
 -- FUNCTIONS
 -- =============================================================================

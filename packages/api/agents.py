@@ -88,6 +88,8 @@ class AgentQueryRequest(BaseModel):
     query: str = Field(..., min_length=1)
     use_knowledge_base: bool = True
     max_tokens: int = 1024
+    user_id: str = "anonymous"  # For HITL tracking
+    department: str = "General"  # For HITL tracking
 
 
 class AgentQueryResponse(BaseModel):
@@ -101,6 +103,8 @@ class AgentQueryResponse(BaseModel):
     governance_triggered: bool = False
     escalation_reason: str | None = None
     policy_ids: list[str] = Field(default_factory=list)
+    approval_id: str | None = None  # ENTERPRISE: Set when response pending approval
+    approval_required: bool = False  # ENTERPRISE: True if awaiting human review
 
 
 class AgentListResponse(BaseModel):
@@ -429,10 +433,15 @@ async def query_agent(agent_id: str, request: AgentQueryRequest) -> AgentQueryRe
 
     Applies HAAIS governance to determine the appropriate HITL mode:
     - INFORM: Agent responds directly
-    - DRAFT: Response requires human review before sending
+    - DRAFT: Response requires human review before sending (BLOCKS response)
+    - EXECUTE: Response requires manager approval (BLOCKS response)
     - ESCALATE: Request escalated to human, agent cannot respond
+
+    ENTERPRISE CRITICAL: DRAFT and EXECUTE modes now properly BLOCK responses
+    and create approval requests. Users receive a pending status, not the response.
     """
     from packages.core.router import get_router
+    from packages.core.hitl import get_hitl_manager, HITLMode as HITLModeEnum
 
     # Get agent
     agent_manager = get_agent_manager()
@@ -460,10 +469,27 @@ async def query_agent(agent_id: str, request: AgentQueryRequest) -> AgentQueryRe
         domain=agent.domain,
     )
 
-    # Handle ESCALATE mode - do not process, return escalation response
+    # Get HITL manager for approval workflow
+    hitl_manager = get_hitl_manager()
+
+    # Handle ESCALATE mode - do not process, create escalation request
     if decision.hitl_mode == HITLMode.ESCALATE:
+        # Create escalation approval request
+        approval = hitl_manager.create_approval_request(
+            hitl_mode=HITLModeEnum.ESCALATE,
+            user_id=request.user_id,
+            agent_id=agent_id,
+            agent_name=agent.name,
+            original_query=request.query,
+            proposed_response="",  # No response generated for escalation
+            user_department=request.department,
+            risk_signals=decision.policy_trigger_ids,
+            escalation_reason=decision.escalation_reason,
+            priority="urgent",
+        )
+
         return AgentQueryResponse(
-            response=f"This request has been escalated to a human supervisor. Reason: {decision.escalation_reason or 'Policy violation detected'}",
+            response=f"This request has been escalated to a human supervisor. Reason: {decision.escalation_reason or 'Policy violation detected'}. Approval ID: {approval.id}",
             agent_id=agent_id,
             agent_name=agent.name,
             sources=[],
@@ -471,6 +497,8 @@ async def query_agent(agent_id: str, request: AgentQueryRequest) -> AgentQueryRe
             governance_triggered=True,
             escalation_reason=decision.escalation_reason,
             policy_ids=decision.policy_trigger_ids,
+            approval_id=approval.id,
+            approval_required=True,
         )
 
     # Get relevant context from knowledge base
@@ -502,7 +530,7 @@ async def query_agent(agent_id: str, request: AgentQueryRequest) -> AgentQueryRe
     # Add governance-triggered guardrails
     if decision.policy_trigger_ids:
         system_prompt += "\n\n## GOVERNANCE NOTICE:\nThis query triggered governance policies. Exercise additional caution."
-        if decision.hitl_mode == HITLMode.DRAFT:
+        if decision.hitl_mode in (HITLMode.DRAFT, HITLMode.EXECUTE):
             system_prompt += "\nYour response will be reviewed by a human before delivery."
 
     # Query the LLM
@@ -519,10 +547,53 @@ async def query_agent(agent_id: str, request: AgentQueryRequest) -> AgentQueryRe
             detail=f"Failed to query LLM: {e}",
         )
 
-    # For DRAFT mode, prefix the response to indicate human review is needed
-    if decision.hitl_mode == HITLMode.DRAFT:
-        response_text = f"[DRAFT - Pending Human Review]\n\n{response_text}"
+    # ==========================================================================
+    # ENTERPRISE CRITICAL: HITL RESPONSE BLOCKING
+    # For DRAFT and EXECUTE modes, DO NOT return response to user.
+    # Instead, create approval request and return pending status.
+    # ==========================================================================
+    if decision.hitl_mode in (HITLMode.DRAFT, HITLMode.EXECUTE):
+        # Map to HITL enum
+        hitl_mode_enum = HITLModeEnum.DRAFT if decision.hitl_mode == HITLMode.DRAFT else HITLModeEnum.EXECUTE
 
+        # Determine priority based on mode
+        priority = "high" if decision.hitl_mode == HITLMode.EXECUTE else "normal"
+
+        # Create approval request with the generated response
+        approval = hitl_manager.create_approval_request(
+            hitl_mode=hitl_mode_enum,
+            user_id=request.user_id,
+            agent_id=agent_id,
+            agent_name=agent.name,
+            original_query=request.query,
+            proposed_response=response_text,  # Store generated response for review
+            user_department=request.department,
+            risk_signals=decision.policy_trigger_ids,
+            guardrails_triggered=agent.guardrails if agent.guardrails else [],
+            escalation_reason=decision.escalation_reason,
+            priority=priority,
+            context={
+                "sources": [s.get("metadata", {}).get("filename", "unknown") for s in sources],
+                "governance_triggered": len(decision.policy_trigger_ids) > 0,
+            },
+        )
+
+        # BLOCK: Return pending status instead of actual response
+        mode_label = "DRAFT" if decision.hitl_mode == HITLMode.DRAFT else "EXECUTE"
+        return AgentQueryResponse(
+            response=f"Your request is pending human review ({mode_label} mode). Approval ID: {approval.id}. You will be notified when the response is approved.",
+            agent_id=agent_id,
+            agent_name=agent.name,
+            sources=[],  # Don't expose sources until approved
+            hitl_mode=decision.hitl_mode.value,
+            governance_triggered=len(decision.policy_trigger_ids) > 0,
+            escalation_reason=decision.escalation_reason,
+            policy_ids=decision.policy_trigger_ids,
+            approval_id=approval.id,
+            approval_required=True,
+        )
+
+    # INFORM mode - return response directly
     return AgentQueryResponse(
         response=response_text,
         agent_id=agent_id,
@@ -532,6 +603,8 @@ async def query_agent(agent_id: str, request: AgentQueryRequest) -> AgentQueryRe
         governance_triggered=len(decision.policy_trigger_ids) > 0,
         escalation_reason=decision.escalation_reason,
         policy_ids=decision.policy_trigger_ids,
+        approval_id=None,
+        approval_required=False,
     )
 
 

@@ -127,12 +127,31 @@ app = FastAPI(
 # CORS middleware for frontend
 from fastapi.middleware.cors import CORSMiddleware
 
+# Production CORS - restrict in deployment
+ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://localhost:3002",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3001",
+    "http://127.0.0.1:3002",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001", "http://localhost:3002", "http://127.0.0.1:3000", "http://127.0.0.1:3001", "http://127.0.0.1:3002"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allow_headers=["*"],
+)
+
+# Tenant isolation middleware - ENTERPRISE CRITICAL
+# This MUST be added after CORS but before route handlers
+from packages.core.multitenancy.middleware import TenantMiddleware
+
+app.add_middleware(
+    TenantMiddleware,
+    require_tenant=False,  # Set to True once all clients send X-Tenant-ID header
 )
 
 # Initialize state at module level for immediate availability

@@ -30,6 +30,7 @@ class Conversation(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     user_id: str = "anonymous"
     department: str = "General"
+    tenant_id: str = "default"  # ENTERPRISE: Tenant isolation
     created_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat())
     updated_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat())
     messages: list[Message] = Field(default_factory=list)
@@ -120,9 +121,13 @@ class SessionManager:
         self,
         user_id: str = "anonymous",
         department: str = "General",
+        tenant_id: str = "default",
     ) -> Conversation:
-        """Create a new conversation session."""
-        conv = Conversation(user_id=user_id, department=department)
+        """Create a new conversation session.
+
+        ENTERPRISE: Sessions are scoped to tenants for isolation.
+        """
+        conv = Conversation(user_id=user_id, department=department, tenant_id=tenant_id)
         self._active_sessions[conv.id] = conv
         self._save_conversation(conv)
         return conv
@@ -205,8 +210,13 @@ class SessionManager:
         user_id: str | None = None,
         limit: int = 50,
         include_inactive: bool = False,
+        tenant_id: str | None = None,
     ) -> list[Conversation]:
-        """List conversations, optionally filtered by user."""
+        """List conversations, optionally filtered by user and tenant.
+
+        ENTERPRISE: When tenant_id is provided, only returns conversations
+        belonging to that tenant. This provides data isolation.
+        """
         conversations = []
 
         # Load all conversation files
@@ -214,6 +224,9 @@ class SessionManager:
             try:
                 with open(file_path) as f:
                     conv = Conversation(**json.load(f))
+                    # ENTERPRISE: Filter by tenant
+                    if tenant_id and conv.tenant_id != tenant_id:
+                        continue
                     if user_id and conv.user_id != user_id:
                         continue
                     if not include_inactive and not conv.is_active:
@@ -261,20 +274,35 @@ class SessionManager:
     # User Preferences
     # =========================================================================
 
-    def get_user_preferences(self, user_id: str) -> UserPreferences:
-        """Get or create user preferences."""
-        if user_id not in self._preferences:
-            self._preferences[user_id] = UserPreferences(user_id=user_id)
+    def get_user_preferences(
+        self,
+        user_id: str,
+        tenant_id: str | None = None,
+    ) -> UserPreferences:
+        """Get or create user preferences.
+
+        ENTERPRISE: Preferences are keyed by user_id. In a full multi-tenant
+        implementation, this would be keyed by (tenant_id, user_id).
+        """
+        # In production, key should be f"{tenant_id}:{user_id}" for isolation
+        pref_key = f"{tenant_id}:{user_id}" if tenant_id else user_id
+
+        if pref_key not in self._preferences:
+            self._preferences[pref_key] = UserPreferences(user_id=user_id)
             self._save_preferences()
-        return self._preferences[user_id]
+        return self._preferences[pref_key]
 
     def update_user_preferences(
         self,
         user_id: str,
         updates: dict[str, Any],
+        tenant_id: str | None = None,
     ) -> UserPreferences:
-        """Update user preferences."""
-        prefs = self.get_user_preferences(user_id)
+        """Update user preferences.
+
+        ENTERPRISE: Preferences are scoped by tenant.
+        """
+        prefs = self.get_user_preferences(user_id, tenant_id=tenant_id)
 
         for key, value in updates.items():
             if hasattr(prefs, key):
