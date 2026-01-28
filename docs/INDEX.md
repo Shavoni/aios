@@ -160,6 +160,7 @@ python -m aios init --template generic-city
 - **[ROUTING_ARCHITECTURE.md](./ROUTING_ARCHITECTURE.md)** - Core routing system and critical issues
 - **[GOVERNANCE_ARCHITECTURE.md](./GOVERNANCE_ARCHITECTURE.md)** - Governance system review and gaps analysis
 - **[GOVERNANCE_STRENGTHENING.md](./GOVERNANCE_STRENGTHENING.md)** - How to strengthen governance for cross-agent consistency
+- **[TWO_TIER_GOVERNANCE_IMPLEMENTATION.md](./TWO_TIER_GOVERNANCE_IMPLEMENTATION.md)** - Implementation plan for policy + knowledge governance
 - **[CROSS_DEPARTMENT_CONTINUITY.md](./CROSS_DEPARTMENT_CONTINUITY.md)** - Cross-agent knowledge and conflict detection analysis
 - **[LLM_ORCHESTRATION_LAYER.md](./LLM_ORCHESTRATION_LAYER.md)** - LLM routing and provider management
 - **[ENTERPRISE_DISCOVERY_ARCHITECTURE.md](./ENTERPRISE_DISCOVERY_ARCHITECTURE.md)** - Auto-discovery system
