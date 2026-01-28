@@ -162,6 +162,7 @@ python -m aios init --template generic-city
 - **[GOVERNANCE_STRENGTHENING.md](./GOVERNANCE_STRENGTHENING.md)** - How to strengthen governance for cross-agent consistency
 - **[TWO_TIER_GOVERNANCE_IMPLEMENTATION.md](./TWO_TIER_GOVERNANCE_IMPLEMENTATION.md)** - Implementation plan for policy + knowledge governance
 - **[HITL_EXECUTION_ANALYSIS.md](./HITL_EXECUTION_ANALYSIS.md)** - Complete Human-in-the-Loop system analysis
+- **[AUDITABILITY_AND_MULTITENANCY.md](./AUDITABILITY_AND_MULTITENANCY.md)** - Decision tracing and tenant isolation analysis
 - **[CROSS_DEPARTMENT_CONTINUITY.md](./CROSS_DEPARTMENT_CONTINUITY.md)** - Cross-agent knowledge and conflict detection analysis
 - **[LLM_ORCHESTRATION_LAYER.md](./LLM_ORCHESTRATION_LAYER.md)** - LLM routing and provider management
 - **[ENTERPRISE_DISCOVERY_ARCHITECTURE.md](./ENTERPRISE_DISCOVERY_ARCHITECTURE.md)** - Auto-discovery system
