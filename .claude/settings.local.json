@@ -62,7 +62,16 @@
       "Bash(taskkill:*)",
       "Bash(ping:*)",
       "Bash(pip show:*)",
-      "Bash(more:*)"
+      "Bash(more:*)",
+      "Bash(gh pr create:*)",
+      "Bash(for dir in \"D:/Cleveland_Municipal_AI_Suite\" \"D:/ai-gateway-dashboard-spark-main\" \"D:/airoips-command-vault Masteer VS\" \"D:/Clearview-Ai-Shield-Main\" \"D:/AEGIS Adaptive Emotional Guardian & Intervention System\")",
+      "Bash(do echo \"=== $dir ===\")",
+      "Bash(if [ -d \"$dir/.git\" ])",
+      "Bash(then cd \"$dir\")",
+      "Bash(else echo \"No .git folder\")",
+      "Bash(fi:*)",
+      "Bash(done)",
+      "Bash(gh auth:*)"
     ]
   }
 }

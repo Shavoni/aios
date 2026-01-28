@@ -1256,6 +1256,13 @@ export default function AgentsPage() {
 }
 
 // Edit Agent Form Component
+const hitlModeOptions = [
+  { value: "AUTO", label: "Auto", description: "Response sent immediately", color: "bg-green-500" },
+  { value: "DRAFT", label: "Draft", description: "Saved for review before sending", color: "bg-blue-500" },
+  { value: "REVIEW", label: "Review", description: "Requires approval before delivery", color: "bg-amber-500" },
+  { value: "ESCALATE", label: "Escalate", description: "Routes to supervisor", color: "bg-red-500" },
+];
+
 function EditAgentForm({ agent, onSave, onCancel }: { agent: AgentConfig; onSave: (updates: Partial<AgentConfig>) => void; onCancel: () => void }) {
   const [name, setName] = useState(agent.name);
   const [title, setTitle] = useState(agent.title);
@@ -1264,6 +1271,8 @@ function EditAgentForm({ agent, onSave, onCancel }: { agent: AgentConfig; onSave
   const [capabilities, setCapabilities] = useState(agent.capabilities.join("\n"));
   const [guardrails, setGuardrails] = useState(agent.guardrails.join("\n"));
   const [escalatesTo, setEscalatesTo] = useState(agent.escalates_to);
+  const [hitlMode, setHitlMode] = useState(agent.hitl_mode || "AUTO");
+  const [gptUrl, setGptUrl] = useState(agent.gpt_url || "");
 
   return (
     <>
@@ -1300,6 +1309,37 @@ function EditAgentForm({ agent, onSave, onCancel }: { agent: AgentConfig; onSave
             <label className="text-sm font-medium">Capabilities (one per line)</label>
             <Textarea value={capabilities} onChange={(e) => setCapabilities(e.target.value)} rows={4} />
           </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium">GPT/Copilot URL (optional)</label>
+            <Input value={gptUrl} onChange={(e) => setGptUrl(e.target.value)} placeholder="https://chat.openai.com/g/..." />
+            <p className="text-xs text-muted-foreground">External URL to a ChatGPT or Copilot agent</p>
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium flex items-center gap-2">
+              <Shield className="h-4 w-4 text-amber-500" />
+              HITL Mode (Human-in-the-Loop)
+            </label>
+            <div className="grid grid-cols-2 gap-2">
+              {hitlModeOptions.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => setHitlMode(option.value)}
+                  className={`p-3 rounded-lg border-2 text-left transition-all ${
+                    hitlMode === option.value
+                      ? "border-primary bg-primary/10"
+                      : "border-muted hover:border-muted-foreground/50"
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <div className={`w-2 h-2 rounded-full ${option.color}`}></div>
+                    <span className="font-medium text-sm">{option.label}</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">{option.description}</p>
+                </button>
+              ))}
+            </div>
+          </div>
         </TabsContent>
 
         <TabsContent value="prompt" className="space-y-4 mt-4">
@@ -1324,6 +1364,8 @@ function EditAgentForm({ agent, onSave, onCancel }: { agent: AgentConfig; onSave
           capabilities: capabilities.split("\n").filter((c) => c.trim()),
           guardrails: guardrails.split("\n").filter((g) => g.trim()),
           escalates_to: escalatesTo,
+          hitl_mode: hitlMode,
+          gpt_url: gptUrl,
         })} className="bg-gradient-to-r from-green-500 to-emerald-500">
           Save Changes
         </Button>
