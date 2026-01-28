@@ -1039,3 +1039,63 @@ export async function markRuleImmutable(ruleId: string): Promise<{ success: bool
 export async function unmarkRuleImmutable(ruleId: string): Promise<{ success: boolean; rule_id: string; immutable: boolean }> {
   return apiFetch(`/governance/rules/${ruleId}/immutable`, { method: "DELETE" });
 }
+
+// =============================================================================
+// Branding
+// =============================================================================
+
+export interface BrandingSettings {
+  app_name: string;
+  tagline: string;
+  organization: string;
+  support_email: string;
+  logo_url: string;
+  favicon_url: string;
+}
+
+export interface LogoUploadResponse {
+  success: boolean;
+  filename: string;
+  url: string;
+  size: number;
+  message: string;
+}
+
+export async function getBranding(): Promise<BrandingSettings> {
+  return apiFetch("/system/branding");
+}
+
+export async function updateBranding(settings: Partial<BrandingSettings>): Promise<BrandingSettings & { success: boolean; message: string }> {
+  return apiFetch("/system/branding", {
+    method: "PUT",
+    body: JSON.stringify(settings),
+  });
+}
+
+export async function uploadLogo(file: File): Promise<LogoUploadResponse> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const url = `${API_BASE}/system/branding/upload-logo`;
+  const res = await fetch(url, {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ detail: res.statusText }));
+    throw new Error(error.detail || `Upload failed: ${res.status}`);
+  }
+
+  return res.json();
+}
+
+export async function deleteLogo(): Promise<{ success: boolean; deleted: number; message: string }> {
+  return apiFetch("/system/branding/logo", { method: "DELETE" });
+}
+
+export function getLogoUrl(logoPath: string): string {
+  if (!logoPath) return "";
+  if (logoPath.startsWith("http")) return logoPath;
+  return `${API_BASE}${logoPath}`;
+}

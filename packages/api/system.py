@@ -2,16 +2,30 @@
 
 from __future__ import annotations
 
+import json
 import shutil
+import uuid
 from pathlib import Path
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, UploadFile, File, status
+from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
 from packages.core.agents import AgentConfig, get_agent_manager
 from packages.core.knowledge import get_knowledge_manager
 
 router = APIRouter(prefix="/system", tags=["System"])
+
+# Storage paths
+BRANDING_PATH = Path("data/branding")
+UPLOADS_PATH = BRANDING_PATH / "uploads"
+BRANDING_CONFIG_FILE = BRANDING_PATH / "config.json"
+
+
+def ensure_branding_paths():
+    """Ensure branding directories exist."""
+    BRANDING_PATH.mkdir(parents=True, exist_ok=True)
+    UPLOADS_PATH.mkdir(parents=True, exist_ok=True)
 
 
 class ClientSetupRequest(BaseModel):
@@ -660,3 +674,185 @@ async def clear_pending_agents() -> dict:
     count = len(_pending_agents)
     _pending_agents.clear()
     return {"cleared": count}
+
+
+# =============================================================================
+# Branding / Logo Upload
+# =============================================================================
+
+class BrandingSettings(BaseModel):
+    """Branding configuration model."""
+    app_name: str = Field(default="HAAIS AIOS", description="Application name")
+    tagline: str = Field(default="AI Operating System", description="Application tagline")
+    organization: str = Field(default="", description="Organization name")
+    support_email: str = Field(default="", description="Support email address")
+    logo_url: str = Field(default="", description="Logo URL (uploaded or external)")
+    favicon_url: str = Field(default="", description="Favicon URL")
+
+
+def load_branding_config() -> dict:
+    """Load branding configuration from file."""
+    ensure_branding_paths()
+    if BRANDING_CONFIG_FILE.exists():
+        with open(BRANDING_CONFIG_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {}
+
+
+def save_branding_config(config: dict) -> None:
+    """Save branding configuration to file."""
+    ensure_branding_paths()
+    with open(BRANDING_CONFIG_FILE, "w", encoding="utf-8") as f:
+        json.dump(config, f, indent=2)
+
+
+@router.post("/branding/upload-logo")
+async def upload_logo(file: UploadFile = File(...)) -> dict:
+    """Upload a logo file.
+
+    Accepts PNG, JPG, SVG, and WebP files up to 2MB.
+    Returns the URL path to access the uploaded logo.
+    """
+    ensure_branding_paths()
+
+    # Validate file type
+    allowed_types = {
+        "image/png": ".png",
+        "image/jpeg": ".jpg",
+        "image/svg+xml": ".svg",
+        "image/webp": ".webp",
+    }
+
+    content_type = file.content_type or ""
+    if content_type not in allowed_types:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid file type: {content_type}. Allowed: PNG, JPG, SVG, WebP"
+        )
+
+    # Read file and check size (2MB limit)
+    content = await file.read()
+    max_size = 2 * 1024 * 1024  # 2MB
+    if len(content) > max_size:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"File too large. Maximum size is 2MB."
+        )
+
+    # Generate unique filename
+    extension = allowed_types[content_type]
+    filename = f"logo-{uuid.uuid4().hex[:8]}{extension}"
+    file_path = UPLOADS_PATH / filename
+
+    # Delete old logo files (keep only one)
+    for old_file in UPLOADS_PATH.glob("logo-*"):
+        try:
+            old_file.unlink()
+        except Exception:
+            pass
+
+    # Save file
+    with open(file_path, "wb") as f:
+        f.write(content)
+
+    # Update branding config
+    logo_url = f"/system/branding/logo/{filename}"
+    config = load_branding_config()
+    config["logo_url"] = logo_url
+    save_branding_config(config)
+
+    return {
+        "success": True,
+        "filename": filename,
+        "url": logo_url,
+        "size": len(content),
+        "message": "Logo uploaded successfully"
+    }
+
+
+@router.get("/branding/logo/{filename}")
+async def get_logo(filename: str) -> FileResponse:
+    """Serve an uploaded logo file."""
+    file_path = UPLOADS_PATH / filename
+    if not file_path.exists():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Logo not found"
+        )
+
+    # Determine content type
+    suffix = file_path.suffix.lower()
+    content_types = {
+        ".png": "image/png",
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".svg": "image/svg+xml",
+        ".webp": "image/webp",
+    }
+    content_type = content_types.get(suffix, "application/octet-stream")
+
+    return FileResponse(file_path, media_type=content_type)
+
+
+@router.delete("/branding/logo")
+async def delete_logo() -> dict:
+    """Delete the uploaded logo."""
+    ensure_branding_paths()
+
+    # Delete all logo files
+    deleted = 0
+    for logo_file in UPLOADS_PATH.glob("logo-*"):
+        try:
+            logo_file.unlink()
+            deleted += 1
+        except Exception:
+            pass
+
+    # Update branding config
+    config = load_branding_config()
+    config["logo_url"] = ""
+    save_branding_config(config)
+
+    return {
+        "success": True,
+        "deleted": deleted,
+        "message": "Logo deleted"
+    }
+
+
+@router.get("/branding")
+async def get_branding() -> dict:
+    """Get current branding settings."""
+    config = load_branding_config()
+    return {
+        "app_name": config.get("app_name", "HAAIS AIOS"),
+        "tagline": config.get("tagline", "AI Operating System"),
+        "organization": config.get("organization", ""),
+        "support_email": config.get("support_email", ""),
+        "logo_url": config.get("logo_url", ""),
+        "favicon_url": config.get("favicon_url", ""),
+    }
+
+
+@router.put("/branding")
+async def update_branding(settings: BrandingSettings) -> dict:
+    """Update branding settings."""
+    config = load_branding_config()
+
+    # Update only provided fields
+    config["app_name"] = settings.app_name
+    config["tagline"] = settings.tagline
+    config["organization"] = settings.organization
+    config["support_email"] = settings.support_email
+    if settings.logo_url:
+        config["logo_url"] = settings.logo_url
+    if settings.favicon_url:
+        config["favicon_url"] = settings.favicon_url
+
+    save_branding_config(config)
+
+    return {
+        "success": True,
+        "message": "Branding settings updated",
+        **config
+    }

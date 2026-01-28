@@ -80,10 +80,16 @@ import {
   getDriftReport,
   syncPoliciesFromFile,
   getImmutableRules,
+  getBranding,
+  updateBranding,
+  uploadLogo,
+  deleteLogo,
+  getLogoUrl,
   type GovernanceSummary,
   type PolicyVersion,
   type PolicyChange,
   type DriftReport,
+  type BrandingSettings,
 } from "@/lib/api";
 import { config } from "@/lib/config";
 import { History, GitBranch, AlertCircle, RotateCcw, FileCheck, ShieldCheck } from "lucide-react";
@@ -711,168 +717,7 @@ export default function SettingsPage() {
 
         {/* Branding Tab */}
         <TabsContent value="branding" className="space-y-6">
-          <Card className="border-0 shadow-lg">
-            <CardHeader className="border-b bg-muted/30">
-              <CardTitle className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-pink-500 to-rose-500 text-white">
-                  <ImageIcon className="h-4 w-4" />
-                </div>
-                Organization Logo
-              </CardTitle>
-              <CardDescription>
-                Upload your organization's logo to personalize the dashboard
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="pt-6 space-y-6">
-              <div className="grid gap-6 sm:grid-cols-2">
-                {/* Current Logo Preview */}
-                <div className="space-y-4">
-                  <p className="text-sm font-medium">Current Logo</p>
-                  <div className="flex items-center justify-center h-32 rounded-xl border-2 border-dashed border-muted-foreground/25 bg-muted/30">
-                    {config.logoUrl ? (
-                      <img
-                        src={config.logoUrl}
-                        alt="Organization logo"
-                        className="max-h-24 max-w-full object-contain"
-                      />
-                    ) : (
-                      <div className="text-center">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 text-white mx-auto mb-2">
-                          <Sparkles className="h-6 w-6" />
-                        </div>
-                        <p className="text-xs text-muted-foreground">Using default icon</p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Upload Area */}
-                <div className="space-y-4">
-                  <p className="text-sm font-medium">Upload New Logo</p>
-                  <div className="flex flex-col items-center justify-center h-32 rounded-xl border-2 border-dashed border-pink-200 dark:border-pink-800 bg-pink-50/50 dark:bg-pink-950/20 hover:bg-pink-100/50 dark:hover:bg-pink-950/30 transition-colors cursor-pointer">
-                    <Upload className="h-8 w-8 text-pink-400 mb-2" />
-                    <p className="text-sm text-muted-foreground">Click to upload or drag and drop</p>
-                    <p className="text-xs text-muted-foreground">PNG, JPG, SVG (max 2MB)</p>
-                  </div>
-                </div>
-              </div>
-
-              <Separator />
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Logo URL (Alternative)</label>
-                <div className="flex gap-2">
-                  <Input
-                    placeholder="https://example.com/logo.png"
-                    className="bg-muted/50"
-                  />
-                  <Button className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600">
-                    <Save className="mr-2 h-4 w-4" />
-                    Save
-                  </Button>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Enter a direct URL to your logo if you prefer not to upload
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-0 shadow-lg">
-            <CardHeader className="border-b bg-muted/30">
-              <CardTitle className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-purple-500 text-white">
-                  <Palette className="h-4 w-4" />
-                </div>
-                Brand Settings
-              </CardTitle>
-              <CardDescription>
-                Customize the look and feel of your deployment
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="pt-6 space-y-4">
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Application Name</label>
-                  <Input
-                    placeholder="e.g., Cleveland AI Gateway"
-                    defaultValue={config.appName}
-                    className="bg-muted/50"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Tagline</label>
-                  <Input
-                    placeholder="e.g., City Employee Support"
-                    defaultValue={config.tagline}
-                    className="bg-muted/50"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Organization Name</label>
-                  <Input
-                    placeholder="e.g., City of Cleveland"
-                    defaultValue={config.organization}
-                    className="bg-muted/50"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Support Email</label>
-                  <Input
-                    placeholder="support@example.com"
-                    defaultValue={config.supportEmail}
-                    className="bg-muted/50"
-                  />
-                </div>
-              </div>
-
-              <Separator />
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Favicon URL</label>
-                <Input
-                  placeholder="https://example.com/favicon.ico"
-                  className="bg-muted/50"
-                />
-                <p className="text-xs text-muted-foreground">
-                  Custom favicon shown in browser tabs
-                </p>
-              </div>
-
-              <div className="flex justify-end">
-                <Button className="bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600">
-                  <Save className="mr-2 h-4 w-4" />
-                  Save Brand Settings
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-0 shadow-lg">
-            <CardHeader className="border-b bg-muted/30">
-              <CardTitle className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 text-white">
-                  <Building2 className="h-4 w-4" />
-                </div>
-                Agent Branding
-              </CardTitle>
-              <CardDescription>
-                Customize logos and avatars for individual agents
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="pt-6">
-              <div className="text-center py-8 text-muted-foreground">
-                <ImageIcon className="h-12 w-12 mx-auto mb-3 opacity-50" />
-                <p className="text-sm">
-                  Agent avatars and logos can be configured in the{" "}
-                  <a href="/agents" className="text-primary hover:underline">
-                    Agents
-                  </a>{" "}
-                  section
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          <BrandingTab />
         </TabsContent>
       </Tabs>
     </div>
@@ -1214,6 +1059,354 @@ function GovernanceTab() {
               </p>
             </div>
             <Switch checked={summary?.require_approval ?? true} />
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+// =============================================================================
+// Branding Tab Component
+// =============================================================================
+
+function BrandingTab() {
+  const [branding, setBranding] = useState<BrandingSettings | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
+
+  // Form state
+  const [appName, setAppName] = useState("");
+  const [tagline, setTagline] = useState("");
+  const [organization, setOrganization] = useState("");
+  const [supportEmail, setSupportEmail] = useState("");
+  const [logoUrl, setLogoUrl] = useState("");
+  const [faviconUrl, setFaviconUrl] = useState("");
+
+  useEffect(() => {
+    loadBranding();
+  }, []);
+
+  async function loadBranding() {
+    try {
+      setLoading(true);
+      const data = await getBranding();
+      setBranding(data);
+      setAppName(data.app_name || "");
+      setTagline(data.tagline || "");
+      setOrganization(data.organization || "");
+      setSupportEmail(data.support_email || "");
+      setLogoUrl(data.logo_url || "");
+      setFaviconUrl(data.favicon_url || "");
+    } catch (error) {
+      console.error("Failed to load branding:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleSaveBranding() {
+    setSaving(true);
+    try {
+      await updateBranding({
+        app_name: appName,
+        tagline,
+        organization,
+        support_email: supportEmail,
+        logo_url: logoUrl,
+        favicon_url: faviconUrl,
+      });
+      toast.success("Branding settings saved");
+      loadBranding();
+    } catch (error) {
+      toast.error("Failed to save branding settings");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function handleFileUpload(file: File) {
+    // Validate file type
+    const validTypes = ["image/png", "image/jpeg", "image/svg+xml", "image/webp"];
+    if (!validTypes.includes(file.type)) {
+      toast.error("Invalid file type. Please upload PNG, JPG, SVG, or WebP");
+      return;
+    }
+
+    // Validate file size (2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error("File too large. Maximum size is 2MB");
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const result = await uploadLogo(file);
+      setLogoUrl(result.url);
+      toast.success("Logo uploaded successfully");
+      loadBranding();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Upload failed";
+      toast.error(message);
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  async function handleDeleteLogo() {
+    try {
+      await deleteLogo();
+      setLogoUrl("");
+      toast.success("Logo deleted");
+      loadBranding();
+    } catch (error) {
+      toast.error("Failed to delete logo");
+    }
+  }
+
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      handleFileUpload(file);
+    }
+  }
+
+  function handleDragOver(e: React.DragEvent) {
+    e.preventDefault();
+    setDragOver(true);
+  }
+
+  function handleDragLeave(e: React.DragEvent) {
+    e.preventDefault();
+    setDragOver(false);
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  const currentLogoUrl = branding?.logo_url ? getLogoUrl(branding.logo_url) : "";
+
+  return (
+    <div className="space-y-6">
+      <Card className="border-0 shadow-lg">
+        <CardHeader className="border-b bg-muted/30">
+          <CardTitle className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-pink-500 to-rose-500 text-white">
+              <ImageIcon className="h-4 w-4" />
+            </div>
+            Organization Logo
+          </CardTitle>
+          <CardDescription>
+            Upload your organization's logo to personalize the dashboard
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="pt-6 space-y-6">
+          <div className="grid gap-6 sm:grid-cols-2">
+            {/* Current Logo Preview */}
+            <div className="space-y-4">
+              <p className="text-sm font-medium">Current Logo</p>
+              <div className="flex items-center justify-center h-32 rounded-xl border-2 border-dashed border-muted-foreground/25 bg-muted/30 relative">
+                {currentLogoUrl ? (
+                  <>
+                    <img
+                      src={currentLogoUrl}
+                      alt="Organization logo"
+                      className="max-h-24 max-w-full object-contain"
+                    />
+                    <Button
+                      variant="destructive"
+                      size="icon"
+                      className="absolute top-2 right-2 h-6 w-6"
+                      onClick={handleDeleteLogo}
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </>
+                ) : (
+                  <div className="text-center">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 text-white mx-auto mb-2">
+                      <Sparkles className="h-6 w-6" />
+                    </div>
+                    <p className="text-xs text-muted-foreground">Using default icon</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Upload Area */}
+            <div className="space-y-4">
+              <p className="text-sm font-medium">Upload New Logo</p>
+              <label
+                className={`flex flex-col items-center justify-center h-32 rounded-xl border-2 border-dashed transition-colors cursor-pointer ${
+                  dragOver
+                    ? "border-pink-500 bg-pink-100 dark:bg-pink-950/50"
+                    : "border-pink-200 dark:border-pink-800 bg-pink-50/50 dark:bg-pink-950/20 hover:bg-pink-100/50 dark:hover:bg-pink-950/30"
+                }`}
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+              >
+                <input
+                  type="file"
+                  accept="image/png,image/jpeg,image/svg+xml,image/webp"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleFileUpload(file);
+                  }}
+                  disabled={uploading}
+                />
+                {uploading ? (
+                  <Loader2 className="h-8 w-8 text-pink-500 animate-spin" />
+                ) : (
+                  <>
+                    <Upload className="h-8 w-8 text-pink-400 mb-2" />
+                    <p className="text-sm text-muted-foreground">Click to upload or drag and drop</p>
+                    <p className="text-xs text-muted-foreground">PNG, JPG, SVG, WebP (max 2MB)</p>
+                  </>
+                )}
+              </label>
+            </div>
+          </div>
+
+          <Separator />
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Logo URL (Alternative)</label>
+            <div className="flex gap-2">
+              <Input
+                placeholder="https://example.com/logo.png"
+                value={logoUrl}
+                onChange={(e) => setLogoUrl(e.target.value)}
+                className="bg-muted/50"
+              />
+              <Button
+                onClick={handleSaveBranding}
+                disabled={saving}
+                className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600"
+              >
+                {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
+                Save
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Enter a direct URL to your logo if you prefer not to upload
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-0 shadow-lg">
+        <CardHeader className="border-b bg-muted/30">
+          <CardTitle className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-purple-500 text-white">
+              <Palette className="h-4 w-4" />
+            </div>
+            Brand Settings
+          </CardTitle>
+          <CardDescription>
+            Customize the look and feel of your deployment
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="pt-6 space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Application Name</label>
+              <Input
+                placeholder="e.g., Cleveland AI Gateway"
+                value={appName}
+                onChange={(e) => setAppName(e.target.value)}
+                className="bg-muted/50"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Tagline</label>
+              <Input
+                placeholder="e.g., City Employee Support"
+                value={tagline}
+                onChange={(e) => setTagline(e.target.value)}
+                className="bg-muted/50"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Organization Name</label>
+              <Input
+                placeholder="e.g., City of Cleveland"
+                value={organization}
+                onChange={(e) => setOrganization(e.target.value)}
+                className="bg-muted/50"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Support Email</label>
+              <Input
+                placeholder="support@example.com"
+                value={supportEmail}
+                onChange={(e) => setSupportEmail(e.target.value)}
+                className="bg-muted/50"
+              />
+            </div>
+          </div>
+
+          <Separator />
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Favicon URL</label>
+            <Input
+              placeholder="https://example.com/favicon.ico"
+              value={faviconUrl}
+              onChange={(e) => setFaviconUrl(e.target.value)}
+              className="bg-muted/50"
+            />
+            <p className="text-xs text-muted-foreground">
+              Custom favicon shown in browser tabs
+            </p>
+          </div>
+
+          <div className="flex justify-end">
+            <Button
+              onClick={handleSaveBranding}
+              disabled={saving}
+              className="bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600"
+            >
+              {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
+              Save Brand Settings
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-0 shadow-lg">
+        <CardHeader className="border-b bg-muted/30">
+          <CardTitle className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 text-white">
+              <Building2 className="h-4 w-4" />
+            </div>
+            Agent Branding
+          </CardTitle>
+          <CardDescription>
+            Customize logos and avatars for individual agents
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="pt-6">
+          <div className="text-center py-8 text-muted-foreground">
+            <ImageIcon className="h-12 w-12 mx-auto mb-3 opacity-50" />
+            <p className="text-sm">
+              Agent avatars and logos can be configured in the{" "}
+              <a href="/agents" className="text-primary hover:underline">
+                Agents
+              </a>{" "}
+              section
+            </p>
           </div>
         </CardContent>
       </Card>
