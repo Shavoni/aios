@@ -150,6 +150,7 @@ from packages.api.system_extended import router as system_extended_router
 from packages.api.onboarding import router as onboarding_router
 from packages.api.governance import router as governance_router
 from packages.api.tenants import router as tenants_router
+from packages.api.voice import router as voice_router
 
 app.include_router(agents_router)
 app.include_router(system_router)
@@ -160,6 +161,7 @@ app.include_router(system_extended_router)
 app.include_router(onboarding_router)
 app.include_router(governance_router)
 app.include_router(tenants_router)
+app.include_router(voice_router)
 
 
 # Startup event to start background services
