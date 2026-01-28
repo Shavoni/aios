@@ -1,0 +1,31 @@
+{
+  "id": "3360dd6e-0de1-4a2a-8051-9224ff9d2583",
+  "user_id": "guest",
+  "department": "General",
+  "created_at": "2026-01-28T07:30:03.239761",
+  "updated_at": "2026-01-28T07:30:05.282753",
+  "messages": [
+    {
+      "id": "7fb99ed5-f8a0-49d2-aae5-83cf88b07aeb",
+      "role": "user",
+      "content": "I need finance assistance",
+      "timestamp": "2026-01-28T07:30:03.254701",
+      "agent_id": null,
+      "agent_name": null,
+      "metadata": {}
+    },
+    {
+      "id": "57520518-353e-411b-8fb6-9262db379c8c",
+      "role": "assistant",
+      "content": "Please clarify if you are referring to assistance with personal finance needs, such as accessing community resources, or if you are looking for financial services related to city operations. This will help me route your inquiry to the appropriate departmental AI assistant.",
+      "timestamp": "2026-01-28T07:30:05.282753",
+      "agent_id": "concierge",
+      "agent_name": "HAAIS Concierge",
+      "metadata": {}
+    }
+  ],
+  "current_agent_id": "concierge",
+  "context": {},
+  "is_active": true,
+  "title": "I need finance assistance"
+}

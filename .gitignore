@@ -1,0 +1,33 @@
+# Python
+.venv
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# Environment
+.env
+.env.local
+
+# OS
+.DS_Store
+._.DS_Store
+nul
+Thumbs.db
+
+# Node
+node_modules/
+.next/
+out/
+dist/
+
+# Data (keep structure, ignore content)
+data/chroma/
+data/knowledge/
+data/templates/*.json
+
+# IDE
+.idea/
+
+# Logs
+*.log

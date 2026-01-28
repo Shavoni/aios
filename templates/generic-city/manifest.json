@@ -1,0 +1,49 @@
+{
+  "name": "generic-city",
+  "display_name": "Generic City Government",
+  "version": "1.0.0",
+  "description": "Template for any city government deployment - customize agents and departments",
+  "type": "city-government",
+  "created_at": "2026-01-25T00:00:00Z",
+  "author": "DEF1LIVE LLC",
+
+  "organization": {
+    "name": "{{CITY_NAME}}",
+    "domain": "{{CITY_DOMAIN}}",
+    "employees": "{{EMPLOYEE_COUNT}}",
+    "timezone": "{{TIMEZONE}}",
+    "state": "{{STATE}}",
+    "country": "USA"
+  },
+
+  "features": {
+    "governance_enabled": true,
+    "hitl_modes": ["INFORM", "DRAFT", "ESCALATE"],
+    "rag_enabled": true,
+    "multi_provider": true,
+    "local_llm_fallback": true
+  },
+
+  "agents": {
+    "source": "agents.json",
+    "count": 6,
+    "domains": ["Router", "HR", "Finance", "Building", "311", "PublicSafety"]
+  },
+
+  "customization_required": [
+    "Organization name and domain",
+    "Agent names (department heads)",
+    "System prompts with city-specific context",
+    "Knowledge base documents",
+    "Governance policies"
+  ],
+
+  "setup_steps": [
+    "1. Copy this template to templates/your-city/",
+    "2. Update manifest.json with city details",
+    "3. Update agents.json with department head names",
+    "4. Load city-specific knowledge documents",
+    "5. Configure governance policies",
+    "6. Run: python -m aios init --template your-city"
+  ]
+}

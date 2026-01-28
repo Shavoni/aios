@@ -1,0 +1,31 @@
+{
+  "id": "5525100e-d26b-4c16-af91-852e42124dff",
+  "user_id": "guest",
+  "department": "General",
+  "created_at": "2026-01-28T08:50:22.995358",
+  "updated_at": "2026-01-28T08:50:29.122192",
+  "messages": [
+    {
+      "id": "3c5d7af2-3d4d-41cc-84f7-ecae633b107f",
+      "role": "user",
+      "content": "Building permit inquiry",
+      "timestamp": "2026-01-28T08:50:23.024066",
+      "agent_id": null,
+      "agent_name": null,
+      "metadata": {}
+    },
+    {
+      "id": "75efce34-fbe1-46dc-bf59-5ac916bc5c2f",
+      "role": "assistant",
+      "content": "If you have an inquiry about building permits in the City of Cleveland, here's a general overview of the building permit process:\n\n1. **When a Permit is Required:** A building permit is required for most construction, alteration, or repair work. This includes new construction, additions, renovations, demolitions, electrical, plumbing, and HVAC work, as well as signs and awnings. Some minor repairs may not require a permit; a full list of work exempt from permits is available on the city's website.\n\n2. **Application Process:** The permit application is submitted online through the city's permitting portal.\n\n3. **Plan Review:** The submitted plans are reviewed by the Building & Housing Department for compliance with the Ohio Building Code and other applicable regulations.\n\n4. **Permit Issuance:** Once the plans are approved, the permit is issued.\n\n5. **Inspections:** The work must be inspected at various stages of construction to ensure compliance with the approved plans and building code. Inspections can be scheduled online through the permitting portal.\n\n6. **Certificate of Occupancy:** A Certificate of Occupancy is issued once all inspections have been passed and the project is complete.\n\nIf you need more specific information or assistance with a building permit, please refer to the city's official website or contact the Building & Housing Department directly.",
+      "timestamp": "2026-01-28T08:50:29.122192",
+      "agent_id": "building-housing",
+      "agent_name": "Sally Martin",
+      "metadata": {}
+    }
+  ],
+  "current_agent_id": "building-housing",
+  "context": {},
+  "is_active": true,
+  "title": "Building permit inquiry"
+}

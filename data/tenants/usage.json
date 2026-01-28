@@ -1,0 +1,18 @@
+{
+  "5fe88aae": {
+    "tenant_id": "5fe88aae",
+    "date": "2026-01-28",
+    "api_calls_today": 0,
+    "api_calls_this_month": 0,
+    "tokens_used_today": 0,
+    "tokens_used_this_month": 0,
+    "llm_cost_today_usd": 0.0,
+    "llm_cost_this_month_usd": 0.0,
+    "active_agents": 0,
+    "queries_today": 0,
+    "queries_this_month": 0,
+    "kb_documents": 0,
+    "kb_size_mb": 0.0,
+    "last_updated": "2026-01-28T07:52:34.360882"
+  }
+}

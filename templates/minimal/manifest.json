@@ -1,0 +1,35 @@
+{
+  "name": "minimal",
+  "display_name": "Minimal Installation",
+  "version": "1.0.0",
+  "description": "Bare minimum aiOS installation - just concierge router, no department agents",
+  "type": "minimal",
+  "created_at": "2026-01-25T00:00:00Z",
+  "author": "DEF1LIVE LLC",
+
+  "organization": {
+    "name": "{{ORG_NAME}}",
+    "domain": "{{ORG_DOMAIN}}"
+  },
+
+  "features": {
+    "governance_enabled": true,
+    "hitl_modes": ["INFORM", "ESCALATE"],
+    "rag_enabled": false,
+    "multi_provider": false,
+    "local_llm_fallback": false
+  },
+
+  "agents": {
+    "source": "agents.json",
+    "count": 1,
+    "domains": ["Router"]
+  },
+
+  "use_cases": [
+    "Testing and development",
+    "Quick proof-of-concept",
+    "Learning the system",
+    "Building from scratch"
+  ]
+}

@@ -1,0 +1,19 @@
+# HAAIS Knowledge Base Sources
+#
+# This directory contains public source snapshots imported by the
+# Public Source Importer. Files are stored as markdown with YAML
+# frontmatter containing source attribution and retrieval timestamps.
+#
+# Structure:
+# kb_sources/
+# └── citywide_public/
+#     ├── open_data_catalog/    # Socrata dataset metadata
+#     ├── legislation/          # Legistar legislation
+#     ├── ordinances/           # Codified ordinances
+#     └── web_pages/            # General web pages
+#
+# To import sources:
+#   npm run import:public
+#
+# To ingest into Supabase:
+#   npm run ingest:md kb_sources/citywide_public dept-citywide citywide public citywide_public

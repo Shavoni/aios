@@ -1,0 +1,93 @@
+{
+  "constitutional_rules": [
+    {
+      "id": "const-001",
+      "name": "PII Protection",
+      "description": "Escalate requests involving personally identifiable information",
+      "conditions": [
+        {
+          "field": "risk.contains",
+          "operator": "eq",
+          "value": "PII"
+        }
+      ],
+      "action": {
+        "hitl_mode": "ESCALATE",
+        "escalation_reason": "Request involves personally identifiable information"
+      },
+      "priority": 100
+    },
+    {
+      "id": "const-002",
+      "name": "Legal Matters",
+      "description": "Escalate legal questions requiring attorney review",
+      "conditions": [
+        {
+          "field": "risk.contains",
+          "operator": "eq",
+          "value": "LEGAL"
+        }
+      ],
+      "action": {
+        "hitl_mode": "DRAFT",
+        "escalation_reason": "Legal matters require human review"
+      },
+      "priority": 90
+    },
+    {
+      "id": "const-003",
+      "name": "High Impact Actions",
+      "description": "Require approval for high-impact decisions",
+      "conditions": [
+        {
+          "field": "intent.impact",
+          "operator": "eq",
+          "value": "high"
+        }
+      ],
+      "action": {
+        "hitl_mode": "DRAFT",
+        "approval_required": true
+      },
+      "priority": 80
+    }
+  ],
+  "organization_rules": {
+    "default": [
+      {
+        "id": "org-001",
+        "name": "Financial Sensitivity",
+        "description": "Draft mode for financial information",
+        "conditions": [
+          {
+            "field": "risk.contains",
+            "operator": "eq",
+            "value": "FINANCIAL"
+          }
+        ],
+        "action": {
+          "hitl_mode": "DRAFT"
+        },
+        "priority": 50
+      },
+      {
+        "id": "org-002",
+        "name": "Personnel Matters",
+        "description": "Draft mode for HR/personnel topics",
+        "conditions": [
+          {
+            "field": "risk.contains",
+            "operator": "eq",
+            "value": "PERSONNEL"
+          }
+        ],
+        "action": {
+          "hitl_mode": "DRAFT"
+        },
+        "priority": 50
+      }
+    ]
+  },
+  "department_rules": {},
+  "prohibited_topics": []
+}

@@ -1,0 +1,49 @@
+{
+  "id": "a09c13f4-3398-4c7d-8dcb-9ce23b613396",
+  "user_id": "guest",
+  "department": "General",
+  "created_at": "2026-01-28T07:28:51.282963",
+  "updated_at": "2026-01-28T07:29:11.147240",
+  "messages": [
+    {
+      "id": "efedde0d-e13e-4240-8e56-22193ea232d9",
+      "role": "user",
+      "content": "I'd like to speak to the Mayor's office",
+      "timestamp": "2026-01-28T07:28:51.292773",
+      "agent_id": null,
+      "agent_name": null,
+      "metadata": {}
+    },
+    {
+      "id": "551145e9-cf05-4769-b15d-55108719af77",
+      "role": "assistant",
+      "content": "I can direct you to the appropriate departmental AI assistant that can help connect you with the Mayor's office. Please hold while I transfer your request.",
+      "timestamp": "2026-01-28T07:28:54.750990",
+      "agent_id": "concierge",
+      "agent_name": "HAAIS Concierge",
+      "metadata": {}
+    },
+    {
+      "id": "73371f67-83ae-4941-95a4-907f119348c1",
+      "role": "user",
+      "content": "Yes I need the AI asset",
+      "timestamp": "2026-01-28T07:29:09.066340",
+      "agent_id": null,
+      "agent_name": null,
+      "metadata": {}
+    },
+    {
+      "id": "2618fe7e-9af3-49c8-a33d-24446503fd8d",
+      "role": "assistant",
+      "content": "Could you please clarify which department or type of assistance you need so I can direct you to the appropriate specialized departmental AI assistant?",
+      "timestamp": "2026-01-28T07:29:11.147240",
+      "agent_id": "concierge",
+      "agent_name": "HAAIS Concierge",
+      "metadata": {}
+    }
+  ],
+  "current_agent_id": "concierge",
+  "context": {},
+  "is_active": true,
+  "title": "I'd like to speak to the Mayor's office"
+}

@@ -1,0 +1,48 @@
+{
+  "version": "1.0",
+  "publisher": "Your City Name",
+  "department": "dept-citywide",
+  "refreshCadence": "weekly",
+  "outputBaseDir": "kb_sources/citywide_public",
+  "httpSettings": {
+    "maxRetries": 3,
+    "retryDelayMs": 1000,
+    "timeoutMs": 30000,
+    "rateLimit": 2,
+    "respectRobotsTxt": true
+  },
+  "webPages": [
+    {
+      "url": "https://your-city.gov/departments",
+      "filename": "city-departments",
+      "subdir": "web_pages",
+      "sourceType": "web_page",
+      "knowledgeProfile": "department_map",
+      "licenseNotes": "Public government information."
+    },
+    {
+      "url": "https://your-city-code.amlegal.com/codes/overview",
+      "filename": "codified-ordinances",
+      "subdir": "ordinances",
+      "sourceType": "ordinance",
+      "knowledgeProfile": "codified_ordinances",
+      "licenseNotes": "Codified ordinances. Verify current status at source."
+    }
+  ],
+  "socrata": {
+    "baseUrl": "https://data.your-city.gov",
+    "subdir": "open_data_catalog",
+    "knowledgeProfile": "open_data_catalog",
+    "limit": 500,
+    "category": null
+  },
+  "legistar": {
+    "portalUrl": "https://your-city.legistar.com",
+    "subdir": "legislation",
+    "knowledgeProfile": "legislation",
+    "limit": 100,
+    "matterType": null,
+    "introducedWithinDays": 365,
+    "includeBodyText": false
+  }
+}

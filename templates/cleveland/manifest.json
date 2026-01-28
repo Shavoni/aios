@@ -1,0 +1,50 @@
+{
+  "name": "cleveland",
+  "display_name": "City of Cleveland",
+  "version": "1.0.0",
+  "description": "Cleveland Civic AI Gateway - Full deployment for 8,000 city employees",
+  "type": "city-government",
+  "created_at": "2026-01-25T00:00:00Z",
+  "author": "DEF1LIVE LLC",
+
+  "organization": {
+    "name": "City of Cleveland",
+    "domain": "clevelandohio.gov",
+    "employees": 8000,
+    "timezone": "America/New_York",
+    "state": "Ohio",
+    "country": "USA"
+  },
+
+  "features": {
+    "governance_enabled": true,
+    "hitl_modes": ["INFORM", "DRAFT", "ESCALATE"],
+    "rag_enabled": true,
+    "multi_provider": true,
+    "local_llm_fallback": true
+  },
+
+  "agents": {
+    "source": "agents.json",
+    "count": 9,
+    "domains": ["Router", "HR", "Finance", "Building", "311", "PublicHealth", "PublicSafety", "Regional", "Strategy"]
+  },
+
+  "policies": {
+    "source": "policies.json",
+    "types": ["constitutional", "organization", "department"]
+  },
+
+  "knowledge": {
+    "directory": "knowledge/",
+    "categories": ["hr", "finance", "building", "public-health", "311", "public-safety"]
+  },
+
+  "partners": [
+    "CGI",
+    "Greater Cleveland Partnership",
+    "Mayor Justin Bibb Administration"
+  ],
+
+  "cost_savings_target": "40-70%"
+}

@@ -1,0 +1,28 @@
+{
+  "5fe88aae": {
+    "id": "5fe88aae",
+    "name": "City of Cleveland",
+    "status": "active",
+    "tier": "government",
+    "admin_email": "admin@clevelandohio.gov",
+    "admin_name": "",
+    "settings": {
+      "preferred_models": {},
+      "fallback_models": {},
+      "default_temperature": 0.7,
+      "default_max_tokens": 2000,
+      "default_hitl_mode": "INFORM",
+      "require_approval_for_domains": [],
+      "prohibited_topics": [],
+      "custom_branding": {},
+      "welcome_message": "",
+      "escalation_email": "",
+      "enabled_features": [],
+      "disabled_features": []
+    },
+    "quota": null,
+    "created_at": "2026-01-26T19:57:03.660932",
+    "updated_at": "2026-01-26T19:57:03.660932",
+    "metadata": {}
+  }
+}

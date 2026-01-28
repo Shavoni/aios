@@ -1,0 +1,31 @@
+{
+  "id": "0c967efb-7605-4801-8573-509e42d0bbcf",
+  "user_id": "guest",
+  "department": "General",
+  "created_at": "2026-01-28T07:51:30.259452",
+  "updated_at": "2026-01-28T07:51:33.925175",
+  "messages": [
+    {
+      "id": "ebd0f433-c195-46e9-b22f-a51f60fd38c5",
+      "role": "user",
+      "content": "Which agent should I talk to about building and housing I have some code questions and I want to tear down a building downtown",
+      "timestamp": "2026-01-28T07:51:30.277073",
+      "agent_id": null,
+      "agent_name": null,
+      "metadata": {}
+    },
+    {
+      "id": "86afbb6c-4699-4669-81bc-4bf48bdb827c",
+      "role": "assistant",
+      "content": "For questions related to building and housing code, you should contact the **Division of Code Enforcement** within the Cleveland Department of Building & Housing. They are responsible for enforcing the housing code and property maintenance code.\n\nIf your inquiry involves demolishing a building downtown, you should reach out to the **Building & Housing Director** or the **Chief Housing Official**, as they oversee the city's demolition program. They can provide guidance on the necessary steps and requirements for demolition.\n\nFor specific contact details, you can refer to the Cleveland Department of Building & Housing's contact directory or call their main office for assistance.",
+      "timestamp": "2026-01-28T07:51:33.925175",
+      "agent_id": "building-housing",
+      "agent_name": "Sally Martin",
+      "metadata": {}
+    }
+  ],
+  "current_agent_id": "building-housing",
+  "context": {},
+  "is_active": true,
+  "title": "Which agent should I talk to about building and ho..."
+}

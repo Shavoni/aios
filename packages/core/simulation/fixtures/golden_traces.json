@@ -1,0 +1,266 @@
+{
+  "version": "1.0.0",
+  "description": "Golden trace fixtures for deterministic simulation testing",
+  "fixtures": [
+    {
+      "id": "golden_001_fmla_leave",
+      "request_text": "I need to request FMLA leave",
+      "tenant_id": "test-tenant",
+      "user_id": "employee-123",
+      "expected": {
+        "intent": "hr_leave",
+        "risk_level": "low",
+        "agent": "hr_specialist",
+        "model_tier": "economy",
+        "requires_hitl": false
+      }
+    },
+    {
+      "id": "golden_002_password_reset",
+      "request_text": "I forgot my password",
+      "tenant_id": "test-tenant",
+      "user_id": "employee-456",
+      "expected": {
+        "intent": "it_support",
+        "risk_level": "low",
+        "agent": "it_support",
+        "model_tier": "economy",
+        "requires_hitl": false
+      }
+    },
+    {
+      "id": "golden_003_contract_review",
+      "request_text": "I need to review a contract with a vendor",
+      "tenant_id": "test-tenant",
+      "user_id": "manager-789",
+      "expected": {
+        "intent": "finance_invoice",
+        "risk_level": "medium",
+        "agent": "finance_specialist",
+        "model_tier": "premium",
+        "requires_hitl": true
+      }
+    },
+    {
+      "id": "golden_004_expense_report",
+      "request_text": "How do I submit an expense reimbursement?",
+      "tenant_id": "test-tenant",
+      "user_id": "employee-101",
+      "expected": {
+        "intent": "finance_expense",
+        "risk_level": "low",
+        "agent": "finance_specialist",
+        "model_tier": "economy",
+        "requires_hitl": false
+      }
+    },
+    {
+      "id": "golden_005_building_permit",
+      "request_text": "I need a building permit for construction",
+      "tenant_id": "municipal-tenant",
+      "user_id": "citizen-202",
+      "expected": {
+        "intent": "building_permit",
+        "risk_level": "low",
+        "agent": "building_department",
+        "model_tier": "economy",
+        "requires_hitl": false
+      }
+    },
+    {
+      "id": "golden_006_benefits_inquiry",
+      "request_text": "What are my health insurance options?",
+      "tenant_id": "test-tenant",
+      "user_id": "employee-303",
+      "expected": {
+        "intent": "hr_benefits",
+        "risk_level": "low",
+        "agent": "hr_specialist",
+        "model_tier": "economy",
+        "requires_hitl": false
+      }
+    },
+    {
+      "id": "golden_007_termination_high_risk",
+      "request_text": "We need to terminate an employee for poor performance",
+      "tenant_id": "test-tenant",
+      "user_id": "manager-404",
+      "expected": {
+        "intent": "general_inquiry",
+        "risk_level": "medium",
+        "agent": "concierge",
+        "model_tier": "premium",
+        "requires_hitl": true
+      }
+    },
+    {
+      "id": "golden_008_budget_allocation",
+      "request_text": "I need to review our department budget allocation",
+      "tenant_id": "test-tenant",
+      "user_id": "director-505",
+      "expected": {
+        "intent": "finance_budget",
+        "risk_level": "low",
+        "agent": "finance_specialist",
+        "model_tier": "economy",
+        "requires_hitl": false
+      }
+    },
+    {
+      "id": "golden_009_vpn_access",
+      "request_text": "How do I set up VPN access for remote work?",
+      "tenant_id": "test-tenant",
+      "user_id": "employee-606",
+      "expected": {
+        "intent": "it_support",
+        "risk_level": "low",
+        "agent": "it_support",
+        "model_tier": "economy",
+        "requires_hitl": false
+      }
+    },
+    {
+      "id": "golden_010_compliance_audit",
+      "request_text": "We have an upcoming compliance audit, what do we need?",
+      "tenant_id": "test-tenant",
+      "user_id": "compliance-707",
+      "expected": {
+        "intent": "legal_compliance",
+        "risk_level": "low",
+        "agent": "legal_advisor",
+        "model_tier": "economy",
+        "requires_hitl": false
+      }
+    },
+    {
+      "id": "golden_011_inspection_request",
+      "request_text": "I need to schedule a building inspection",
+      "tenant_id": "municipal-tenant",
+      "user_id": "citizen-808",
+      "expected": {
+        "intent": "building_inspection",
+        "risk_level": "low",
+        "agent": "building_department",
+        "model_tier": "economy",
+        "requires_hitl": false
+      }
+    },
+    {
+      "id": "golden_012_retirement_401k",
+      "request_text": "How do I change my 401k contribution?",
+      "tenant_id": "test-tenant",
+      "user_id": "employee-909",
+      "expected": {
+        "intent": "hr_benefits",
+        "risk_level": "low",
+        "agent": "hr_specialist",
+        "model_tier": "economy",
+        "requires_hitl": false
+      }
+    },
+    {
+      "id": "golden_013_invoice_payment",
+      "request_text": "When will the vendor invoice be paid?",
+      "tenant_id": "test-tenant",
+      "user_id": "procurement-111",
+      "expected": {
+        "intent": "finance_invoice",
+        "risk_level": "low",
+        "agent": "finance_specialist",
+        "model_tier": "economy",
+        "requires_hitl": false
+      }
+    },
+    {
+      "id": "golden_014_general_help",
+      "request_text": "Can you help me?",
+      "tenant_id": "test-tenant",
+      "user_id": "user-222",
+      "expected": {
+        "intent": "general_inquiry",
+        "risk_level": "low",
+        "agent": "concierge",
+        "model_tier": "economy",
+        "requires_hitl": false
+      }
+    },
+    {
+      "id": "golden_015_confidential_document",
+      "request_text": "I need access to a confidential legal document",
+      "tenant_id": "test-tenant",
+      "user_id": "exec-333",
+      "expected": {
+        "intent": "it_support",
+        "risk_level": "medium",
+        "agent": "it_support",
+        "model_tier": "premium",
+        "requires_hitl": true
+      }
+    },
+    {
+      "id": "golden_016_software_install",
+      "request_text": "How do I install the new accounting software?",
+      "tenant_id": "test-tenant",
+      "user_id": "employee-444",
+      "expected": {
+        "intent": "it_software",
+        "risk_level": "low",
+        "agent": "it_support",
+        "model_tier": "economy",
+        "requires_hitl": false
+      }
+    },
+    {
+      "id": "golden_017_policy_handbook",
+      "request_text": "Where can I find the employee handbook?",
+      "tenant_id": "test-tenant",
+      "user_id": "new-hire-555",
+      "expected": {
+        "intent": "hr_policy",
+        "risk_level": "low",
+        "agent": "hr_specialist",
+        "model_tier": "economy",
+        "requires_hitl": false
+      }
+    },
+    {
+      "id": "golden_018_data_leak_critical",
+      "request_text": "There may have been a security breach and data leak",
+      "tenant_id": "test-tenant",
+      "user_id": "security-666",
+      "expected": {
+        "intent": "general_inquiry",
+        "risk_level": "high",
+        "agent": "concierge",
+        "model_tier": "premium",
+        "requires_hitl": true
+      }
+    },
+    {
+      "id": "golden_019_nda_agreement",
+      "request_text": "I need an NDA for a new partnership",
+      "tenant_id": "test-tenant",
+      "user_id": "bizdev-777",
+      "expected": {
+        "intent": "legal_contract",
+        "risk_level": "low",
+        "agent": "legal_advisor",
+        "model_tier": "economy",
+        "requires_hitl": false
+      }
+    },
+    {
+      "id": "golden_020_vacation_pto",
+      "request_text": "How many vacation days do I have left?",
+      "tenant_id": "test-tenant",
+      "user_id": "employee-888",
+      "expected": {
+        "intent": "hr_leave",
+        "risk_level": "low",
+        "agent": "hr_specialist",
+        "model_tier": "economy",
+        "requires_hitl": false
+      }
+    }
+  ]
+}
