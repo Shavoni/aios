@@ -15,6 +15,9 @@
 2. **[DEPLOYMENT_TEMPLATES.md](./DEPLOYMENT_TEMPLATES.md)** - Multi-tenant deployment, reset, and cloning
 3. **[UI_DEVELOPMENT_GUIDE.md](./UI_DEVELOPMENT_GUIDE.md)** - Frontend development and UI customization guide
 
+**For questions about UI capabilities**:
+- **[QUICK_START_UI.md](./QUICK_START_UI.md)** - Quick answer: "Can AIOS help me build professional UIs?"
+
 ---
 
 ## System Overview
@@ -155,6 +158,7 @@ python -m aios init --template generic-city
 ### Architecture & Design
 - **[HAAIS_AIOS_OVERVIEW.md](./HAAIS_AIOS_OVERVIEW.md)** - High-level system overview
 - **[ROUTING_ARCHITECTURE.md](./ROUTING_ARCHITECTURE.md)** - Core routing system and critical issues
+- **[GOVERNANCE_ARCHITECTURE.md](./GOVERNANCE_ARCHITECTURE.md)** - Governance system review and gaps analysis
 - **[LLM_ORCHESTRATION_LAYER.md](./LLM_ORCHESTRATION_LAYER.md)** - LLM routing and provider management
 - **[ENTERPRISE_DISCOVERY_ARCHITECTURE.md](./ENTERPRISE_DISCOVERY_ARCHITECTURE.md)** - Auto-discovery system
 
