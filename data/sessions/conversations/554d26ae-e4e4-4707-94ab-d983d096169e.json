@@ -1,0 +1,23 @@
+{
+  "id": "554d26ae-e4e4-4707-94ab-d983d096169e",
+  "user_id": "guest",
+  "department": "General",
+  "tenant_id": "default",
+  "created_at": "2026-01-28T20:20:59.632779",
+  "updated_at": "2026-01-28T20:20:59.657848",
+  "messages": [
+    {
+      "id": "e1aa378f-0c76-4a4b-8df2-6521b7d4ad2f",
+      "role": "user",
+      "content": "I need to speak to the mayor's assistant",
+      "timestamp": "2026-01-28T20:20:59.657848",
+      "agent_id": null,
+      "agent_name": null,
+      "metadata": {}
+    }
+  ],
+  "current_agent_id": null,
+  "context": {},
+  "is_active": true,
+  "title": "I need to speak to the mayor's assistant"
+}

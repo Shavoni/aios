@@ -15,9 +15,27 @@ router = APIRouter(prefix="/onboarding", tags=["Onboarding"])
 # =============================================================================
 
 
+class CrawlConfigRequest(BaseModel):
+    """Configuration for controlled discovery crawl."""
+    max_pages: int = Field(default=50, ge=10, le=250, description="Maximum pages to crawl")
+    max_depth: int = Field(default=2, ge=1, le=4, description="Maximum crawl depth")
+    timeout_seconds: int = Field(default=120, ge=30, le=600, description="Timeout in seconds")
+    mode: str = Field(default="shallow", description="Discovery mode: shallow, targeted, or full")
+
+    # Scope controls
+    include_leadership: bool = Field(default=True, description="Include leadership/executives")
+    include_departments: bool = Field(default=True, description="Include departments")
+    include_services: bool = Field(default=True, description="Include services")
+    include_data_portals: bool = Field(default=True, description="Include data portals")
+
+    # Caching
+    use_cache: bool = Field(default=True, description="Use cached results if available")
+
+
 class DiscoverRequest(BaseModel):
     """Request to start discovery."""
     url: str = Field(..., min_length=1, description="Municipal website URL")
+    config: CrawlConfigRequest | None = Field(default=None, description="Optional crawl configuration")
 
     @field_validator("url")
     @classmethod
@@ -43,11 +61,17 @@ class DiscoverRequest(BaseModel):
             raise ValueError("Invalid URL format")
 
 
+class CandidateSelectionRequest(BaseModel):
+    """Request to update candidate selections."""
+    selections: dict[str, bool] = Field(..., description="Map of candidate ID to selected status")
+
+
 class DiscoverResponse(BaseModel):
     """Response with discovery job ID."""
     job_id: str
     status: str
     message: str
+    cached: bool = False
 
 
 class ConfigUpdateRequest(BaseModel):
@@ -81,21 +105,170 @@ async def start_discovery(request: DiscoverRequest) -> DiscoverResponse:
 
     Crawls the website to discover organizational structure,
     departments, officials, and open data portals.
+
+    With controlled discovery (default mode=shallow):
+    1. Fast inventory scan with configurable limits
+    2. Returns candidates for user selection
+    3. User selects which items to deep crawl
+    4. Deep crawl only approved selections
     """
     try:
-        from packages.onboarding.discovery import start_discovery as _start_discovery
+        from packages.onboarding.discovery import (
+            start_discovery as _start_discovery,
+            CrawlConfig,
+            DiscoveryMode,
+            get_discovery_engine,
+        )
 
-        job_id = _start_discovery(request.url)
+        # Build config from request
+        config = CrawlConfig()  # Default config
+        use_cache = True
+
+        if request.config:
+            try:
+                mode = DiscoveryMode(request.config.mode)
+            except ValueError:
+                mode = DiscoveryMode.SHALLOW
+
+            config = CrawlConfig(
+                max_pages=request.config.max_pages,
+                max_depth=request.config.max_depth,
+                timeout_seconds=request.config.timeout_seconds,
+                mode=mode,
+                include_leadership=request.config.include_leadership,
+                include_departments=request.config.include_departments,
+                include_services=request.config.include_services,
+                include_data_portals=request.config.include_data_portals,
+            )
+            use_cache = request.config.use_cache
+
+        # Try to use cached results if enabled
+        if use_cache:
+            engine = get_discovery_engine()
+            job_id, is_cached = engine.get_cached_or_start(request.url, config)
+            if is_cached:
+                return DiscoverResponse(
+                    job_id=job_id,
+                    status="cached",
+                    message=f"Using cached discovery results for {request.url}",
+                    cached=True,
+                )
+
+        # Start fresh discovery
+        job_id = _start_discovery(request.url, config)
         return DiscoverResponse(
             job_id=job_id,
             status="started",
             message=f"Discovery started for {request.url}",
+            cached=False,
         )
     except RuntimeError as e:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=str(e),
         )
+
+
+@router.post("/discover/{job_id}/cancel")
+async def cancel_discovery(job_id: str) -> dict[str, Any]:
+    """Cancel a running discovery job."""
+    from packages.onboarding.discovery import cancel_discovery as _cancel_discovery
+
+    success = _cancel_discovery(job_id)
+    if not success:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Discovery job '{job_id}' not found or cannot be cancelled",
+        )
+
+    return {
+        "job_id": job_id,
+        "status": "cancelled",
+        "message": "Discovery job cancelled successfully",
+    }
+
+
+@router.get("/discover/{job_id}/candidates")
+async def get_discovery_candidates(job_id: str) -> dict[str, Any]:
+    """Get discovered candidates for user selection.
+
+    Returns the list of discovered items (departments, leadership, etc.)
+    that the user can select or deselect before proceeding with deep crawl.
+    """
+    from packages.onboarding.discovery import get_discovery_status as _get_status
+
+    result = _get_status(job_id)
+    if not result:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Discovery job '{job_id}' not found",
+        )
+
+    return {
+        "job_id": job_id,
+        "status": result.status.value,
+        "total_candidates": len(result.candidates),
+        "candidates": [c.to_dict() for c in result.candidates],
+        "progress": {
+            "pages_crawled": result.pages_crawled,
+            "departments_detected": result.departments_detected,
+            "leaders_detected": result.leaders_detected,
+            "data_portals_detected": result.data_portals_detected,
+        },
+    }
+
+
+@router.put("/discover/{job_id}/candidates")
+async def update_candidate_selections(
+    job_id: str,
+    request: CandidateSelectionRequest,
+) -> dict[str, Any]:
+    """Update which candidates are selected for deep crawl.
+
+    Send a map of candidate IDs to their selected status (true/false).
+    Only selected candidates will be included in agent creation.
+    """
+    from packages.onboarding.discovery import (
+        update_candidate_selection as _update_selection,
+        get_discovery_status as _get_status,
+    )
+
+    success = _update_selection(job_id, request.selections)
+    if not success:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Discovery job '{job_id}' not found",
+        )
+
+    result = _get_status(job_id)
+    selected_count = sum(1 for c in result.candidates if c.selected) if result else 0
+
+    return {
+        "job_id": job_id,
+        "status": "updated",
+        "total_candidates": len(result.candidates) if result else 0,
+        "selected_count": selected_count,
+        "message": f"Updated candidate selections: {selected_count} selected",
+    }
+
+
+@router.get("/discover/{job_id}/selected")
+async def get_selected_candidates(job_id: str) -> dict[str, Any]:
+    """Get only the selected candidates from a discovery job."""
+    from packages.onboarding.discovery import get_selected_candidates as _get_selected
+
+    selected = _get_selected(job_id)
+    if selected is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Discovery job '{job_id}' not found",
+        )
+
+    return {
+        "job_id": job_id,
+        "selected_count": len(selected),
+        "candidates": [c.to_dict() for c in selected],
+    }
 
 
 @router.get("/discover/{job_id}")

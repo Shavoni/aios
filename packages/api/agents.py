@@ -17,6 +17,7 @@ from packages.core.knowledge import (
 )
 from packages.core.concierge import route_to_agent, RoutingResult
 from packages.core.governance.manager import get_governance_manager
+from packages.core.grounding import get_grounding_engine, create_grounding_summary
 from packages.core.schemas.models import HITLMode
 
 router = APIRouter(prefix="/agents", tags=["Agents"])
@@ -93,7 +94,11 @@ class AgentQueryRequest(BaseModel):
 
 
 class AgentQueryResponse(BaseModel):
-    """Response from agent query."""
+    """Response from agent query.
+
+    ENTERPRISE-GRADE: Supports grounded AI with full source attribution.
+    Every response can answer: "What authoritative source justifies this output?"
+    """
 
     response: str
     agent_id: str
@@ -105,6 +110,48 @@ class AgentQueryResponse(BaseModel):
     policy_ids: list[str] = Field(default_factory=list)
     approval_id: str | None = None  # ENTERPRISE: Set when response pending approval
     approval_required: bool = False  # ENTERPRISE: True if awaiting human review
+
+    # === GROUNDED AI: Source Attribution ===
+    source_citations: list[dict[str, Any]] = Field(
+        default_factory=list,
+        description="Structured citations mapping claims to sources"
+    )
+    grounding_score: float = Field(
+        default=0.0,
+        ge=0.0,
+        le=1.0,
+        description="How well-grounded is this response (0=speculation, 1=fully cited)"
+    )
+    authority_basis: str | None = Field(
+        default=None,
+        description="Primary authority backing this response (e.g., 'HR Policy 4.2', 'City Ordinance 12.4')"
+    )
+
+    # === ATTRIBUTION & VERIFICATION ===
+    attribution: str = Field(
+        default="ai_generated",
+        description="'ai_generated', 'ai_assisted', 'human_authored', 'human_verified'"
+    )
+    verification_status: str = Field(
+        default="unverified",
+        description="'verified', 'unverified', 'ai_generated', 'requires_review'"
+    )
+    requires_human_verification: bool = Field(
+        default=False,
+        description="Whether this response should be flagged for human review"
+    )
+
+    # === DECISION REASONING ===
+    governance_reasoning: str | None = Field(
+        default=None,
+        description="Explanation of why governance decided on this HITL mode"
+    )
+    confidence: float = Field(
+        default=1.0,
+        ge=0.0,
+        le=1.0,
+        description="Confidence in this response"
+    )
 
 
 class AgentListResponse(BaseModel):
@@ -593,7 +640,22 @@ async def query_agent(agent_id: str, request: AgentQueryRequest) -> AgentQueryRe
             approval_required=True,
         )
 
-    # INFORM mode - return response directly
+    # INFORM mode - return response directly with grounding
+    # ==========================================================================
+    # GROUNDED AI: Compute source attribution and authority basis
+    # Every response answers: "What authoritative source justifies this output?"
+    # ==========================================================================
+    grounding = create_grounding_summary(
+        response_text=response_text,
+        sources=sources,
+        governance_decision={
+            "hitl_mode": decision.hitl_mode.value,
+            "policy_trigger_ids": decision.policy_trigger_ids,
+            "approval_required": decision.approval_required,
+            "escalation_reason": decision.escalation_reason,
+        },
+    )
+
     return AgentQueryResponse(
         response=response_text,
         agent_id=agent_id,
@@ -605,6 +667,15 @@ async def query_agent(agent_id: str, request: AgentQueryRequest) -> AgentQueryRe
         policy_ids=decision.policy_trigger_ids,
         approval_id=None,
         approval_required=False,
+        # === GROUNDED AI FIELDS ===
+        source_citations=grounding.get("source_citations", []),
+        grounding_score=grounding.get("grounding_score", 0.0),
+        authority_basis=grounding.get("authority_basis"),
+        governance_reasoning=grounding.get("governance_reasoning"),
+        attribution="ai_generated",
+        verification_status="unverified" if grounding.get("requires_human_verification") else "ai_generated",
+        requires_human_verification=grounding.get("requires_human_verification", False),
+        confidence=1.0 - (0.5 * (1 - grounding.get("grounding_score", 0.0))),  # Higher grounding = higher confidence
     )
 
 

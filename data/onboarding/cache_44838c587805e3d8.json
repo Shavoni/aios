@@ -1,0 +1,3191 @@
+{
+  "id": "e5e4a537d2c0",
+  "status": "awaiting_selection",
+  "started_at": "2026-01-30T00:06:14.430797",
+  "completed_at": "2026-01-30T00:08:31.371019",
+  "source_url": "https://www.camdennj.gov/",
+  "mode": "shallow",
+  "municipality": {
+    "name": "City of Camden",
+    "state": null,
+    "website": "https://www.camdennj.gov",
+    "population": null
+  },
+  "executive": {
+    "name": "Victor Carstarphen",
+    "title": "Mayor",
+    "office": "Office of the Mayor",
+    "url": "https://www.camdennj.gov"
+  },
+  "chief_officers": [
+    {
+      "name": "Chief Financial",
+      "title": "Budget Reports",
+      "office": "Executive Office",
+      "url": "https://www.camdennj.gov/finance-department"
+    }
+  ],
+  "departments": [
+    {
+      "id": "camden-city-school-district",
+      "name": "Camden City School District",
+      "director": null,
+      "director_title": null,
+      "url": "https://camdencityschools.org/",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "camden-redevelopment-agency",
+      "name": "Camden Redevelopment Agency",
+      "director": null,
+      "director_title": null,
+      "url": "http://camdenredevelopment.org/",
+      "description": null,
+      "suggested_template": "strategy",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "housing-authority-of-the-city",
+      "name": "Housing Authority of the City of Camden",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdenhousing.org/",
+      "description": null,
+      "suggested_template": "building",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "parking-authority-city-of-camd",
+      "name": "Parking Authority City of Camden",
+      "director": null,
+      "director_title": null,
+      "url": "https://camdenparking.net/",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "camden-community-partnership-i",
+      "name": "Camden Community Partnership, Inc.",
+      "director": null,
+      "director_title": null,
+      "url": "https://camdencommunitypartnership.com/",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "camden-county-police-departmen",
+      "name": "Camden County Police Department",
+      "director": null,
+      "director_title": null,
+      "url": "http://camdencountypd.org/",
+      "description": null,
+      "suggested_template": "public-safety",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "communications-office",
+      "name": "Communications Office",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/communications-office/",
+      "description": null,
+      "suggested_template": "communications",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "division-of-constituent-servic",
+      "name": "Division of Constituent Services",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/division-of-constituent-services/",
+      "description": null,
+      "suggested_template": "311",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "city-council",
+      "name": "City Council",
+      "director": null,
+      "director_title": null,
+      "url": null,
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "city-clerk",
+      "name": "City Clerk",
+      "director": null,
+      "director_title": null,
+      "url": null,
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "records-management-unit",
+      "name": "Records Management Unit",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/records-management-unit/",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "vital-statistics",
+      "name": "Vital Statistics",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/vital-statistics/",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "personnel",
+      "name": "Personnel",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/personnel/",
+      "description": null,
+      "suggested_template": "hr",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "health-benefits",
+      "name": "Health Benefits",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/health-benefits",
+      "description": null,
+      "suggested_template": "public-health",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "information-technology",
+      "name": "Information Technology",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/information-technology",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "code-enforcement",
+      "name": "Code Enforcement",
+      "director": null,
+      "director_title": null,
+      "url": null,
+      "description": null,
+      "suggested_template": "building",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "construction-building-bureau",
+      "name": "Construction & Building Bureau",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/construction-building-bureau/",
+      "description": null,
+      "suggested_template": "building",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "housing-bureau",
+      "name": "Housing Bureau",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/housing/",
+      "description": null,
+      "suggested_template": "building",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "license-inspections",
+      "name": "License & Inspections",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/license-inspections/",
+      "description": null,
+      "suggested_template": "building",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "law-department",
+      "name": "Law Department",
+      "director": null,
+      "director_title": null,
+      "url": null,
+      "description": null,
+      "suggested_template": "law",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "city-properties",
+      "name": "City Properties",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/city-properties/",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "recreation",
+      "name": "Recreation",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/recreation/",
+      "description": null,
+      "suggested_template": "parks",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "finance",
+      "name": "Finance",
+      "director": null,
+      "director_title": null,
+      "url": null,
+      "description": null,
+      "suggested_template": "finance",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "planning-development",
+      "name": "Planning & Development",
+      "director": null,
+      "director_title": null,
+      "url": null,
+      "description": null,
+      "suggested_template": "strategy",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "capital-improvements",
+      "name": "Capital Improvements",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/capital-improvements/",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "division-of-planning",
+      "name": "Division of Planning",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/division-of-planning/",
+      "description": null,
+      "suggested_template": "strategy",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "housing-services",
+      "name": "Housing Services",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/housing-services/",
+      "description": null,
+      "suggested_template": "building",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "public-works",
+      "name": "Public Works",
+      "director": null,
+      "director_title": null,
+      "url": null,
+      "description": null,
+      "suggested_template": "public-works",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "nj-clean-communities",
+      "name": "NJ Clean Communities",
+      "director": null,
+      "director_title": null,
+      "url": "https://njclean.ci.camden.nj.us/",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "emergency-services",
+      "name": "Emergency Services",
+      "director": null,
+      "director_title": null,
+      "url": null,
+      "description": null,
+      "suggested_template": "fire",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "office-of-emergency-management",
+      "name": "Office of Emergency Management",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/office-of-emergency-management",
+      "description": null,
+      "suggested_template": "fire",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "camden-fire-department",
+      "name": "Camden Fire Department",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/fire-department/",
+      "description": null,
+      "suggested_template": "fire",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "camden-county-police",
+      "name": "Camden County Police",
+      "director": null,
+      "director_title": null,
+      "url": "http://camdencountypd.org/",
+      "description": null,
+      "suggested_template": "public-safety",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "fire-marshal",
+      "name": "Fire Marshal",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/fire-marshal/",
+      "description": null,
+      "suggested_template": "fire",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "employment-opportunities",
+      "name": "Employment Opportunities",
+      "director": null,
+      "director_title": null,
+      "url": null,
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "employment-opportunities-train",
+      "name": "Employment Opportunities & Training",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/employment-opportunity-and-training/",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "business-growth-development",
+      "name": "Business Growth & Development",
+      "director": null,
+      "director_title": null,
+      "url": null,
+      "description": null,
+      "suggested_template": "strategy",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "constituent-services",
+      "name": "Constituent Services",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/division-of-constituent-services/",
+      "description": null,
+      "suggested_template": "311",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "city-ordinances",
+      "name": "City Ordinances",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/city-council/",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "food-truck-permits",
+      "name": "Food Truck Permits",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/food-truck-permit/",
+      "description": null,
+      "suggested_template": "building",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "municipal-budget",
+      "name": "Municipal Budget",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/finance-department/",
+      "description": null,
+      "suggested_template": "finance",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "water-services",
+      "name": "Water Services",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/water-services/",
+      "description": null,
+      "suggested_template": "public-works",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "recreational-cannabis",
+      "name": "Recreational Cannabis",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/recreational-cannabis/",
+      "description": null,
+      "suggested_template": "parks",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "visiting-camden",
+      "name": "Visiting Camden",
+      "director": null,
+      "director_title": null,
+      "url": "https://visitnj.org/city/camden",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "camden-waterfront",
+      "name": "Camden Waterfront",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.visitnj.org/article/camden-waterfront",
+      "description": null,
+      "suggested_template": "public-works",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "employee-recognition-committee",
+      "name": "Employee Recognition Committee",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/employee-recognition-committee/",
+      "description": null,
+      "suggested_template": "hr",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "popular-city-services",
+      "name": "Popular City Services",
+      "director": null,
+      "director_title": null,
+      "url": null,
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "the-city-of-camden",
+      "name": "The City of Camden",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "website-user-accessibility-sta",
+      "name": "Website User Accessibility Statement",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/accessibility/",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "camden-county-police-departmen",
+      "name": "Camden County Police Department\nPolice and emergency services",
+      "director": null,
+      "director_title": null,
+      "url": null,
+      "description": null,
+      "suggested_template": "public-safety",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "city-of-camden-office-of-emerg",
+      "name": "City of Camden Office of Emergency Management\nEmergency and community resources",
+      "director": null,
+      "director_title": null,
+      "url": null,
+      "description": null,
+      "suggested_template": "fire",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "ccpd-stopit-app-report-illegal",
+      "name": "CCPD STOPit App\nReport illegal activity and dumping.",
+      "director": null,
+      "director_title": null,
+      "url": null,
+      "description": null,
+      "suggested_template": "law",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "nj-office-of-homeland-security",
+      "name": "NJ Office of Homeland Security and Preparedness\nReport potential threats and suspicious activity.",
+      "director": null,
+      "director_title": null,
+      "url": null,
+      "description": null,
+      "suggested_template": "hr",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "nj-211-facing-a-crisis-or-deal",
+      "name": "NJ 211\nFacing a crisis or dealing with a disaster.",
+      "director": null,
+      "director_title": null,
+      "url": null,
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "emergency-management",
+      "name": "Emergency Management",
+      "director": null,
+      "director_title": null,
+      "url": null,
+      "description": null,
+      "suggested_template": "fire",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "report-suspicious-activity",
+      "name": "Report Suspicious Activity",
+      "director": null,
+      "director_title": null,
+      "url": null,
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "rooming-boarding-house-site-li",
+      "name": "Rooming & Boarding House Site Licensing Board",
+      "director": null,
+      "director_title": null,
+      "url": null,
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "rooming-and-boarding-house-sit",
+      "name": "Rooming and Boarding House Site Licensing Board Agendas",
+      "director": null,
+      "director_title": null,
+      "url": null,
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "rooming-boarding-house-site-li",
+      "name": "Rooming & Boarding House Site Licensing Board Meeting Dates",
+      "director": null,
+      "director_title": null,
+      "url": null,
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "city-council-reorganizational",
+      "name": "City Council Reorganizational Meeting",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/event/reorganizational-meeting/",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "city-council-caucus-meeting",
+      "name": "City Council Caucus Meeting",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/event/city-council-caucus-meeting-7/",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "city-council-regular-meeting",
+      "name": "City Council Regular Meeting",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/event/city-council-regular-meeting-12/",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "early-settlement-development",
+      "name": "Early Settlement & Development",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/early-settlement-and-development/",
+      "description": null,
+      "suggested_template": "strategy",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "citynews-camdennj-gov",
+      "name": "CityNews@camdennj.gov",
+      "director": null,
+      "director_title": null,
+      "url": "mailto:CityNews@camdennj.gov",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "personnel-camdennj-gov",
+      "name": "Personnel@camdennj.gov",
+      "director": null,
+      "director_title": null,
+      "url": "mailto:Personnel@camdennj.gov",
+      "description": null,
+      "suggested_template": "hr",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "healthbenefits-camdennj-gov",
+      "name": "HealthBenefits@camdennj.gov",
+      "director": null,
+      "director_title": null,
+      "url": "mailto:HealthBenefits@camdennj.gov",
+      "description": null,
+      "suggested_template": "public-health",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "citycouncil-camdennj-gov",
+      "name": "citycouncil@camdennj.gov",
+      "director": null,
+      "director_title": null,
+      "url": "mailto:citycouncil@camdennj.gov",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "camdencity-mc-njcourts-gov",
+      "name": "CamdenCity.MC@njcourts.gov",
+      "director": null,
+      "director_title": null,
+      "url": "mailto:CamdenCity.MC@njcourts.gov",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "finance-camdennj-gov",
+      "name": "Finance@camdennj.gov",
+      "director": null,
+      "director_title": null,
+      "url": "mailto:Finance@camdennj.gov",
+      "description": null,
+      "suggested_template": "finance",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "law-camdennj-gov",
+      "name": "Law@camdennj.gov",
+      "director": null,
+      "director_title": null,
+      "url": "mailto:Law@camdennj.gov",
+      "description": null,
+      "suggested_template": "law",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "fire-camdennj-gov",
+      "name": "Fire@camdennj.gov",
+      "director": null,
+      "director_title": null,
+      "url": "mailto:Fire@camdennj.gov",
+      "description": null,
+      "suggested_template": "fire",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "community-centers",
+      "name": "Community Centers",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/community-centers/",
+      "description": null,
+      "suggested_template": "parks",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "office-of-senior-emergency-ser",
+      "name": "Office of Senior & Emergency Services",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/senior-services-and-emergency-assistance/",
+      "description": null,
+      "suggested_template": "fire",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "office-of-recreation",
+      "name": "Office of Recreation",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/recreation/",
+      "description": null,
+      "suggested_template": "parks",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "www-newjerseyamwater-com",
+      "name": "www.newjerseyamwater.com",
+      "director": null,
+      "director_title": null,
+      "url": "http://www.newjerseyamwater.com/",
+      "description": null,
+      "suggested_template": "public-works",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "www-amwater-com-camden",
+      "name": "www.amwater.com/camden",
+      "director": null,
+      "director_title": null,
+      "url": "http://www.amwater.com/camden",
+      "description": null,
+      "suggested_template": "public-works",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "water-quality-faq-s",
+      "name": "Water Quality FAQ\u2019s",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/wp-content/uploads/2021/04/AW-Camden-CCI_Water-Quality_FAQ_Final-4-13-21.pdf",
+      "description": null,
+      "suggested_template": "public-works",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "parkside-wtp-press-release",
+      "name": "Parkside WTP Press Release",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/wp-content/uploads/2021/04/Parkside-WTP-Improvements-Release_Final_4.14.21.pdf",
+      "description": null,
+      "suggested_template": "parks",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "audit-budget-reports",
+      "name": "Audit & Budget Reports",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/audit-budget-reports/",
+      "description": null,
+      "suggested_template": "finance",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "winter-fire-prevention",
+      "name": "Winter Fire Prevention",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/wp-content/uploads/2018/01/WinterFirePrevention.pdf",
+      "description": null,
+      "suggested_template": "fire",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "parks",
+      "name": "Parks",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/park-list-information/",
+      "description": null,
+      "suggested_template": "parks",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "stormwater",
+      "name": "Stormwater",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/wp-content/uploads/2020/02/sppp-01.pdf",
+      "description": null,
+      "suggested_template": "public-works",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "american-water-contract-servic",
+      "name": "American Water \u2013 Contract Services",
+      "director": null,
+      "director_title": null,
+      "url": "https://amwater.com/corp/products-services/contract-services/camden",
+      "description": null,
+      "suggested_template": "public-works",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "community-clean-up-guidelines",
+      "name": "Community Clean-Up Guidelines",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/wp-content/uploads/2021/10/DPW-Community-Clean-Up-Guidelines-and-App-100821.pdf",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "nj-housing-mortgage-finance-ag",
+      "name": "NJ Housing & Mortgage Finance Agency",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.nj.gov/dca/hmfa/",
+      "description": null,
+      "suggested_template": "finance",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "development-camdennj-gov",
+      "name": "Development@camdennj.gov",
+      "director": "and Zoning",
+      "director_title": "Director",
+      "url": "mailto:Development@camdennj.gov",
+      "description": null,
+      "suggested_template": "strategy",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "planning-board",
+      "name": "Planning Board",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/planning-board/",
+      "description": null,
+      "suggested_template": "strategy",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "redevelopment-plan",
+      "name": "Redevelopment Plan",
+      "director": null,
+      "director_title": null,
+      "url": "http://camdenredevelopment.org/Plans/Plans/Redevelopment-Plan.aspx",
+      "description": null,
+      "suggested_template": "strategy",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "division-of-housing-services",
+      "name": "Division of Housing Services",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/housing-services/",
+      "description": null,
+      "suggested_template": "building",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "zoning-board-site-plans",
+      "name": "Zoning Board Site Plans",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/zoning-board-site-plans/",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "planning-board-members",
+      "name": "Planning Board Members",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/wp-content/uploads/2023/07/PB-Members-List-08-2022.pdf",
+      "description": null,
+      "suggested_template": "strategy",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "site-plan-applications-and-sub",
+      "name": "Site Plan Applications and Submission Items Package",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/wp-content/uploads/2023/03/2023-SITE-PLAN-APPLICATION-AND-SUBMISSION-ITEMS-PACKAGE-REV-03-22-2023.pdf",
+      "description": null,
+      "suggested_template": "fire",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "the-camden-health-element",
+      "name": "The Camden Health Element",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.dvrpc.org/health/camdenhealthelement/",
+      "description": null,
+      "suggested_template": "public-health",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "planning-board-site-plans",
+      "name": "Planning Board Site Plans",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/planning-board-site-plans/",
+      "description": null,
+      "suggested_template": "strategy",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "planning-board-fees",
+      "name": "Planning Board Fees",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/wp-content/uploads/2024/01/Planning-Fees-2024.pdf",
+      "description": null,
+      "suggested_template": "strategy",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "rfp-notice-community-developme",
+      "name": "RFP NOTICE COMMUNITY DEVELOPMENT BLOCK GRANT PROGRAM HOME INVESTMENT PARTNERSHIP PROGRAM 2026-2027",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/wp-content/uploads/2025/12/Camden-RFP-2026-2027-_002_-_002_.pdf",
+      "description": null,
+      "suggested_template": "strategy",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "are-you-in-need-of-rental-util",
+      "name": "Are you in need of Rental & Utility assistance (English)",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/wp-content/uploads/2025/04/emergency-eng.pdf",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "are-you-in-need-of-rental-util",
+      "name": "Are you in need of Rental & Utility assistance (Spanish)",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/wp-content/uploads/2025/04/emergency-span.pdf",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "housing",
+      "name": "Housing",
+      "director": null,
+      "director_title": null,
+      "url": "https://www.camdennj.gov/housing/",
+      "description": null,
+      "suggested_template": "building",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "camden-city-tax-map",
+      "name": "Camden City Tax Map",
+      "director": null,
+      "director_title": null,
+      "url": "https://tmv.civilsolutions.biz/viewer/663524d5f9516a1190b9db11",
+      "description": null,
+      "suggested_template": "it",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    },
+    {
+      "id": "http-www-nj-gov-treasury-reven",
+      "name": "http://www.nj.gov/treasury/revenue/rms/index.shtml",
+      "director": null,
+      "director_title": null,
+      "url": "http://www.nj.gov/treasury/revenue/rms/index.shtml",
+      "description": null,
+      "suggested_template": "finance",
+      "contact": {
+        "email": null,
+        "phone": null,
+        "address": null
+      }
+    }
+  ],
+  "data_portals": [],
+  "governance_docs": [
+    {
+      "type": "ordinance",
+      "title": "City Ordinances",
+      "url": "https://www.camdennj.gov/city-council/"
+    },
+    {
+      "type": "budget",
+      "title": "Municipal Budget",
+      "url": "https://www.camdennj.gov/finance-department/"
+    },
+    {
+      "type": "budget",
+      "title": "Audit & Budget Reports",
+      "url": "https://www.camdennj.gov/audit-budget-reports/"
+    },
+    {
+      "type": "policy",
+      "title": "NOTICE: New policy for Approvals of Rental Certificates and Resale of Property",
+      "url": "https://www.camdennj.gov/wp-content/uploads/2020/10/copolicy.pdf"
+    }
+  ],
+  "pages_crawled": 35,
+  "error": "Discovery timed out after 120s",
+  "candidates": [
+    {
+      "id": "exec-mayor",
+      "name": "Victor Carstarphen",
+      "type": "leadership",
+      "url": "https://www.camdennj.gov",
+      "confidence": "high",
+      "source_urls": [
+        "https://www.camdennj.gov"
+      ],
+      "suggested_agent_name": "Mayor's Office Assistant",
+      "metadata": {
+        "title": "Mayor",
+        "office": "Office of the Mayor"
+      },
+      "selected": true
+    },
+    {
+      "id": "officer-0",
+      "name": "Chief Financial",
+      "type": "leadership",
+      "url": "https://www.camdennj.gov/finance-department",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/finance-department"
+      ],
+      "suggested_agent_name": "Budget Reports Assistant",
+      "metadata": {
+        "title": "Budget Reports",
+        "office": "Executive Office"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-camden-city-school-district",
+      "name": "Camden City School District",
+      "type": "department",
+      "url": "https://camdencityschools.org/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://camdencityschools.org/"
+      ],
+      "suggested_agent_name": "Camden City School District Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-camden-redevelopment-agency",
+      "name": "Camden Redevelopment Agency",
+      "type": "department",
+      "url": "http://camdenredevelopment.org/",
+      "confidence": "medium",
+      "source_urls": [
+        "http://camdenredevelopment.org/"
+      ],
+      "suggested_agent_name": "Camden Redevelopment Agency Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "strategy"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-housing-authority-of-the-city",
+      "name": "Housing Authority of the City of Camden",
+      "type": "department",
+      "url": "https://www.camdenhousing.org/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdenhousing.org/"
+      ],
+      "suggested_agent_name": "Housing Authority of the City of Camden Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "building"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-parking-authority-city-of-camd",
+      "name": "Parking Authority City of Camden",
+      "type": "department",
+      "url": "https://camdenparking.net/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://camdenparking.net/"
+      ],
+      "suggested_agent_name": "Parking Authority City of Camden Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-camden-community-partnership-i",
+      "name": "Camden Community Partnership, Inc.",
+      "type": "department",
+      "url": "https://camdencommunitypartnership.com/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://camdencommunitypartnership.com/"
+      ],
+      "suggested_agent_name": "Camden Community Partnership, Inc. Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-camden-county-police-departmen",
+      "name": "Camden County Police Department",
+      "type": "department",
+      "url": "http://camdencountypd.org/",
+      "confidence": "medium",
+      "source_urls": [
+        "http://camdencountypd.org/"
+      ],
+      "suggested_agent_name": "Camden County Police Department Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "public-safety"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-communications-office",
+      "name": "Communications Office",
+      "type": "department",
+      "url": "https://www.camdennj.gov/communications-office/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/communications-office/"
+      ],
+      "suggested_agent_name": "Communications Office Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "communications"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-division-of-constituent-servic",
+      "name": "Division of Constituent Services",
+      "type": "department",
+      "url": "https://www.camdennj.gov/division-of-constituent-services/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/division-of-constituent-services/"
+      ],
+      "suggested_agent_name": "Division of Constituent Services Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "311"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-city-council",
+      "name": "City Council",
+      "type": "department",
+      "url": "https://www.camdennj.gov/",
+      "confidence": "medium",
+      "source_urls": [],
+      "suggested_agent_name": "City Council Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-city-clerk",
+      "name": "City Clerk",
+      "type": "department",
+      "url": "https://www.camdennj.gov/",
+      "confidence": "medium",
+      "source_urls": [],
+      "suggested_agent_name": "City Clerk Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-records-management-unit",
+      "name": "Records Management Unit",
+      "type": "department",
+      "url": "https://www.camdennj.gov/records-management-unit/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/records-management-unit/"
+      ],
+      "suggested_agent_name": "Records Management Unit Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-vital-statistics",
+      "name": "Vital Statistics",
+      "type": "department",
+      "url": "https://www.camdennj.gov/vital-statistics/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/vital-statistics/"
+      ],
+      "suggested_agent_name": "Vital Statistics Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-personnel",
+      "name": "Personnel",
+      "type": "department",
+      "url": "https://www.camdennj.gov/personnel/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/personnel/"
+      ],
+      "suggested_agent_name": "Personnel Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "hr"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-health-benefits",
+      "name": "Health Benefits",
+      "type": "department",
+      "url": "https://www.camdennj.gov/health-benefits",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/health-benefits"
+      ],
+      "suggested_agent_name": "Health Benefits Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "public-health"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-information-technology",
+      "name": "Information Technology",
+      "type": "department",
+      "url": "https://www.camdennj.gov/information-technology",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/information-technology"
+      ],
+      "suggested_agent_name": "Information Technology Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-code-enforcement",
+      "name": "Code Enforcement",
+      "type": "department",
+      "url": "https://www.camdennj.gov/",
+      "confidence": "medium",
+      "source_urls": [],
+      "suggested_agent_name": "Code Enforcement Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "building"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-construction-building-bureau",
+      "name": "Construction & Building Bureau",
+      "type": "department",
+      "url": "https://www.camdennj.gov/construction-building-bureau/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/construction-building-bureau/"
+      ],
+      "suggested_agent_name": "Construction & Building Bureau Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "building"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-housing-bureau",
+      "name": "Housing Bureau",
+      "type": "department",
+      "url": "https://www.camdennj.gov/housing/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/housing/"
+      ],
+      "suggested_agent_name": "Housing Bureau Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "building"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-license-inspections",
+      "name": "License & Inspections",
+      "type": "department",
+      "url": "https://www.camdennj.gov/license-inspections/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/license-inspections/"
+      ],
+      "suggested_agent_name": "License & Inspections Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "building"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-law-department",
+      "name": "Law Department",
+      "type": "department",
+      "url": "https://www.camdennj.gov/",
+      "confidence": "medium",
+      "source_urls": [],
+      "suggested_agent_name": "Law Department Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "law"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-city-properties",
+      "name": "City Properties",
+      "type": "department",
+      "url": "https://www.camdennj.gov/city-properties/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/city-properties/"
+      ],
+      "suggested_agent_name": "City Properties Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-recreation",
+      "name": "Recreation",
+      "type": "department",
+      "url": "https://www.camdennj.gov/recreation/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/recreation/"
+      ],
+      "suggested_agent_name": "Recreation Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "parks"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-finance",
+      "name": "Finance",
+      "type": "department",
+      "url": "https://www.camdennj.gov/",
+      "confidence": "medium",
+      "source_urls": [],
+      "suggested_agent_name": "Finance Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "finance"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-planning-development",
+      "name": "Planning & Development",
+      "type": "department",
+      "url": "https://www.camdennj.gov/",
+      "confidence": "medium",
+      "source_urls": [],
+      "suggested_agent_name": "Planning & Development Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "strategy"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-capital-improvements",
+      "name": "Capital Improvements",
+      "type": "department",
+      "url": "https://www.camdennj.gov/capital-improvements/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/capital-improvements/"
+      ],
+      "suggested_agent_name": "Capital Improvements Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-division-of-planning",
+      "name": "Division of Planning",
+      "type": "department",
+      "url": "https://www.camdennj.gov/division-of-planning/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/division-of-planning/"
+      ],
+      "suggested_agent_name": "Division of Planning Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "strategy"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-housing-services",
+      "name": "Housing Services",
+      "type": "department",
+      "url": "https://www.camdennj.gov/housing-services/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/housing-services/"
+      ],
+      "suggested_agent_name": "Housing Services Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "building"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-public-works",
+      "name": "Public Works",
+      "type": "department",
+      "url": "https://www.camdennj.gov/",
+      "confidence": "medium",
+      "source_urls": [],
+      "suggested_agent_name": "Public Works Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "public-works"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-nj-clean-communities",
+      "name": "NJ Clean Communities",
+      "type": "department",
+      "url": "https://njclean.ci.camden.nj.us/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://njclean.ci.camden.nj.us/"
+      ],
+      "suggested_agent_name": "NJ Clean Communities Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-emergency-services",
+      "name": "Emergency Services",
+      "type": "department",
+      "url": "https://www.camdennj.gov/",
+      "confidence": "medium",
+      "source_urls": [],
+      "suggested_agent_name": "Emergency Services Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "fire"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-office-of-emergency-management",
+      "name": "Office of Emergency Management",
+      "type": "department",
+      "url": "https://www.camdennj.gov/office-of-emergency-management",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/office-of-emergency-management"
+      ],
+      "suggested_agent_name": "Office of Emergency Management Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "fire"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-camden-fire-department",
+      "name": "Camden Fire Department",
+      "type": "department",
+      "url": "https://www.camdennj.gov/fire-department/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/fire-department/"
+      ],
+      "suggested_agent_name": "Camden Fire Department Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "fire"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-camden-county-police",
+      "name": "Camden County Police",
+      "type": "department",
+      "url": "http://camdencountypd.org/",
+      "confidence": "medium",
+      "source_urls": [
+        "http://camdencountypd.org/"
+      ],
+      "suggested_agent_name": "Camden County Police Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "public-safety"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-fire-marshal",
+      "name": "Fire Marshal",
+      "type": "department",
+      "url": "https://www.camdennj.gov/fire-marshal/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/fire-marshal/"
+      ],
+      "suggested_agent_name": "Fire Marshal Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "fire"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-employment-opportunities",
+      "name": "Employment Opportunities",
+      "type": "department",
+      "url": "https://www.camdennj.gov/",
+      "confidence": "medium",
+      "source_urls": [],
+      "suggested_agent_name": "Employment Opportunities Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-employment-opportunities-train",
+      "name": "Employment Opportunities & Training",
+      "type": "department",
+      "url": "https://www.camdennj.gov/employment-opportunity-and-training/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/employment-opportunity-and-training/"
+      ],
+      "suggested_agent_name": "Employment Opportunities & Training Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-business-growth-development",
+      "name": "Business Growth & Development",
+      "type": "department",
+      "url": "https://www.camdennj.gov/",
+      "confidence": "medium",
+      "source_urls": [],
+      "suggested_agent_name": "Business Growth & Development Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "strategy"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-constituent-services",
+      "name": "Constituent Services",
+      "type": "department",
+      "url": "https://www.camdennj.gov/division-of-constituent-services/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/division-of-constituent-services/"
+      ],
+      "suggested_agent_name": "Constituent Services Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "311"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-city-ordinances",
+      "name": "City Ordinances",
+      "type": "department",
+      "url": "https://www.camdennj.gov/city-council/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/city-council/"
+      ],
+      "suggested_agent_name": "City Ordinances Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-food-truck-permits",
+      "name": "Food Truck Permits",
+      "type": "department",
+      "url": "https://www.camdennj.gov/food-truck-permit/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/food-truck-permit/"
+      ],
+      "suggested_agent_name": "Food Truck Permits Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "building"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-municipal-budget",
+      "name": "Municipal Budget",
+      "type": "department",
+      "url": "https://www.camdennj.gov/finance-department/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/finance-department/"
+      ],
+      "suggested_agent_name": "Municipal Budget Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "finance"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-water-services",
+      "name": "Water Services",
+      "type": "department",
+      "url": "https://www.camdennj.gov/water-services/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/water-services/"
+      ],
+      "suggested_agent_name": "Water Services Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "public-works"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-recreational-cannabis",
+      "name": "Recreational Cannabis",
+      "type": "department",
+      "url": "https://www.camdennj.gov/recreational-cannabis/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/recreational-cannabis/"
+      ],
+      "suggested_agent_name": "Recreational Cannabis Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "parks"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-visiting-camden",
+      "name": "Visiting Camden",
+      "type": "department",
+      "url": "https://visitnj.org/city/camden",
+      "confidence": "medium",
+      "source_urls": [
+        "https://visitnj.org/city/camden"
+      ],
+      "suggested_agent_name": "Visiting Camden Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-camden-waterfront",
+      "name": "Camden Waterfront",
+      "type": "department",
+      "url": "https://www.visitnj.org/article/camden-waterfront",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.visitnj.org/article/camden-waterfront"
+      ],
+      "suggested_agent_name": "Camden Waterfront Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "public-works"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-employee-recognition-committee",
+      "name": "Employee Recognition Committee",
+      "type": "department",
+      "url": "https://www.camdennj.gov/employee-recognition-committee/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/employee-recognition-committee/"
+      ],
+      "suggested_agent_name": "Employee Recognition Committee Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "hr"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-popular-city-services",
+      "name": "Popular City Services",
+      "type": "department",
+      "url": "https://www.camdennj.gov/",
+      "confidence": "medium",
+      "source_urls": [],
+      "suggested_agent_name": "Popular City Services Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-the-city-of-camden",
+      "name": "The City of Camden",
+      "type": "department",
+      "url": "https://www.camdennj.gov",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov"
+      ],
+      "suggested_agent_name": "The City of Camden Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-website-user-accessibility-sta",
+      "name": "Website User Accessibility Statement",
+      "type": "department",
+      "url": "https://www.camdennj.gov/accessibility/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/accessibility/"
+      ],
+      "suggested_agent_name": "Website User Accessibility Statement Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-camden-county-police-departmen",
+      "name": "Camden County Police Department\nPolice and emergency services",
+      "type": "department",
+      "url": "https://www.camdennj.gov/",
+      "confidence": "medium",
+      "source_urls": [],
+      "suggested_agent_name": "Camden County Police Department\nPolice and emergency services Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "public-safety"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-city-of-camden-office-of-emerg",
+      "name": "City of Camden Office of Emergency Management\nEmergency and community resources",
+      "type": "department",
+      "url": "https://www.camdennj.gov/",
+      "confidence": "medium",
+      "source_urls": [],
+      "suggested_agent_name": "City of Camden Office of Emergency Management\nEmergency and community resources Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "fire"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-ccpd-stopit-app-report-illegal",
+      "name": "CCPD STOPit App\nReport illegal activity and dumping.",
+      "type": "department",
+      "url": "https://www.camdennj.gov/",
+      "confidence": "medium",
+      "source_urls": [],
+      "suggested_agent_name": "CCPD STOPit App\nReport illegal activity and dumping. Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "law"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-nj-office-of-homeland-security",
+      "name": "NJ Office of Homeland Security and Preparedness\nReport potential threats and suspicious activity.",
+      "type": "department",
+      "url": "https://www.camdennj.gov/",
+      "confidence": "medium",
+      "source_urls": [],
+      "suggested_agent_name": "NJ Office of Homeland Security and Preparedness\nReport potential threats and suspicious activity. Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "hr"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-nj-211-facing-a-crisis-or-deal",
+      "name": "NJ 211\nFacing a crisis or dealing with a disaster.",
+      "type": "department",
+      "url": "https://www.camdennj.gov/",
+      "confidence": "medium",
+      "source_urls": [],
+      "suggested_agent_name": "NJ 211\nFacing a crisis or dealing with a disaster. Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-emergency-management",
+      "name": "Emergency Management",
+      "type": "department",
+      "url": "https://www.camdennj.gov/",
+      "confidence": "medium",
+      "source_urls": [],
+      "suggested_agent_name": "Emergency Management Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "fire"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-report-suspicious-activity",
+      "name": "Report Suspicious Activity",
+      "type": "department",
+      "url": "https://www.camdennj.gov/",
+      "confidence": "medium",
+      "source_urls": [],
+      "suggested_agent_name": "Report Suspicious Activity Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-rooming-boarding-house-site-li",
+      "name": "Rooming & Boarding House Site Licensing Board",
+      "type": "department",
+      "url": "https://www.camdennj.gov/",
+      "confidence": "medium",
+      "source_urls": [],
+      "suggested_agent_name": "Rooming & Boarding House Site Licensing Board Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-rooming-and-boarding-house-sit",
+      "name": "Rooming and Boarding House Site Licensing Board Agendas",
+      "type": "department",
+      "url": "https://www.camdennj.gov/",
+      "confidence": "medium",
+      "source_urls": [],
+      "suggested_agent_name": "Rooming and Boarding House Site Licensing Board Agendas Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-rooming-boarding-house-site-li",
+      "name": "Rooming & Boarding House Site Licensing Board Meeting Dates",
+      "type": "department",
+      "url": "https://www.camdennj.gov/",
+      "confidence": "medium",
+      "source_urls": [],
+      "suggested_agent_name": "Rooming & Boarding House Site Licensing Board Meeting Dates Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-city-council-reorganizational",
+      "name": "City Council Reorganizational Meeting",
+      "type": "department",
+      "url": "https://www.camdennj.gov/event/reorganizational-meeting/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/event/reorganizational-meeting/"
+      ],
+      "suggested_agent_name": "City Council Reorganizational Meeting Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-city-council-caucus-meeting",
+      "name": "City Council Caucus Meeting",
+      "type": "department",
+      "url": "https://www.camdennj.gov/event/city-council-caucus-meeting-7/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/event/city-council-caucus-meeting-7/"
+      ],
+      "suggested_agent_name": "City Council Caucus Meeting Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-city-council-regular-meeting",
+      "name": "City Council Regular Meeting",
+      "type": "department",
+      "url": "https://www.camdennj.gov/event/city-council-regular-meeting-12/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/event/city-council-regular-meeting-12/"
+      ],
+      "suggested_agent_name": "City Council Regular Meeting Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-early-settlement-development",
+      "name": "Early Settlement & Development",
+      "type": "department",
+      "url": "https://www.camdennj.gov/early-settlement-and-development/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/early-settlement-and-development/"
+      ],
+      "suggested_agent_name": "Early Settlement & Development Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "strategy"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-citynews-camdennj-gov",
+      "name": "CityNews@camdennj.gov",
+      "type": "department",
+      "url": "mailto:CityNews@camdennj.gov",
+      "confidence": "medium",
+      "source_urls": [
+        "mailto:CityNews@camdennj.gov"
+      ],
+      "suggested_agent_name": "CityNews@camdennj.gov Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-personnel-camdennj-gov",
+      "name": "Personnel@camdennj.gov",
+      "type": "department",
+      "url": "mailto:Personnel@camdennj.gov",
+      "confidence": "medium",
+      "source_urls": [
+        "mailto:Personnel@camdennj.gov"
+      ],
+      "suggested_agent_name": "Personnel@camdennj.gov Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "hr"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-healthbenefits-camdennj-gov",
+      "name": "HealthBenefits@camdennj.gov",
+      "type": "department",
+      "url": "mailto:HealthBenefits@camdennj.gov",
+      "confidence": "medium",
+      "source_urls": [
+        "mailto:HealthBenefits@camdennj.gov"
+      ],
+      "suggested_agent_name": "HealthBenefits@camdennj.gov Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "public-health"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-citycouncil-camdennj-gov",
+      "name": "citycouncil@camdennj.gov",
+      "type": "department",
+      "url": "mailto:citycouncil@camdennj.gov",
+      "confidence": "medium",
+      "source_urls": [
+        "mailto:citycouncil@camdennj.gov"
+      ],
+      "suggested_agent_name": "citycouncil@camdennj.gov Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-camdencity-mc-njcourts-gov",
+      "name": "CamdenCity.MC@njcourts.gov",
+      "type": "department",
+      "url": "mailto:CamdenCity.MC@njcourts.gov",
+      "confidence": "medium",
+      "source_urls": [
+        "mailto:CamdenCity.MC@njcourts.gov"
+      ],
+      "suggested_agent_name": "CamdenCity.MC@njcourts.gov Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-finance-camdennj-gov",
+      "name": "Finance@camdennj.gov",
+      "type": "department",
+      "url": "mailto:Finance@camdennj.gov",
+      "confidence": "medium",
+      "source_urls": [
+        "mailto:Finance@camdennj.gov"
+      ],
+      "suggested_agent_name": "Finance@camdennj.gov Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "finance"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-law-camdennj-gov",
+      "name": "Law@camdennj.gov",
+      "type": "department",
+      "url": "mailto:Law@camdennj.gov",
+      "confidence": "medium",
+      "source_urls": [
+        "mailto:Law@camdennj.gov"
+      ],
+      "suggested_agent_name": "Law@camdennj.gov Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "law"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-fire-camdennj-gov",
+      "name": "Fire@camdennj.gov",
+      "type": "department",
+      "url": "mailto:Fire@camdennj.gov",
+      "confidence": "medium",
+      "source_urls": [
+        "mailto:Fire@camdennj.gov"
+      ],
+      "suggested_agent_name": "Fire@camdennj.gov Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "fire"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-community-centers",
+      "name": "Community Centers",
+      "type": "department",
+      "url": "https://www.camdennj.gov/community-centers/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/community-centers/"
+      ],
+      "suggested_agent_name": "Community Centers Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "parks"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-office-of-senior-emergency-ser",
+      "name": "Office of Senior & Emergency Services",
+      "type": "department",
+      "url": "https://www.camdennj.gov/senior-services-and-emergency-assistance/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/senior-services-and-emergency-assistance/"
+      ],
+      "suggested_agent_name": "Office of Senior & Emergency Services Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "fire"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-office-of-recreation",
+      "name": "Office of Recreation",
+      "type": "department",
+      "url": "https://www.camdennj.gov/recreation/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/recreation/"
+      ],
+      "suggested_agent_name": "Office of Recreation Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "parks"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-www-newjerseyamwater-com",
+      "name": "www.newjerseyamwater.com",
+      "type": "department",
+      "url": "http://www.newjerseyamwater.com/",
+      "confidence": "medium",
+      "source_urls": [
+        "http://www.newjerseyamwater.com/"
+      ],
+      "suggested_agent_name": "www.newjerseyamwater.com Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "public-works"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-www-amwater-com-camden",
+      "name": "www.amwater.com/camden",
+      "type": "department",
+      "url": "http://www.amwater.com/camden",
+      "confidence": "medium",
+      "source_urls": [
+        "http://www.amwater.com/camden"
+      ],
+      "suggested_agent_name": "www.amwater.com/camden Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "public-works"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-water-quality-faq-s",
+      "name": "Water Quality FAQ\u2019s",
+      "type": "department",
+      "url": "https://www.camdennj.gov/wp-content/uploads/2021/04/AW-Camden-CCI_Water-Quality_FAQ_Final-4-13-21.pdf",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/wp-content/uploads/2021/04/AW-Camden-CCI_Water-Quality_FAQ_Final-4-13-21.pdf"
+      ],
+      "suggested_agent_name": "Water Quality FAQ\u2019s Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "public-works"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-parkside-wtp-press-release",
+      "name": "Parkside WTP Press Release",
+      "type": "department",
+      "url": "https://www.camdennj.gov/wp-content/uploads/2021/04/Parkside-WTP-Improvements-Release_Final_4.14.21.pdf",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/wp-content/uploads/2021/04/Parkside-WTP-Improvements-Release_Final_4.14.21.pdf"
+      ],
+      "suggested_agent_name": "Parkside WTP Press Release Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "parks"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-audit-budget-reports",
+      "name": "Audit & Budget Reports",
+      "type": "department",
+      "url": "https://www.camdennj.gov/audit-budget-reports/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/audit-budget-reports/"
+      ],
+      "suggested_agent_name": "Audit & Budget Reports Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "finance"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-winter-fire-prevention",
+      "name": "Winter Fire Prevention",
+      "type": "department",
+      "url": "https://www.camdennj.gov/wp-content/uploads/2018/01/WinterFirePrevention.pdf",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/wp-content/uploads/2018/01/WinterFirePrevention.pdf"
+      ],
+      "suggested_agent_name": "Winter Fire Prevention Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "fire"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-parks",
+      "name": "Parks",
+      "type": "department",
+      "url": "https://www.camdennj.gov/park-list-information/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/park-list-information/"
+      ],
+      "suggested_agent_name": "Parks Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "parks"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-stormwater",
+      "name": "Stormwater",
+      "type": "department",
+      "url": "https://www.camdennj.gov/wp-content/uploads/2020/02/sppp-01.pdf",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/wp-content/uploads/2020/02/sppp-01.pdf"
+      ],
+      "suggested_agent_name": "Stormwater Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "public-works"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-american-water-contract-servic",
+      "name": "American Water \u2013 Contract Services",
+      "type": "department",
+      "url": "https://amwater.com/corp/products-services/contract-services/camden",
+      "confidence": "medium",
+      "source_urls": [
+        "https://amwater.com/corp/products-services/contract-services/camden"
+      ],
+      "suggested_agent_name": "American Water \u2013 Contract Services Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "public-works"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-community-clean-up-guidelines",
+      "name": "Community Clean-Up Guidelines",
+      "type": "department",
+      "url": "https://www.camdennj.gov/wp-content/uploads/2021/10/DPW-Community-Clean-Up-Guidelines-and-App-100821.pdf",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/wp-content/uploads/2021/10/DPW-Community-Clean-Up-Guidelines-and-App-100821.pdf"
+      ],
+      "suggested_agent_name": "Community Clean-Up Guidelines Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-nj-housing-mortgage-finance-ag",
+      "name": "NJ Housing & Mortgage Finance Agency",
+      "type": "department",
+      "url": "https://www.nj.gov/dca/hmfa/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.nj.gov/dca/hmfa/"
+      ],
+      "suggested_agent_name": "NJ Housing & Mortgage Finance Agency Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "finance"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-development-camdennj-gov",
+      "name": "Development@camdennj.gov",
+      "type": "department",
+      "url": "mailto:Development@camdennj.gov",
+      "confidence": "high",
+      "source_urls": [
+        "mailto:Development@camdennj.gov"
+      ],
+      "suggested_agent_name": "Development@camdennj.gov Assistant",
+      "metadata": {
+        "director": "and Zoning",
+        "director_title": "Director",
+        "template": "strategy"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-planning-board",
+      "name": "Planning Board",
+      "type": "department",
+      "url": "https://www.camdennj.gov/planning-board/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/planning-board/"
+      ],
+      "suggested_agent_name": "Planning Board Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "strategy"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-redevelopment-plan",
+      "name": "Redevelopment Plan",
+      "type": "department",
+      "url": "http://camdenredevelopment.org/Plans/Plans/Redevelopment-Plan.aspx",
+      "confidence": "medium",
+      "source_urls": [
+        "http://camdenredevelopment.org/Plans/Plans/Redevelopment-Plan.aspx"
+      ],
+      "suggested_agent_name": "Redevelopment Plan Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "strategy"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-division-of-housing-services",
+      "name": "Division of Housing Services",
+      "type": "department",
+      "url": "https://www.camdennj.gov/housing-services/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/housing-services/"
+      ],
+      "suggested_agent_name": "Division of Housing Services Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "building"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-zoning-board-site-plans",
+      "name": "Zoning Board Site Plans",
+      "type": "department",
+      "url": "https://www.camdennj.gov/zoning-board-site-plans/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/zoning-board-site-plans/"
+      ],
+      "suggested_agent_name": "Zoning Board Site Plans Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-planning-board-members",
+      "name": "Planning Board Members",
+      "type": "department",
+      "url": "https://www.camdennj.gov/wp-content/uploads/2023/07/PB-Members-List-08-2022.pdf",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/wp-content/uploads/2023/07/PB-Members-List-08-2022.pdf"
+      ],
+      "suggested_agent_name": "Planning Board Members Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "strategy"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-site-plan-applications-and-sub",
+      "name": "Site Plan Applications and Submission Items Package",
+      "type": "department",
+      "url": "https://www.camdennj.gov/wp-content/uploads/2023/03/2023-SITE-PLAN-APPLICATION-AND-SUBMISSION-ITEMS-PACKAGE-REV-03-22-2023.pdf",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/wp-content/uploads/2023/03/2023-SITE-PLAN-APPLICATION-AND-SUBMISSION-ITEMS-PACKAGE-REV-03-22-2023.pdf"
+      ],
+      "suggested_agent_name": "Site Plan Applications and Submission Items Package Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "fire"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-the-camden-health-element",
+      "name": "The Camden Health Element",
+      "type": "department",
+      "url": "https://www.dvrpc.org/health/camdenhealthelement/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.dvrpc.org/health/camdenhealthelement/"
+      ],
+      "suggested_agent_name": "The Camden Health Element Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "public-health"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-planning-board-site-plans",
+      "name": "Planning Board Site Plans",
+      "type": "department",
+      "url": "https://www.camdennj.gov/planning-board-site-plans/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/planning-board-site-plans/"
+      ],
+      "suggested_agent_name": "Planning Board Site Plans Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "strategy"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-planning-board-fees",
+      "name": "Planning Board Fees",
+      "type": "department",
+      "url": "https://www.camdennj.gov/wp-content/uploads/2024/01/Planning-Fees-2024.pdf",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/wp-content/uploads/2024/01/Planning-Fees-2024.pdf"
+      ],
+      "suggested_agent_name": "Planning Board Fees Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "strategy"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-rfp-notice-community-developme",
+      "name": "RFP NOTICE COMMUNITY DEVELOPMENT BLOCK GRANT PROGRAM HOME INVESTMENT PARTNERSHIP PROGRAM 2026-2027",
+      "type": "department",
+      "url": "https://www.camdennj.gov/wp-content/uploads/2025/12/Camden-RFP-2026-2027-_002_-_002_.pdf",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/wp-content/uploads/2025/12/Camden-RFP-2026-2027-_002_-_002_.pdf"
+      ],
+      "suggested_agent_name": "RFP NOTICE COMMUNITY DEVELOPMENT BLOCK GRANT PROGRAM HOME INVESTMENT PARTNERSHIP PROGRAM 2026-2027 Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "strategy"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-are-you-in-need-of-rental-util",
+      "name": "Are you in need of Rental & Utility assistance (English)",
+      "type": "department",
+      "url": "https://www.camdennj.gov/wp-content/uploads/2025/04/emergency-eng.pdf",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/wp-content/uploads/2025/04/emergency-eng.pdf"
+      ],
+      "suggested_agent_name": "Are you in need of Rental & Utility assistance (English) Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-are-you-in-need-of-rental-util",
+      "name": "Are you in need of Rental & Utility assistance (Spanish)",
+      "type": "department",
+      "url": "https://www.camdennj.gov/wp-content/uploads/2025/04/emergency-span.pdf",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/wp-content/uploads/2025/04/emergency-span.pdf"
+      ],
+      "suggested_agent_name": "Are you in need of Rental & Utility assistance (Spanish) Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-housing",
+      "name": "Housing",
+      "type": "department",
+      "url": "https://www.camdennj.gov/housing/",
+      "confidence": "medium",
+      "source_urls": [
+        "https://www.camdennj.gov/housing/"
+      ],
+      "suggested_agent_name": "Housing Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "building"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-camden-city-tax-map",
+      "name": "Camden City Tax Map",
+      "type": "department",
+      "url": "https://tmv.civilsolutions.biz/viewer/663524d5f9516a1190b9db11",
+      "confidence": "medium",
+      "source_urls": [
+        "https://tmv.civilsolutions.biz/viewer/663524d5f9516a1190b9db11"
+      ],
+      "suggested_agent_name": "Camden City Tax Map Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "it"
+      },
+      "selected": true
+    },
+    {
+      "id": "dept-http-www-nj-gov-treasury-reven",
+      "name": "http://www.nj.gov/treasury/revenue/rms/index.shtml",
+      "type": "department",
+      "url": "http://www.nj.gov/treasury/revenue/rms/index.shtml",
+      "confidence": "medium",
+      "source_urls": [
+        "http://www.nj.gov/treasury/revenue/rms/index.shtml"
+      ],
+      "suggested_agent_name": "http://www.nj.gov/treasury/revenue/rms/index.shtml Assistant",
+      "metadata": {
+        "director": null,
+        "director_title": null,
+        "template": "finance"
+      },
+      "selected": true
+    }
+  ],
+  "config": {
+    "max_pages": 50,
+    "max_depth": 2,
+    "timeout_seconds": 120,
+    "mode": "shallow"
+  },
+  "progress": {
+    "departments_detected": 101,
+    "leaders_detected": 2,
+    "services_detected": 0,
+    "data_portals_detected": 0
+  },
+  "cancelled": false
+}

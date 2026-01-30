@@ -59,6 +59,35 @@ from .audit import (
     get_voice_audit_log,
 )
 
+from .pipeline import (
+    PipelineState,
+    PipelineMetrics,
+    PipelineSession,
+    STTProvider,
+    TTSProvider,
+    LLMStreamProvider,
+    BargeInEvent,
+    BargeInHandler,
+    VoicePipeline,
+    ProviderHealthWorker,
+    get_voice_pipeline,
+    get_health_worker,
+)
+
+from .providers import (
+    ProviderName,
+    ProviderConfig,
+    DeepgramSTT,
+    ElevenLabsTTS,
+    AzureSTT,
+    AzureTTS,
+    OpenAIWhisperSTT,
+    OpenAITTS,
+    OpenAILLM,
+    ProviderFactory,
+    create_configured_pipeline,
+)
+
 
 __all__ = [
     # Registry
@@ -95,4 +124,31 @@ __all__ = [
     "VoiceAuditEvent",
     "VoiceAuditLog",
     "get_voice_audit_log",
+
+    # Pipeline
+    "PipelineState",
+    "PipelineMetrics",
+    "PipelineSession",
+    "STTProvider",
+    "TTSProvider",
+    "LLMStreamProvider",
+    "BargeInEvent",
+    "BargeInHandler",
+    "VoicePipeline",
+    "ProviderHealthWorker",
+    "get_voice_pipeline",
+    "get_health_worker",
+
+    # Provider SDKs
+    "ProviderName",
+    "ProviderConfig",
+    "DeepgramSTT",
+    "ElevenLabsTTS",
+    "AzureSTT",
+    "AzureTTS",
+    "OpenAIWhisperSTT",
+    "OpenAITTS",
+    "OpenAILLM",
+    "ProviderFactory",
+    "create_configured_pipeline",
 ]

@@ -1,0 +1,46 @@
+{
+  "default:current": {
+    "user_id": "current",
+    "department": "General",
+    "preferred_language": "en",
+    "preferred_response_style": "professional",
+    "frequently_used_agents": [],
+    "custom_settings": {},
+    "last_active": "2026-01-28T20:18:25.032552",
+    "notifications": {
+      "escalation_alerts": {
+        "email": true,
+        "push": true,
+        "in_app": true
+      },
+      "draft_pending": {
+        "email": false,
+        "push": true,
+        "in_app": true
+      },
+      "policy_changes": {
+        "email": true,
+        "push": false,
+        "in_app": true
+      },
+      "weekly_summary": {
+        "email": false,
+        "push": false,
+        "in_app": false
+      },
+      "sla_warnings": {
+        "email": true,
+        "push": true,
+        "in_app": true
+      },
+      "agent_errors": {
+        "email": true,
+        "push": false,
+        "in_app": true
+      },
+      "enabled": true,
+      "quiet_hours_start": null,
+      "quiet_hours_end": null
+    }
+  }
+}

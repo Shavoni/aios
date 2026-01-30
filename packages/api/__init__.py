@@ -104,6 +104,10 @@ class HealthResponse(BaseModel):
     policies_loaded: bool = False
     llm_available: bool = False
     llm_provider: str = "none"
+    # Enterprise status
+    auth_mode: str = "development"
+    grounding_enabled: bool = True
+    audit_enabled: bool = True
 
 
 class PolicyLoadResponse(BaseModel):
@@ -170,6 +174,7 @@ from packages.api.onboarding import router as onboarding_router
 from packages.api.governance import router as governance_router
 from packages.api.tenants import router as tenants_router
 from packages.api.voice import router as voice_router
+from packages.api.audit import router as audit_router
 
 app.include_router(agents_router)
 app.include_router(system_router)
@@ -181,6 +186,7 @@ app.include_router(onboarding_router)
 app.include_router(governance_router)
 app.include_router(tenants_router)
 app.include_router(voice_router)
+app.include_router(audit_router)
 
 
 # Startup event to start background services
@@ -213,12 +219,18 @@ async def health_check() -> HealthResponse:
         or app.state.policy_set.department_rules
     )
     router: Router = app.state.router
+    settings: Settings = app.state.settings
+
     return HealthResponse(
         status="ok",
         version="1.0.0",
         policies_loaded=has_policies,
         llm_available=router.settings.has_api_key,
         llm_provider=router.settings.llm_provider if router.settings.has_api_key else "none",
+        # Enterprise status
+        auth_mode=settings.auth_mode,
+        grounding_enabled=settings.grounding_enabled,
+        audit_enabled=settings.audit_enabled,
     )
 
 

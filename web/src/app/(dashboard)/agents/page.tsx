@@ -210,7 +210,7 @@ export default function AgentsPage() {
     setSavingTemplate(true);
     try {
       const result = await exportAsTemplate(templateName.trim(), templateDescription.trim());
-      toast.success(`Template "${result.template_name}" saved`, {
+      toast.success(`Template "${result.name}" saved`, {
         description: `Exported ${result.agent_count} agents`,
       });
       setShowSaveTemplate(false);

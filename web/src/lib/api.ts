@@ -45,6 +45,7 @@ export interface AgentConfig {
   system_prompt: string;
   status: "active" | "inactive" | "degraded";
   is_router: boolean;
+  hitl_mode?: string;
   created_at: string;
   updated_at: string;
 }

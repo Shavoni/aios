@@ -17,6 +17,17 @@ from packages.core.analytics import (
     get_analytics_manager,
 )
 
+
+# CEF escape helper for Python 3.11 compatibility
+def _escape_cef(text, max_len=200):
+    BACKSLASH_EQ = chr(92) + '='
+    BACKSLASH_PIPE = chr(92) + '|'
+    result = text[:max_len]
+    result = result.replace('=', BACKSLASH_EQ)
+    result = result.replace('|', BACKSLASH_PIPE)
+    result = result.replace(chr(10), ' ')
+    return result
+
 router = APIRouter(prefix="/analytics", tags=["Analytics"])
 
 
@@ -209,7 +220,7 @@ async def export_analytics(
                 f"src={e.user_id} "
                 f"suser={e.user_id} "
                 f"duser={e.agent_id} "
-                f"msg={e.query_text[:200].replace('=', '\\=').replace('|', '\\|')} "
+                f"msg={_escape_cef(e.query_text)} "
                 f"outcome={'Success' if e.success else 'Failure'} "
                 f"cs1={e.department} cs1Label=Department "
                 f"cs2={e.hitl_mode} cs2Label=HITLMode "
@@ -366,7 +377,7 @@ async def download_siem_cef(
             f"src={e.user_id} "
             f"suser={e.user_id} "
             f"duser={e.agent_id} "
-            f"msg={e.query_text[:200].replace('=', '\\=').replace('|', '\\|').replace(chr(10), ' ')} "
+            f"msg={_escape_cef(e.query_text)} "
             f"outcome={'Success' if e.success else 'Failure'} "
             f"cs1={e.department} cs1Label=Department "
             f"cs2={e.hitl_mode} cs2Label=HITLMode "

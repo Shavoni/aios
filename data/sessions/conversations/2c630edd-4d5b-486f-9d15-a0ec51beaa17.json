@@ -1,0 +1,32 @@
+{
+  "id": "2c630edd-4d5b-486f-9d15-a0ec51beaa17",
+  "user_id": "guest",
+  "department": "General",
+  "tenant_id": "default",
+  "created_at": "2026-01-28T20:23:44.938717",
+  "updated_at": "2026-01-28T20:24:06.127352",
+  "messages": [
+    {
+      "id": "e6cd25b2-2fba-470e-a24b-4abb14a8b502",
+      "role": "user",
+      "content": "Hello, can you hear me?",
+      "timestamp": "2026-01-28T20:23:44.973311",
+      "agent_id": null,
+      "agent_name": null,
+      "metadata": {}
+    },
+    {
+      "id": "4ec240a0-ba6b-4ae9-9a48-bb20ebbf9929",
+      "role": "user",
+      "content": "Let's try it again, I'd like to know if you can hear.",
+      "timestamp": "2026-01-28T20:24:06.127352",
+      "agent_id": null,
+      "agent_name": null,
+      "metadata": {}
+    }
+  ],
+  "current_agent_id": null,
+  "context": {},
+  "is_active": true,
+  "title": "Hello, can you hear me?"
+}

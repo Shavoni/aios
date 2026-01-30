@@ -46,6 +46,12 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   listAgents,
   queryAgent,
   routeQuery,
@@ -179,6 +185,8 @@ export default function ConciergePage() {
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [showWelcome, setShowWelcome] = useState(true);
   const [showAgentDirectory, setShowAgentDirectory] = useState(false);
+  const [speechSupported, setSpeechSupported] = useState(false);
+  const [speechError, setSpeechError] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -217,32 +225,104 @@ export default function ConciergePage() {
   };
 
   const initSpeechRecognition = () => {
-    if (typeof window !== "undefined" && "webkitSpeechRecognition" in window) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const SpeechRecognitionAPI = (window as any).webkitSpeechRecognition;
+    if (typeof window === "undefined") {
+      setSpeechSupported(false);
+      return;
+    }
+
+    // Check for both standard and webkit prefixed API
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const SpeechRecognitionAPI = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+
+    if (!SpeechRecognitionAPI) {
+      setSpeechSupported(false);
+      setSpeechError("Speech recognition is not supported in this browser. Please use Chrome, Edge, or Safari.");
+      return;
+    }
+
+    try {
       recognitionRef.current = new SpeechRecognitionAPI();
       recognitionRef.current.continuous = false;
-      recognitionRef.current.interimResults = false;
+      recognitionRef.current.interimResults = true;
+      recognitionRef.current.lang = "en-US";
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       recognitionRef.current.onresult = (event: any) => {
-        const transcript = event.results[0][0].transcript;
-        setInput((prev) => prev + transcript);
-        setIsListening(false);
+        const results = event.results;
+        const lastResult = results[results.length - 1];
+
+        if (lastResult.isFinal) {
+          const transcript = lastResult[0].transcript;
+          setInput((prev) => prev + transcript);
+          setIsListening(false);
+          setSpeechError(null);
+        }
       };
 
-      recognitionRef.current.onerror = () => setIsListening(false);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      recognitionRef.current.onerror = (event: any) => {
+        setIsListening(false);
+        switch (event.error) {
+          case "not-allowed":
+          case "permission-denied":
+            setSpeechError("Microphone access denied. Please allow microphone permissions in your browser settings.");
+            break;
+          case "no-speech":
+            setSpeechError("No speech detected. Please try again.");
+            break;
+          case "audio-capture":
+            setSpeechError("No microphone found. Please connect a microphone.");
+            break;
+          case "network":
+            setSpeechError("Network error. Speech recognition requires an internet connection.");
+            break;
+          case "aborted":
+            // User cancelled, no error message needed
+            setSpeechError(null);
+            break;
+          default:
+            setSpeechError(`Speech recognition error: ${event.error}`);
+        }
+      };
+
       recognitionRef.current.onend = () => setIsListening(false);
+
+      setSpeechSupported(true);
+      setSpeechError(null);
+    } catch (error) {
+      setSpeechSupported(false);
+      setSpeechError("Failed to initialize speech recognition.");
+      console.error("Speech recognition init error:", error);
     }
   };
 
   const toggleListening = () => {
-    if (!recognitionRef.current) return;
+    if (!recognitionRef.current || !speechSupported) {
+      setSpeechError("Speech recognition is not available in this browser.");
+      return;
+    }
+
     if (isListening) {
       recognitionRef.current.stop();
+      setIsListening(false);
     } else {
-      recognitionRef.current.start();
-      setIsListening(true);
+      setSpeechError(null);
+      try {
+        recognitionRef.current.start();
+        setIsListening(true);
+      } catch (error) {
+        // Handle case where recognition is already started
+        if (error instanceof Error && error.message.includes("already started")) {
+          recognitionRef.current.stop();
+          setTimeout(() => {
+            recognitionRef.current?.start();
+            setIsListening(true);
+          }, 100);
+        } else {
+          setSpeechError("Failed to start speech recognition. Please try again.");
+          console.error("Speech recognition start error:", error);
+        }
+      }
     }
   };
 
@@ -842,20 +922,37 @@ export default function ConciergePage() {
           <div className="relative">
             <div className="flex items-end gap-3 bg-white dark:bg-neutral-800 rounded-2xl border-2 border-stone-200 dark:border-neutral-700 focus-within:border-amber-400 dark:focus-within:border-amber-500 focus-within:shadow-lg focus-within:shadow-amber-100/50 dark:focus-within:shadow-amber-900/20 transition-all duration-300 p-2">
               {/* Voice Input */}
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleListening}
-                disabled={!recognitionRef.current}
-                className={cn(
-                  "h-10 w-10 rounded-xl transition-all",
-                  isListening
-                    ? "bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900"
-                    : "hover:bg-stone-100 dark:hover:bg-neutral-700 text-stone-400 dark:text-neutral-500"
-                )}
-              >
-                {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
-              </Button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={toggleListening}
+                        disabled={!speechSupported}
+                        className={cn(
+                          "h-10 w-10 rounded-xl transition-all",
+                          isListening
+                            ? "bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900 animate-pulse"
+                            : speechSupported
+                              ? "hover:bg-stone-100 dark:hover:bg-neutral-700 text-stone-400 dark:text-neutral-500"
+                              : "opacity-50 cursor-not-allowed text-stone-300 dark:text-neutral-600"
+                        )}
+                      >
+                        {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+                      </Button>
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent side="top">
+                    {!speechSupported
+                      ? "Speech recognition not supported in this browser. Use Chrome or Edge."
+                      : isListening
+                        ? "Click to stop listening"
+                        : "Click to speak"}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
 
               {/* Text Input */}
               <Textarea
@@ -887,6 +984,26 @@ export default function ConciergePage() {
                 )}
               </Button>
             </div>
+
+            {/* Speech Recognition Feedback */}
+            {speechError && (
+              <div className="mt-2 flex items-center gap-2 text-xs text-red-600 dark:text-red-400 animate-in fade-in duration-200">
+                <MicOff className="w-3 h-3" />
+                <span>{speechError}</span>
+                <button
+                  onClick={() => setSpeechError(null)}
+                  className="ml-auto hover:text-red-800 dark:hover:text-red-300"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </div>
+            )}
+            {isListening && (
+              <div className="mt-2 flex items-center gap-2 text-xs text-amber-600 dark:text-amber-400 animate-in fade-in duration-200">
+                <Mic className="w-3 h-3 animate-pulse" />
+                <span>Listening... speak now</span>
+              </div>
+            )}
           </div>
 
           {/* Footer */}

@@ -71,7 +71,10 @@
       "Bash(else echo \"No .git folder\")",
       "Bash(fi:*)",
       "Bash(done)",
-      "Bash(gh auth:*)"
+      "Bash(gh auth:*)",
+      "Bash(Get-Content C:UsersShavoniAppDataLocalTempclaudeE--My-AI-Projects-and-Apps-aiOStasksb53c94c.output -Tail 50)",
+      "Bash(npx tsc:*)",
+      "Bash(cmd //c \"taskkill /F /PID 59560\")"
     ]
   }
 }
