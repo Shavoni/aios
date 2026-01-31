@@ -1283,3 +1283,254 @@ async def get_llm_usage_stats() -> dict:
             for d in summary.daily_queries[-7:]  # Last 7 days
         ],
     }
+
+
+# =============================================================================
+# Notification Configuration
+# =============================================================================
+
+
+class NotificationConfigResponse(BaseModel):
+    """Notification service configuration and health status."""
+
+    channels: dict[str, bool] = Field(
+        default_factory=dict,
+        description="Health status of each notification channel"
+    )
+    mode: str = Field(default="development", description="development or production")
+    email_configured: bool = False
+    push_configured: bool = False
+    smtp_host: str | None = None
+    smtp_from: str | None = None
+    sendgrid_configured: bool = False
+    firebase_configured: bool = False
+    onesignal_configured: bool = False
+    dev_log_path: str | None = None
+
+
+class NotificationTestRequest(BaseModel):
+    """Request to send a test notification."""
+
+    recipient_id: str = Field(..., description="User ID to send test to")
+    recipient_email: str | None = Field(None, description="Email address (required for email test)")
+    channel: str = Field("email", pattern="^(email|push|in_app)$")
+    title: str = Field(default="Test Notification", description="Test notification title")
+    message: str = Field(default="This is a test notification from HAAIS AIOS.", description="Test message")
+
+
+@router.get("/notifications/config", response_model=NotificationConfigResponse)
+async def get_notification_config() -> NotificationConfigResponse:
+    """Get notification service configuration and health status.
+
+    Returns the configuration status of all notification channels.
+
+    In development mode, notifications are logged to data/notifications/
+    instead of being sent via email/push.
+    """
+    import os
+    from packages.core.notifications import get_notification_service, NOTIFICATION_MODE, NOTIFICATION_LOG_PATH
+
+    service = get_notification_service()
+    health = await service.health_check()
+
+    is_dev = NOTIFICATION_MODE == "development"
+
+    return NotificationConfigResponse(
+        channels=health,
+        mode=NOTIFICATION_MODE,
+        email_configured=health.get("email", False),
+        push_configured=health.get("push", False),
+        smtp_host=os.getenv("AIOS_SMTP_HOST") if os.getenv("AIOS_SMTP_HOST") else None,
+        smtp_from=os.getenv("AIOS_SMTP_FROM", "noreply@haais.ai"),
+        sendgrid_configured=bool(os.getenv("SENDGRID_API_KEY")),
+        firebase_configured=bool(os.getenv("FIREBASE_SERVER_KEY")),
+        onesignal_configured=bool(os.getenv("ONESIGNAL_APP_ID")),
+        dev_log_path=str(NOTIFICATION_LOG_PATH) if is_dev else None,
+    )
+
+
+@router.post("/notifications/test")
+async def send_test_notification(request: NotificationTestRequest) -> dict:
+    """Send a test notification to verify configuration.
+
+    Use this to test that notification channels are working properly.
+    """
+    from packages.core.notifications import (
+        get_notification_service,
+        NotificationChannel,
+        NotificationPriority,
+    )
+
+    service = get_notification_service()
+
+    # Register email if provided
+    if request.recipient_email:
+        service.set_user_email(request.recipient_id, request.recipient_email)
+
+    # Map channel string to enum
+    channel_map = {
+        "email": NotificationChannel.EMAIL,
+        "push": NotificationChannel.PUSH,
+        "in_app": NotificationChannel.IN_APP,
+    }
+    channel = channel_map.get(request.channel, NotificationChannel.EMAIL)
+
+    # Send test notification
+    result = await service.send(
+        notification_type="test",
+        recipient_id=request.recipient_id,
+        title=request.title,
+        message=request.message,
+        priority=NotificationPriority.NORMAL,
+        force_channels=[channel],
+    )
+
+    return {
+        "success": len(result.sent_channels) > 0,
+        "notification_id": result.id,
+        "sent_channels": [c.value for c in result.sent_channels],
+        "failed_channels": [c.value for c in result.failed_channels],
+        "errors": result.errors,
+    }
+
+
+@router.post("/notifications/configure")
+async def configure_notifications(
+    smtp_host: str | None = None,
+    smtp_port: int | None = None,
+    smtp_user: str | None = None,
+    smtp_password: str | None = None,
+    smtp_from: str | None = None,
+    sendgrid_api_key: str | None = None,
+) -> dict:
+    """Configure notification settings.
+
+    Note: In production, these should be set via environment variables.
+    This endpoint provides a way to configure them dynamically.
+    """
+    import os
+
+    # Store in environment (runtime only - won't persist across restarts)
+    # In production, use a proper secrets manager
+    if smtp_host:
+        os.environ["AIOS_SMTP_HOST"] = smtp_host
+    if smtp_port:
+        os.environ["AIOS_SMTP_PORT"] = str(smtp_port)
+    if smtp_user:
+        os.environ["AIOS_SMTP_USER"] = smtp_user
+    if smtp_password:
+        os.environ["AIOS_SMTP_PASSWORD"] = smtp_password
+    if smtp_from:
+        os.environ["AIOS_SMTP_FROM"] = smtp_from
+    if sendgrid_api_key:
+        os.environ["SENDGRID_API_KEY"] = sendgrid_api_key
+
+    # Reset the notification service to pick up new config
+    from packages.core.notifications import NotificationService
+    NotificationService.reset()
+
+    return {
+        "success": True,
+        "message": "Notification settings updated. Note: These are runtime settings and won't persist across restarts.",
+        "configured": {
+            "smtp": bool(smtp_host or os.getenv("AIOS_SMTP_HOST")),
+            "sendgrid": bool(sendgrid_api_key or os.getenv("SENDGRID_API_KEY")),
+        }
+    }
+
+
+@router.get("/notifications/logs")
+async def get_notification_logs(
+    channel: str = "all",
+    limit: int = 50,
+) -> dict:
+    """Get logged notifications (development mode only).
+
+    In development mode, notifications are logged to files instead of being sent.
+    This endpoint allows viewing those logged notifications.
+    """
+    import os
+    from pathlib import Path
+    from packages.core.notifications import NOTIFICATION_MODE, NOTIFICATION_LOG_PATH
+
+    if NOTIFICATION_MODE != "development":
+        return {
+            "mode": NOTIFICATION_MODE,
+            "message": "Notification logs only available in development mode",
+            "logs": [],
+        }
+
+    logs = []
+
+    # Get email logs
+    if channel in ("all", "email"):
+        email_path = NOTIFICATION_LOG_PATH / "emails"
+        if email_path.exists():
+            for f in sorted(email_path.glob("*.json"), reverse=True)[:limit]:
+                try:
+                    with open(f, "r", encoding="utf-8") as file:
+                        data = json.load(file)
+                        data["channel"] = "email"
+                        data["file"] = f.name
+                        logs.append(data)
+                except Exception:
+                    pass
+
+    # Get push logs
+    if channel in ("all", "push"):
+        push_path = NOTIFICATION_LOG_PATH / "push"
+        if push_path.exists():
+            for f in sorted(push_path.glob("*.json"), reverse=True)[:limit]:
+                try:
+                    with open(f, "r", encoding="utf-8") as file:
+                        data = json.load(file)
+                        data["channel"] = "push"
+                        data["file"] = f.name
+                        logs.append(data)
+                except Exception:
+                    pass
+
+    # Sort by logged_at descending
+    logs.sort(key=lambda x: x.get("logged_at", ""), reverse=True)
+
+    return {
+        "mode": NOTIFICATION_MODE,
+        "log_path": str(NOTIFICATION_LOG_PATH),
+        "total": len(logs),
+        "logs": logs[:limit],
+    }
+
+
+@router.delete("/notifications/logs")
+async def clear_notification_logs() -> dict:
+    """Clear notification logs (development mode only)."""
+    import shutil
+    from packages.core.notifications import NOTIFICATION_MODE, NOTIFICATION_LOG_PATH
+
+    if NOTIFICATION_MODE != "development":
+        return {
+            "success": False,
+            "message": "Notification logs only available in development mode",
+        }
+
+    deleted = 0
+
+    # Clear email logs
+    email_path = NOTIFICATION_LOG_PATH / "emails"
+    if email_path.exists():
+        for f in email_path.glob("*.json"):
+            f.unlink()
+            deleted += 1
+
+    # Clear push logs
+    push_path = NOTIFICATION_LOG_PATH / "push"
+    if push_path.exists():
+        for f in push_path.glob("*.json"):
+            f.unlink()
+            deleted += 1
+
+    return {
+        "success": True,
+        "message": f"Deleted {deleted} notification logs",
+        "deleted": deleted,
+    }

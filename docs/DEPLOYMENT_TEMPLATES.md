@@ -1,7 +1,8 @@
 # aiOS Multi-Tenant Deployment & Template System
 
 > **Purpose**: Enable aiOS to be reset, duplicated, and deployed for multiple cities/departments
-> **Status**: SPECIFICATION - Implementation Required
+> **Status**: PARTIALLY IMPLEMENTED - See Template Coverage below
+> **Last Updated**: January 30, 2026
 
 ---
 
@@ -62,7 +63,7 @@ templates/
 │   ├── policies.json            # Standard governance
 │   └── knowledge/               # Placeholder structure
 │
-├── enterprise/                   # Generic enterprise template
+├── enterprise/                   # Generic enterprise template (NOT BUILT)
 │   ├── manifest.json
 │   ├── agents.json
 │   └── policies.json
@@ -71,6 +72,69 @@ templates/
     ├── manifest.json
     └── agents.json              # Just concierge
 ```
+
+### Current Template Implementation Status
+
+**Location**: `packages/onboarding/manifest.py` (AGENT_TEMPLATES)
+**Location**: `packages/onboarding/kb_generator/templates.py` (DOMAIN_TEMPLATES, REGULATORY_TEMPLATES)
+
+#### Municipal Agent Templates (Built)
+
+| Template ID | Name Format | Domain | Status |
+|-------------|-------------|--------|--------|
+| `public-health` | {city} Public Health | PublicHealth | ✅ Built |
+| `hr` | {city} Human Resources | HR | ✅ Built |
+| `finance` | {city} Finance | Finance | ✅ Built |
+| `building` | {city} Building & Housing | Building | ✅ Built |
+| `311` | {city} 311 Services | 311 | ✅ Built |
+| `strategy` | {city} Strategy Office | Strategy | ✅ Built |
+| `public-safety` | {city} Public Safety | PublicSafety | ✅ Built |
+| `parks` | {city} Parks & Recreation | Parks | ✅ Built |
+| `public-works` | {city} Public Works | PublicWorks | ✅ Built |
+
+#### Missing Municipal Templates (Gaps)
+
+| Template ID | Name Format | Domain | Priority |
+|-------------|-------------|--------|----------|
+| `fire` | {city} Fire Department | Fire | HIGH |
+| `law` | {city} Law Department | Legal | HIGH |
+| `it` | {city} IT Services | Technology | MEDIUM |
+| `communications` | {city} Communications | Comms | MEDIUM |
+| `clerk` | {city} Clerk's Office | Administrative | LOW |
+| `utilities` | {city} Public Utilities | Utilities | LOW |
+
+#### Enterprise Templates (NOT BUILT)
+
+| Template ID | Description | Status |
+|-------------|-------------|--------|
+| `enterprise-hr` | Corporate HR | ❌ Not Built |
+| `enterprise-finance` | Corporate Finance | ❌ Not Built |
+| `enterprise-legal` | Legal/Compliance | ❌ Not Built |
+| `enterprise-it` | IT/Engineering | ❌ Not Built |
+| `enterprise-sales` | Sales/Marketing | ❌ Not Built |
+| `enterprise-support` | Customer Support | ❌ Not Built |
+
+#### Regulatory Templates (Built)
+
+| Template ID | Regulation | Status |
+|-------------|------------|--------|
+| `hipaa` | HIPAA Privacy Rule | ✅ Built |
+| `epa_clean_water` | Clean Water Act | ✅ Built |
+| `safe_drinking_water` | Safe Drinking Water Act | ✅ Built |
+| `fair_housing` | Fair Housing Act | ✅ Built |
+| `ohio_building_code` | Ohio Building Code | ✅ Built |
+| `cdc_guidelines` | CDC Guidelines | ✅ Built |
+
+#### Domain KB Templates (Built)
+
+| Template ID | Files Generated | Status |
+|-------------|-----------------|--------|
+| `public_health` | 19 KB files | ✅ Built |
+| `building_housing` | 18 KB files | ✅ Built |
+| `public_utilities` | 16 KB files | ✅ Built |
+| `public_safety` | 17 KB files | ✅ Built |
+| `finance` | 16 KB files | ✅ Built |
+| `hr` | 16 KB files | ✅ Built |
 
 ### Manifest Schema
 
@@ -413,6 +477,26 @@ async def tenant_middleware(request: Request, call_next):
 ---
 
 ## 6. Implementation Tasks
+
+### Phase 0: Template Gaps (HIGH PRIORITY)
+
+- [ ] **Task 0.1**: Add missing municipal templates
+  - [ ] Create `fire` template (Fire Department)
+  - [ ] Create `law` template (Law Department)
+  - [ ] Create `it` template (IT Services)
+  - [ ] Create `communications` template
+
+- [ ] **Task 0.2**: Build enterprise template library
+  - [ ] Create `enterprise-hr` template
+  - [ ] Create `enterprise-finance` template
+  - [ ] Create `enterprise-legal` template
+  - [ ] Create `enterprise-it` template
+  - [ ] Create `enterprise-sales` template
+  - [ ] Create `enterprise-support` template
+
+- [ ] **Task 0.3**: Expand routing keywords
+  - [ ] Add more keyword variations per template
+  - [ ] Improve fuzzy matching for department names
 
 ### Phase 1: Template System
 

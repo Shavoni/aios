@@ -1,8 +1,8 @@
 # aiOS Routing Architecture Specification
 
 > **Document Purpose**: Professional handoff document for understanding and fixing the routing system
-> **Last Audit**: 2026-01-25
-> **Status**: REQUIRES FIXES
+> **Last Audit**: 2026-01-30
+> **Status**: PARTIALLY FIXED - See status updates below
 
 ---
 
@@ -141,11 +141,13 @@ AGENT_MAP = {
 
 ## 3. Critical Issues & Fixes Required
 
-### ISSUE #1: Agent Map Mismatch [HIGH PRIORITY]
+### ISSUE #1: Agent Map Mismatch [RESOLVED]
 
 **Problem**: `AGENT_MAP` in simulation module references agents that don't exist.
 
 **Location**: `packages/core/simulation/__init__.py:20-26`
+
+**Status**: ✅ FIXED - Agent map now uses correct agent IDs
 
 **Fix Required**:
 ```python

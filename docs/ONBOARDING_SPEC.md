@@ -7,15 +7,49 @@ The aiOS Onboarding System automates the deployment of HAAIS-governed AI agents 
 ## System Flow
 
 ```
-URL Input → Discovery → Configuration UI → Manifest Generation → Deployment
+Query Input → Organization Resolver → Intent Parsing → Discovery → Candidate Selection → Manifest Generation → Deployment
 ```
+
+### Query Types Supported
+
+| Query Type | Example | Resolution |
+|------------|---------|------------|
+| Direct URL | `https://clevelandohio.gov` | Pass through |
+| Organization Name | `Cleveland` | KNOWN_ORGANIZATIONS lookup |
+| Intent Query | `IBM corporate leadership global` | Resolver + intent extraction |
+| Domain | `clevelandohio.gov` | Auto-add https:// |
 
 ## Module Architecture
 
-### Module 1: Discovery Engine
-**Purpose:** Crawl city websites and extract organizational intelligence
+### Module 0: Organization Resolver (NEW)
+**Purpose:** Resolve organization names and intent queries to crawlable URLs
 
-**Input:** City website URL (e.g., `https://clevelandohio.gov`)
+**Input:** Raw query (URL, org name, or intent query)
+
+**Output:** Resolved URL with intent metadata
+```json
+{
+  "resolved_url": "https://ibm.com",
+  "organization": "IBM",
+  "intent": ["leadership", "global"],
+  "priority_paths": ["/leadership", "/executives", "/about/leadership"]
+}
+```
+
+**Features:**
+- KNOWN_ORGANIZATIONS dictionary (50+ entries)
+- Intent keyword extraction (leadership, team, careers, investors, etc.)
+- Priority path generation based on intent
+- Fallback to web search for unknown organizations
+
+**Location:** `packages/onboarding/resolver.py`
+
+---
+
+### Module 1: Discovery Engine
+**Purpose:** Crawl city/organization websites and extract organizational intelligence
+
+**Input:** Resolved URL with optional intent and priority paths
 
 **Output:** Structured JSON organizational map
 ```json
@@ -69,6 +103,16 @@ URL Input → Discovery → Configuration UI → Manifest Generation → Deploym
 - Pattern matching for common municipal site structures
 - Executive/department detection via title patterns
 - Open data portal auto-detection
+- **Intent-based priority crawling** - Prioritizes paths matching user intent
+- **Shallow crawl with candidate selection** - User reviews candidates before deep crawl
+- **Controlled discovery workflow** - Step-by-step with human approval
+
+**Discovery Modes:**
+| Mode | Depth | Use Case |
+|------|-------|----------|
+| Shallow | Homepage + priority paths | Initial candidate discovery |
+| Targeted | Intent-specific paths only | "IBM leadership" queries |
+| Full | Complete site crawl | Comprehensive onboarding |
 
 ---
 
@@ -254,18 +298,41 @@ deployment/
 
 ## Department Template Mapping
 
-| Discovered Pattern | Template ID | Domain |
-|-------------------|-------------|--------|
-| Public Health, CDPH, Health Dept | `public-health` | PublicHealth |
-| Human Resources, HR, Personnel | `hr` | HR |
-| Finance, Treasury, Fiscal | `finance` | Finance |
-| Building, Housing, Permits | `building` | Building |
-| 311, Citizen Services | `311` | 311 |
-| Planning, Development, Economic | `strategy` | Strategy |
-| Police, Public Safety | `public-safety` | PublicSafety |
-| Fire, Emergency Services | `fire` | Fire |
-| Parks, Recreation | `parks` | Parks |
-| Public Works, Streets, Utilities | `public-works` | PublicWorks |
+### Municipal Templates (Implemented)
+
+| Discovered Pattern | Template ID | Domain | Status |
+|-------------------|-------------|--------|--------|
+| Public Health, CDPH, Health Dept | `public-health` | PublicHealth | ✅ Built |
+| Human Resources, HR, Personnel | `hr` | HR | ✅ Built |
+| Finance, Treasury, Fiscal | `finance` | Finance | ✅ Built |
+| Building, Housing, Permits | `building` | Building | ✅ Built |
+| 311, Citizen Services | `311` | 311 | ✅ Built |
+| Planning, Development, Economic | `strategy` | Strategy | ✅ Built |
+| Police, Public Safety | `public-safety` | PublicSafety | ✅ Built |
+| Parks, Recreation | `parks` | Parks | ✅ Built |
+| Public Works, Streets, Utilities | `public-works` | PublicWorks | ✅ Built |
+
+### Missing Municipal Templates (Gaps)
+
+| Pattern | Template ID | Domain | Priority |
+|---------|-------------|--------|----------|
+| Fire, Emergency Services | `fire` | Fire | HIGH |
+| Law, Legal, City Attorney | `law` | Legal | HIGH |
+| IT, Technology, Digital | `it` | Technology | MEDIUM |
+| Communications, Public Affairs | `communications` | Comms | MEDIUM |
+
+### Enterprise Templates (Not Built)
+
+Enterprise discovery requires different templates:
+
+| Pattern | Template ID | Domain | Status |
+|---------|-------------|--------|--------|
+| Human Resources | `enterprise-hr` | HR | ❌ Not Built |
+| Finance, Accounting | `enterprise-finance` | Finance | ❌ Not Built |
+| Legal, Compliance | `enterprise-legal` | Legal | ❌ Not Built |
+| IT, Engineering | `enterprise-it` | Technology | ❌ Not Built |
+| Sales, Marketing | `enterprise-sales` | Sales | ❌ Not Built |
+| Customer Support | `enterprise-support` | Support | ❌ Not Built |
 
 ---
 
@@ -283,9 +350,36 @@ deployment/
 
 ## Success Criteria
 
-- [ ] Can discover Cleveland's org structure from URL
-- [ ] Detects data.clevelandohio.gov and catalogs datasets
+- [x] Can discover Cleveland's org structure from URL
+- [x] Detects data.clevelandohio.gov and catalogs datasets
 - [ ] Configuration UI renders all discovered items
-- [ ] Generated manifests match HAAIS schema
-- [ ] Deployment creates functional agents
+- [x] Generated manifests match HAAIS schema
+- [x] Deployment creates functional agents
 - [ ] End-to-end flow completes in < 10 minutes
+- [x] Organization resolver handles name queries (e.g., "Cleveland")
+- [x] Intent parsing extracts keywords (e.g., "leadership", "global")
+- [ ] Enterprise templates support corporate discovery
+- [ ] Extraction quality filters irrelevant content
+
+---
+
+## Known Issues & Gaps
+
+### Extraction Quality Issues
+
+1. **Blind Keyword Matching**: Currently matches keywords without URL path filtering
+2. **No Page Type Detection**: Cannot distinguish leadership pages from news articles
+3. **False Positives**: News sites like CNN.com return article content instead of organizational data
+
+### Template Coverage Gaps
+
+1. **Missing Municipal**: fire, law, it, communications
+2. **No Enterprise Templates**: Corporate discovery not supported
+3. **Routing Keywords Too Narrow**: May miss department matches
+
+### Recommended Improvements
+
+1. Add URL path filtering (e.g., exclude `/news/`, `/blog/`, `/article/`)
+2. Implement page type detection (leadership vs news vs product)
+3. Build enterprise template library
+4. Expand routing keywords for better matching

@@ -19,6 +19,11 @@ from packages.core.concierge import route_to_agent, RoutingResult
 from packages.core.governance.manager import get_governance_manager
 from packages.core.grounding import get_grounding_engine, create_grounding_summary
 from packages.core.schemas.models import HITLMode
+from packages.core.llm import (
+    Task,
+    TaskType,
+    get_model_router,
+)
 
 router = APIRouter(prefix="/agents", tags=["Agents"])
 
@@ -151,6 +156,34 @@ class AgentQueryResponse(BaseModel):
         ge=0.0,
         le=1.0,
         description="Confidence in this response"
+    )
+
+    # === LLM ORCHESTRATION (Cost Optimization) ===
+    model_used: str | None = Field(
+        default=None,
+        description="LLM model that generated this response"
+    )
+    model_tier: str | None = Field(
+        default=None,
+        description="Model tier (REASONING, GENERATION, CONVERSATION, CLASSIFICATION, LOCAL)"
+    )
+    model_provider: str | None = Field(
+        default=None,
+        description="Model provider (openai, anthropic, local)"
+    )
+    cost_usd: float = Field(
+        default=0.0,
+        ge=0.0,
+        description="Cost in USD for this request"
+    )
+    latency_ms: float = Field(
+        default=0.0,
+        ge=0.0,
+        description="Total latency in milliseconds"
+    )
+    fallback_used: bool = Field(
+        default=False,
+        description="Whether a fallback model was used"
     )
 
 
@@ -580,19 +613,85 @@ async def query_agent(agent_id: str, request: AgentQueryRequest) -> AgentQueryRe
         if decision.hitl_mode in (HITLMode.DRAFT, HITLMode.EXECUTE):
             system_prompt += "\nYour response will be reviewed by a human before delivery."
 
-    # Query the LLM
-    router = get_router()
+    # ==========================================================================
+    # LLM ORCHESTRATION: Use IntelligentModelRouter for cost-optimized routing
+    # Routes to optimal model based on task type, cost budget, and availability
+    # ==========================================================================
+    from packages.core.router import get_router as get_legacy_router
+
+    llm_router = get_model_router()
+
+    # Determine task type based on domain and query characteristics
+    task_type = TaskType.STANDARD_QUERY
+    if agent.domain in ("Legal", "HR", "PublicHealth"):
+        task_type = TaskType.POLICY_INTERPRETATION
+    elif decision.hitl_mode in (HITLMode.DRAFT, HITLMode.EXECUTE):
+        task_type = TaskType.COMPLEX_ANALYSIS
+
+    # Create task for routing
+    task = Task(
+        task_type=task_type,
+        prompt=request.query,
+        context_length=len(system_prompt) + len(request.query),
+        max_tokens=request.max_tokens,
+        temperature=0.7,
+        requires_reasoning=(agent.domain in ("Legal", "PublicHealth")),
+        high_stakes=(decision.hitl_mode != HITLMode.INFORM),
+        organization_id=request.department,  # Use department as org context
+        department=request.department,
+    )
+
+    # Execute through intelligent router
     try:
-        response_text = router.llm.generate(
+        execution_result = await llm_router.execute(
+            task=task,
             prompt=request.query,
-            system=system_prompt,
-            max_tokens=request.max_tokens,
+            system_prompt=system_prompt,
         )
+
+        if not execution_result.success or not execution_result.response:
+            # Fall back to legacy router if intelligent routing fails
+            legacy_router = get_legacy_router()
+            response_text = legacy_router.llm.generate(
+                prompt=request.query,
+                system=system_prompt,
+                max_tokens=request.max_tokens,
+            )
+            model_used = "fallback"
+            model_tier = "CONVERSATION"
+            model_provider = "legacy"
+            cost_usd = 0.0
+            latency_ms = 0.0
+            fallback_used = True
+        else:
+            response_text = execution_result.response.content
+            model_used = execution_result.routing.selected_model if execution_result.routing else None
+            model_tier = execution_result.routing.selected_tier.name if execution_result.routing else None
+            model_provider = execution_result.routing.provider if execution_result.routing else None
+            cost_usd = execution_result.actual_cost
+            latency_ms = execution_result.total_latency_ms
+            fallback_used = execution_result.fallback_used
+
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to query LLM: {e}",
-        )
+        # Fall back to legacy router on any error
+        try:
+            legacy_router = get_legacy_router()
+            response_text = legacy_router.llm.generate(
+                prompt=request.query,
+                system=system_prompt,
+                max_tokens=request.max_tokens,
+            )
+            model_used = "fallback"
+            model_tier = "CONVERSATION"
+            model_provider = "legacy"
+            cost_usd = 0.0
+            latency_ms = 0.0
+            fallback_used = True
+        except Exception as fallback_error:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Failed to query LLM: {e}. Fallback also failed: {fallback_error}",
+            )
 
     # ==========================================================================
     # ENTERPRISE CRITICAL: HITL RESPONSE BLOCKING
@@ -638,6 +737,13 @@ async def query_agent(agent_id: str, request: AgentQueryRequest) -> AgentQueryRe
             policy_ids=decision.policy_trigger_ids,
             approval_id=approval.id,
             approval_required=True,
+            # LLM Orchestration fields
+            model_used=model_used,
+            model_tier=model_tier,
+            model_provider=model_provider,
+            cost_usd=cost_usd,
+            latency_ms=latency_ms,
+            fallback_used=fallback_used,
         )
 
     # INFORM mode - return response directly with grounding
@@ -676,6 +782,13 @@ async def query_agent(agent_id: str, request: AgentQueryRequest) -> AgentQueryRe
         verification_status="unverified" if grounding.get("requires_human_verification") else "ai_generated",
         requires_human_verification=grounding.get("requires_human_verification", False),
         confidence=1.0 - (0.5 * (1 - grounding.get("grounding_score", 0.0))),  # Higher grounding = higher confidence
+        # === LLM ORCHESTRATION FIELDS ===
+        model_used=model_used,
+        model_tier=model_tier,
+        model_provider=model_provider,
+        cost_usd=cost_usd,
+        latency_ms=latency_ms,
+        fallback_used=fallback_used,
     )
 
 

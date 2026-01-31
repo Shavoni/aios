@@ -1,6 +1,6 @@
 # aiOS Implementation Status
 
-**Last Updated:** January 2026
+**Last Updated:** January 30, 2026
 **Alignment:** aiOS Enterprise Discovery & Auto-Configuration Architecture v1.0
 
 ---
@@ -8,6 +8,35 @@
 ## Roadmap vs. Implementation Matrix
 
 This document maps the 5-tier architecture from the technical roadmap to what has been implemented.
+
+---
+
+## Tier 0: Organization Resolver (NEW)
+
+**Roadmap Location:** N/A (not in original roadmap)
+**Current Implementation:** `packages/onboarding/resolver.py`
+
+| Component | Roadmap | Status | Notes |
+|-----------|---------|--------|-------|
+| Organization Name Resolution | N/A | ✅ Built | KNOWN_ORGANIZATIONS dictionary |
+| Intent Keyword Parsing | N/A | ✅ Built | Extracts leadership, team, careers, etc. |
+| Priority Path Generation | N/A | ✅ Built | Returns prioritized crawl paths |
+| URL Validation | N/A | ✅ Built | Handles domains, URLs, org names |
+| Web Search Fallback | N/A | ❌ Not Built | For unknown organizations |
+
+### Code Location
+```
+packages/onboarding/
+└── resolver.py           # OrganizationResolver, KNOWN_ORGANIZATIONS, INTENT_KEYWORDS
+```
+
+### Intent Keywords Supported
+- `leadership`, `executives`, `team` → `/leadership`, `/about/leadership`
+- `departments`, `divisions` → `/departments`, `/about`
+- `contact`, `locations` → `/contact`, `/locations`
+- `careers`, `jobs` → `/careers`, `/jobs`
+- `investors`, `financials` → `/investors`, `/investor-relations`
+- `global`, `corporate` → Root-level priority
 
 ---
 
@@ -26,6 +55,8 @@ This document maps the 5-tier architecture from the technical roadmap to what ha
 | LLM-Powered Extraction | Use LLM for semantic parsing | ❌ Not Built | Currently rule-based |
 | Confidence Scores | Per-extraction confidence | ❌ Not Built | Needed for HITL |
 | OrganizationProfile Output | Full JSON structure | ⚠️ Partial | `DiscoveryResult` differs from spec |
+| **Intent-Based Discovery** | Prioritize paths by user intent | ✅ Built | NEW - uses resolver output |
+| **Controlled Discovery** | Shallow crawl → candidate review | ✅ Built | NEW - step-by-step workflow |
 
 ### Code Location
 ```
@@ -39,6 +70,8 @@ packages/onboarding/
 2. **Confidence Scores**: Not implemented - needed for HITL approval workflow.
 3. **API Detection**: Basic portal detection exists, but no deep API documentation parsing.
 4. **Output Format**: `DiscoveryResult` needs alignment with `OrganizationProfile` schema.
+5. **Extraction Quality**: Blind keyword matching causes false positives (news articles, irrelevant pages).
+6. **Page Type Detection**: Cannot distinguish leadership pages from news/blog content.
 
 ### Recommended Actions
 ```python
@@ -95,6 +128,8 @@ DOMAIN_TEMPLATES = {
 2. **Fuzzy Matching**: No algorithm to match discovered depts to templates.
 3. **YAML Format**: Templates in Python, roadmap shows YAML for easier editing.
 4. **Enterprise Templates**: Missing corporate templates (only municipal).
+5. **Missing Municipal Templates**: fire, law, it, communications not implemented.
+6. **Routing Keywords**: Too narrow - miss many valid department matches.
 
 ### Recommended Actions
 ```python
@@ -430,7 +465,8 @@ deployments/                      # NEW DIRECTORY
 
 ## LLM Orchestration Layer Status
 
-> **Reference:** See `docs/LLM_ORCHESTRATION_LAYER.md` for full specification
+> **Reference:** See `docs/LLM_ORCHESTRATION_LAYER.md` for specification
+> **NEW:** See `docs/LLM_INTEGRATION_GUIDE.md` for implementation guide
 
 | Component | Roadmap | Status | Notes |
 |-----------|---------|--------|-------|
@@ -473,16 +509,17 @@ packages/core/llm/                    # NEW DIRECTORY
 
 | Tier | Roadmap Component | Implementation | Completeness |
 |------|-------------------|----------------|--------------|
-| 1 | Data Discovery Agent | `onboarding/discovery.py` | 60% |
+| 0 | Organization Resolver | `onboarding/resolver.py` | **85%** (NEW) |
+| 1 | Data Discovery Agent | `onboarding/discovery.py` | 70% (+10%) |
 | 2 | Template Matcher | `kb_generator/templates.py` | 40% |
-| 3 | HITL Checklist | `api/onboarding.py` | 30% |
+| 3 | HITL Checklist | `api/onboarding.py` | 35% (+5%) |
 | 4 | Auto-Manifest | `onboarding/manifest.py` + `kb_generator/` | 70% |
 | 5 | Deployment | `onboarding/deploy.py` | 50% |
 | — | Governance | `core/governance/` | **95%** |
 | — | Agent Management | `core/agents/` + `api/agents.py` | **90%** |
 | — | LLM Orchestration | `core/router/` (basic) | **20%** |
 
-**Overall Roadmap Completion: ~50%**
+**Overall Roadmap Completion: ~55%** (+5% from resolver & intent parsing)
 
 ### What's Production-Ready
 - Governance layer (centralized, scoped, real-time propagation)
@@ -499,6 +536,34 @@ packages/core/llm/                    # NEW DIRECTORY
 4. **HITL Flow** - Customization endpoints, preview, one-click deploy
 5. **Multi-Tenant** - Organization isolation
 6. **Enterprise Features** - Azure provisioning, training materials
+7. **Enterprise Templates** - Corporate discovery templates (HR, Finance, Legal, IT, Sales)
+8. **Missing Municipal Templates** - fire, law, it, communications
+9. **Extraction Quality** - URL path filtering, page type detection
+
+---
+
+## Recent Changes (January 2026)
+
+### Added: Organization Resolver
+- **File**: `packages/onboarding/resolver.py`
+- **Feature**: Resolve organization names to URLs
+- **Feature**: Parse intent keywords from queries
+- **Feature**: Generate priority crawl paths
+
+### Added: Intent-Based Discovery
+- **File**: `packages/onboarding/discovery.py`
+- **Feature**: Priority paths based on user intent
+- **Feature**: Controlled discovery workflow (shallow → review → deep)
+
+### Fixed: Windows Path Handling
+- **File**: `packages/onboarding/discovery.py`
+- **Issue**: OSError on Windows with relative paths
+- **Fix**: Use absolute paths via `Path(__file__).parent.parent.parent`
+
+### Fixed: API 204 Response Handling
+- **File**: `web/src/lib/api.ts`
+- **Issue**: JSON parse error on DELETE responses
+- **Fix**: Check for 204 status before parsing JSON
 
 ---
 
@@ -508,6 +573,8 @@ packages/core/llm/                    # NEW DIRECTORY
 |----------|---------|
 | `docs/AIOS_TECHNICAL_ROADMAP.md` | 5-tier deployment architecture |
 | `docs/LLM_ORCHESTRATION_LAYER.md` | Model-agnostic LLM framework |
+| `docs/LLM_INTEGRATION_GUIDE.md` | **NEW** - LLM integration implementation guide |
+| `docs/ONBOARDING_SPEC.md` | Onboarding system with resolver & intent parsing |
 | `docs/DEVELOPER_HANDOFF.md` | Full developer documentation |
 | `docs/EXECUTIVE_SUMMARY.md` | Business stakeholder overview |
 | `docs/IMPLEMENTATION_STATUS.md` | This document |

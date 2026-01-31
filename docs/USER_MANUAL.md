@@ -760,45 +760,74 @@ Voice capabilities allow users to speak queries and hear responses:
 
 The Onboarding System automates setup for new clients:
 
-1. **Discovery** - Crawls client website to find departments
-2. **Analysis** - Identifies organizational structure
-3. **Generation** - Creates agents with appropriate prompts
-4. **Population** - Builds knowledge base from web content
+1. **Resolution** - Resolves organization names to URLs
+2. **Intent Parsing** - Extracts user intent (leadership, careers, etc.)
+3. **Discovery** - Crawls client website to find departments
+4. **Analysis** - Identifies organizational structure
+5. **Generation** - Creates agents with appropriate prompts
+6. **Population** - Builds knowledge base from web content
+
+### Query Types Supported
+
+| Query Type | Example | What Happens |
+|------------|---------|--------------|
+| **Direct URL** | `https://clevelandohio.gov` | Crawls directly |
+| **Organization Name** | `Cleveland` | Resolves via known orgs database |
+| **Domain** | `clevelandohio.gov` | Auto-adds https:// |
+| **Intent Query** | `IBM corporate leadership global` | Resolves org + prioritizes leadership pages |
+
+### Intent Keywords
+
+The system recognizes these intent keywords to prioritize specific content:
+
+- **leadership, executives, team** → Prioritizes `/leadership`, `/about/leadership`
+- **departments, divisions** → Prioritizes `/departments`, `/about`
+- **careers, jobs** → Prioritizes `/careers`, `/jobs`
+- **investors, financials** → Prioritizes `/investors`, `/investor-relations`
+- **contact, locations** → Prioritizes `/contact`, `/locations`
+- **global, corporate** → Focuses on main corporate pages
 
 ### Onboarding Workflow
 
 ```
-Step 1: Enter Website URL
+Step 1: Enter Query (URL, org name, or intent query)
         │
         ▼
-Step 2: Discovery Crawl (5-15 minutes)
-        ├── Find department pages
-        ├── Identify key personnel
-        ├── Extract contact info
-        └── Map organizational structure
+Step 2: Organization Resolution
+        ├── Resolve org name to URL
+        ├── Parse intent keywords
+        └── Generate priority paths
         │
         ▼
-Step 3: Review Discovered Departments
-        ├── Check departments to include
-        ├── Uncheck departments to skip
-        └── Add any missing departments
+Step 3: Shallow Discovery Crawl
+        ├── Fetch homepage
+        ├── Crawl priority paths first
+        ├── Extract initial candidates
+        └── Present for review
         │
         ▼
-Step 4: Generate Agents
+Step 4: Candidate Selection (HITL)
+        ├── Review discovered departments
+        ├── Check items to include
+        ├── Uncheck irrelevant items
+        └── Approve for deep crawl
+        │
+        ▼
+Step 5: Generate Agents
         ├── Create agent configurations
         ├── Generate system prompts
         ├── Set appropriate guardrails
         └── Create Concierge router
         │
         ▼
-Step 5: Populate Knowledge Base
+Step 6: Populate Knowledge Base
         ├── Scrape department pages
         ├── Process documents
         ├── Generate embeddings
         └── Index for search
         │
         ▼
-Step 6: Review & Activate
+Step 7: Review & Activate
         ├── Test each agent
         ├── Verify responses
         ├── Adjust as needed
@@ -812,6 +841,24 @@ Step 6: Review & Activate
 | Small (5 depts) | 5 min | 30 min | ~1 hour |
 | Medium (15 depts) | 15 min | 1 hour | ~2 hours |
 | Large (30+ depts) | 30 min | 2 hours | ~4 hours |
+
+### Supported Organizations
+
+The system includes a built-in database of 50+ organizations:
+
+**Government:**
+- Cleveland, Detroit, Cincinnati, Columbus, Chicago, New York, Los Angeles, etc.
+
+**Enterprise (Coming Soon):**
+- IBM, Microsoft, Google, Amazon, Apple, Meta, etc.
+
+For organizations not in the database, the system will attempt to resolve via web search.
+
+### Known Limitations
+
+1. **News Sites**: Sites like CNN, BBC have no organizational structure - discovery returns article content
+2. **Enterprise Support**: Corporate templates not yet implemented (municipal focus)
+3. **Extraction Quality**: Some irrelevant pages may be included - review candidates carefully
 
 ---
 

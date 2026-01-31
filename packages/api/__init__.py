@@ -175,6 +175,7 @@ from packages.api.governance import router as governance_router
 from packages.api.tenants import router as tenants_router
 from packages.api.voice import router as voice_router
 from packages.api.audit import router as audit_router
+from packages.api.factory import router as factory_router
 
 app.include_router(agents_router)
 app.include_router(system_router)
@@ -187,6 +188,7 @@ app.include_router(governance_router)
 app.include_router(tenants_router)
 app.include_router(voice_router)
 app.include_router(audit_router)
+app.include_router(factory_router)
 
 
 # Startup event to start background services
@@ -195,6 +197,14 @@ async def startup_event():
     """Start background services on app startup."""
     from packages.core.knowledge import start_knowledge_scheduler
     start_knowledge_scheduler()
+
+    # Initialize notification service and integrate with HITL workflow
+    try:
+        from packages.core.notifications import integrate_with_hitl_workflow
+        integrate_with_hitl_workflow()
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).warning(f"Failed to initialize notification service: {e}")
 
 
 # Shutdown event to stop background services
