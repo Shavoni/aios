@@ -773,15 +773,12 @@ export default function OnboardingPage() {
     setError(null);
 
     try {
-      let targetUrl = url.trim();
-      if (!targetUrl.startsWith("http://") && !targetUrl.startsWith("https://")) {
-        targetUrl = "https://" + targetUrl;
-      }
-
+      // Send raw input as 'query' - backend resolver handles URL normalization
+      // and organization name lookup (e.g., "CNN" -> cnn.com)
       const res = await fetch(`${API_BASE}/onboarding/discover`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: targetUrl }),
+        body: JSON.stringify({ query: url.trim() }),
       });
 
       if (!res.ok) {

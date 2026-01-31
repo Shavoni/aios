@@ -25,6 +25,11 @@ async function apiFetch<T>(
     throw new Error(error.detail || `API error: ${res.status}`);
   }
 
+  // Handle 204 No Content responses (e.g., DELETE operations)
+  if (res.status === 204) {
+    return undefined as T;
+  }
+
   return res.json();
 }
 

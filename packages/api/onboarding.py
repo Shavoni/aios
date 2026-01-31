@@ -33,32 +33,35 @@ class CrawlConfigRequest(BaseModel):
 
 
 class DiscoverRequest(BaseModel):
-    """Request to start discovery."""
-    url: str = Field(..., min_length=1, description="Municipal website URL")
+    """Request to start discovery.
+
+    Accepts either:
+    - query: Organization name (e.g., 'IBM', 'CNN') or URL
+    - url: Website URL (deprecated, use 'query' instead)
+    """
+    query: str | None = Field(default=None, description="Organization name or website URL (e.g., 'IBM', 'CNN', 'clevelandohio.gov')")
     config: CrawlConfigRequest | None = Field(default=None, description="Optional crawl configuration")
 
-    @field_validator("url")
-    @classmethod
-    def validate_url(cls, v: str) -> str:
-        """Validate URL format for municipal website discovery."""
-        from urllib.parse import urlparse
+    # Backwards compatibility - accept 'url' as alias for 'query'
+    url: str | None = Field(default=None, description="Deprecated: use 'query' instead")
 
-        try:
-            parsed = urlparse(v)
-            # Only allow http and https
-            if parsed.scheme not in ("http", "https"):
-                raise ValueError("Only HTTP and HTTPS URLs are allowed")
-            if not parsed.netloc:
-                raise ValueError("Invalid URL: missing domain")
-            # Block obviously non-municipal URLs
-            netloc_lower = parsed.netloc.lower()
-            if any(blocked in netloc_lower for blocked in ["localhost", "127.0.0.1", "0.0.0.0"]):
-                raise ValueError("Internal URLs are not allowed")
-            return v
-        except ValueError:
-            raise
-        except Exception:
-            raise ValueError("Invalid URL format")
+    @property
+    def input(self) -> str:
+        """Get the actual input (query or url for backwards compat)."""
+        return self.query or self.url or ""
+
+    @field_validator("query", mode="after")
+    @classmethod
+    def validate_not_empty(cls, v, info):
+        """Validate query is not empty if provided."""
+        if v is not None and len(v.strip()) == 0:
+            raise ValueError("query cannot be empty")
+        return v
+
+    def model_post_init(self, __context):
+        """Ensure at least one of query or url is provided."""
+        if not self.query and not self.url:
+            raise ValueError("Either 'query' or 'url' must be provided")
 
 
 class CandidateSelectionRequest(BaseModel):
@@ -72,6 +75,11 @@ class DiscoverResponse(BaseModel):
     status: str
     message: str
     cached: bool = False
+    # Organization info from resolution
+    organization_name: str | None = None
+    organization_url: str | None = None
+    organization_type: str | None = None  # "enterprise", "municipal", "education", "nonprofit"
+    resolution_confidence: str | None = None  # "known", "provided", "guessed"
 
 
 class ConfigUpdateRequest(BaseModel):
@@ -101,10 +109,20 @@ class DeployResponse(BaseModel):
 
 @router.post("/discover", response_model=DiscoverResponse)
 async def start_discovery(request: DiscoverRequest) -> DiscoverResponse:
-    """Start discovery for a municipal website.
+    """Start discovery for an organization.
 
-    Crawls the website to discover organizational structure,
-    departments, officials, and open data portals.
+    Accepts either an organization name (e.g., "IBM", "CNN", "Cleveland")
+    or a URL (e.g., "clevelandohio.gov").
+
+    For enterprise organizations, focuses on:
+    - Leadership/Executive team (CEO, COO, CFO, etc.)
+    - Departments and divisions
+    - Organizational structure
+
+    For municipal organizations, focuses on:
+    - Government departments
+    - Officials and leadership
+    - Services and data portals
 
     With controlled discovery (default mode=shallow):
     1. Fast inventory scan with configurable limits
@@ -119,9 +137,28 @@ async def start_discovery(request: DiscoverRequest) -> DiscoverResponse:
             DiscoveryMode,
             get_discovery_engine,
         )
+        from packages.onboarding.resolver import resolve_organization, get_resolver
 
-        # Build config from request
-        config = CrawlConfig()  # Default config
+        # Resolve input (name or URL) to organization info
+        # Supports intent queries like "IBM leadership" or "Microsoft corporate team"
+        org_info = resolve_organization(request.input)
+        url = org_info["url"]
+        org_name = org_info["name"]
+        org_type = org_info["type"]
+        confidence = org_info["confidence"]
+        detected_intents = org_info.get("intent", [])
+
+        # Get priority paths - use intent-based paths if detected, else org-type defaults
+        resolver = get_resolver()
+        intent_paths = org_info.get("priority_paths", [])
+        if intent_paths:
+            # User specified intent (e.g., "leadership", "executives")
+            # Combine intent paths with org-type defaults
+            priority_paths = intent_paths + resolver.get_priority_paths(org_type)
+        else:
+            priority_paths = resolver.get_priority_paths(org_type)
+
+        # Build config from request, always including org_type and priority_paths
         use_cache = True
 
         if request.config:
@@ -139,28 +176,53 @@ async def start_discovery(request: DiscoverRequest) -> DiscoverResponse:
                 include_departments=request.config.include_departments,
                 include_services=request.config.include_services,
                 include_data_portals=request.config.include_data_portals,
+                priority_paths=priority_paths,
+                org_type=org_type,
             )
             use_cache = request.config.use_cache
+        else:
+            config = CrawlConfig(
+                priority_paths=priority_paths,
+                org_type=org_type,
+            )
 
         # Try to use cached results if enabled
         if use_cache:
             engine = get_discovery_engine()
-            job_id, is_cached = engine.get_cached_or_start(request.url, config)
+            job_id, is_cached = engine.get_cached_or_start(url, config)
             if is_cached:
                 return DiscoverResponse(
                     job_id=job_id,
                     status="cached",
-                    message=f"Using cached discovery results for {request.url}",
+                    message=f"Using cached discovery results for {org_name} ({url})",
                     cached=True,
+                    organization_name=org_name,
+                    organization_url=url,
+                    organization_type=org_type,
+                    resolution_confidence=confidence,
                 )
 
         # Start fresh discovery
-        job_id = _start_discovery(request.url, config)
+        job_id = _start_discovery(url, config)
+
+        # Build response message based on confidence and intent
+        intent_str = f" focusing on {', '.join(detected_intents)}" if detected_intents else ""
+        if confidence == "known":
+            message = f"Discovery started for {org_name} ({url}){intent_str}"
+        elif confidence == "guessed":
+            message = f"Discovery started for {org_name} (inferred URL: {url}){intent_str}"
+        else:
+            message = f"Discovery started for {url}{intent_str}"
+
         return DiscoverResponse(
             job_id=job_id,
             status="started",
-            message=f"Discovery started for {request.url}",
+            message=message,
             cached=False,
+            organization_name=org_name,
+            organization_url=url,
+            organization_type=org_type,
+            resolution_confidence=confidence,
         )
     except RuntimeError as e:
         raise HTTPException(

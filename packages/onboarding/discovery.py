@@ -21,7 +21,7 @@ try:
 except ImportError:
     HAS_CRAWLER_DEPS = False
 
-# Title patterns for detecting executives and department heads
+# Title patterns for detecting executives and department heads (municipal)
 EXECUTIVE_PATTERNS = [
     r"mayor",
     r"city\s*manager",
@@ -29,6 +29,54 @@ EXECUTIVE_PATTERNS = [
     r"deputy\s*mayor",
     r"city\s*administrator",
 ]
+
+# Enterprise executive patterns (C-suite and leadership)
+ENTERPRISE_EXECUTIVE_PATTERNS = [
+    # C-Suite
+    (r"chief\s+executive\s+officer|(?<![a-z])ceo(?![a-z])", "Chief Executive Officer"),
+    (r"chief\s+operating\s+officer|(?<![a-z])coo(?![a-z])", "Chief Operating Officer"),
+    (r"chief\s+financial\s+officer|(?<![a-z])cfo(?![a-z])", "Chief Financial Officer"),
+    (r"chief\s+technology\s+officer|(?<![a-z])cto(?![a-z])", "Chief Technology Officer"),
+    (r"chief\s+information\s+officer|(?<![a-z])cio(?![a-z])", "Chief Information Officer"),
+    (r"chief\s+marketing\s+officer|(?<![a-z])cmo(?![a-z])", "Chief Marketing Officer"),
+    (r"chief\s+product\s+officer|(?<![a-z])cpo(?![a-z])", "Chief Product Officer"),
+    (r"chief\s+human\s+resources\s+officer|(?<![a-z])chro(?![a-z])", "Chief Human Resources Officer"),
+    (r"chief\s+legal\s+officer|(?<![a-z])clo(?![a-z])|general\s+counsel", "General Counsel"),
+    (r"chief\s+revenue\s+officer|(?<![a-z])cro(?![a-z])", "Chief Revenue Officer"),
+    (r"chief\s+strategy\s+officer|(?<![a-z])cso(?![a-z])", "Chief Strategy Officer"),
+    (r"chief\s+data\s+officer|(?<![a-z])cdo(?![a-z])", "Chief Data Officer"),
+    (r"chief\s+security\s+officer|(?<![a-z])ciso(?![a-z])", "Chief Security Officer"),
+
+    # Presidents/VPs
+    (r"(?<![a-z])president(?![a-z])", "President"),
+    (r"executive\s+vice\s+president|(?<![a-z])evp(?![a-z])", "Executive Vice President"),
+    (r"senior\s+vice\s+president|(?<![a-z])svp(?![a-z])", "Senior Vice President"),
+    (r"vice\s+president|(?<![a-z])vp(?![a-z])", "Vice President"),
+
+    # Board
+    (r"chairman|chairwoman|chair\s+of\s+the\s+board", "Chairman"),
+    (r"board\s+member", "Board Member"),
+
+    # Other executives
+    (r"managing\s+director", "Managing Director"),
+    (r"general\s+manager", "General Manager"),
+]
+
+# Enterprise department patterns
+ENTERPRISE_DEPARTMENT_KEYWORDS = {
+    "engineering": ["engineering", "technology", "development", "r&d", "research and development", "product development"],
+    "product": ["product", "product management", "product development"],
+    "sales": ["sales", "business development", "revenue", "commercial"],
+    "marketing": ["marketing", "brand", "communications", "pr", "public relations", "advertising"],
+    "finance": ["finance", "accounting", "treasury", "investor relations", "financial planning"],
+    "hr": ["human resources", "hr", "people", "talent", "recruiting", "people operations"],
+    "legal": ["legal", "compliance", "regulatory", "general counsel", "corporate affairs"],
+    "operations": ["operations", "supply chain", "logistics", "manufacturing", "procurement"],
+    "customer": ["customer success", "customer service", "customer support", "client services"],
+    "it": ["information technology", "it", "infrastructure", "security", "cybersecurity"],
+    "strategy": ["strategy", "corporate development", "m&a", "mergers"],
+    "data": ["data", "analytics", "data science", "business intelligence"],
+}
 
 DEPARTMENT_HEAD_PATTERNS = [
     r"director",
@@ -207,6 +255,12 @@ class CrawlConfig:
     include_departments: bool = True
     include_services: bool = True
     include_data_portals: bool = True
+
+    # Enterprise-specific paths to prioritize during crawl
+    priority_paths: list[str] = field(default_factory=list)
+
+    # Organization type hint (municipal, enterprise, education, nonprofit)
+    org_type: str = "municipal"
 
 
 @dataclass
@@ -410,7 +464,13 @@ class DiscoveryEngine:
                 "Install with: pip install httpx beautifulsoup4"
             )
 
-        self.storage_path = storage_path or Path("data/onboarding")
+        # Use absolute path relative to this file's location to avoid Windows path issues
+        if storage_path:
+            self.storage_path = storage_path
+        else:
+            # Go up from packages/onboarding/ to project root, then into data/onboarding
+            project_root = Path(__file__).parent.parent.parent
+            self.storage_path = project_root / "data" / "onboarding"
         self.storage_path.mkdir(parents=True, exist_ok=True)
         self.max_pages = max_pages
         self.rate_limit_delay = rate_limit_delay
@@ -746,8 +806,8 @@ class DiscoveryEngine:
                 self._save_jobs()
 
                 self._extract_municipality_safe(result, pages_content, base_url)
-                self._extract_executive_safe(result, pages_content)
-                self._extract_departments_safe(result, pages_content, base_url)
+                self._extract_executive_safe(result, pages_content, config)
+                self._extract_departments_safe(result, pages_content, base_url, config)
                 self._extract_data_portals_safe(result, pages_content, base_url)
                 self._extract_governance_docs_safe(result, pages_content, base_url)
 
@@ -921,13 +981,28 @@ class DiscoveryEngine:
         to_visit: list[str] = [start_url]
         pages: dict[str, str] = {}
 
-        # Priority pages to look for - focus on high-value discovery targets
-        priority_paths = [
-            "/government", "/departments", "/directory", "/mayor",
-            "/city-hall", "/about", "/leadership", "/officials",
-            "/administration", "/services", "/team", "/staff",
-            "/contact", "/sitemap", "/site-map",
-        ]
+        # Priority pages to look for - use config-provided paths for enterprise,
+        # or fall back to municipal defaults
+        if config.priority_paths:
+            # Use enterprise-specific priority paths from config
+            priority_paths = config.priority_paths
+        elif config.org_type == "enterprise":
+            # Default enterprise paths (leadership, executives, departments)
+            priority_paths = [
+                "/about/leadership", "/about/team", "/about/management",
+                "/company/leadership", "/company/team", "/company/about",
+                "/leadership", "/team", "/executives", "/management",
+                "/about", "/about-us", "/company", "/corporate",
+                "/investors", "/investor-relations", "/careers",
+            ]
+        else:
+            # Default municipal paths
+            priority_paths = [
+                "/government", "/departments", "/directory", "/mayor",
+                "/city-hall", "/about", "/leadership", "/officials",
+                "/administration", "/services", "/team", "/staff",
+                "/contact", "/sitemap", "/site-map",
+            ]
 
         # Add priority paths to queue at depth 1
         for path in priority_paths:
@@ -1003,12 +1078,21 @@ class DiscoveryEngine:
                             # Set depth for new URL
                             url_depths[full_url] = current_depth + 1
 
-                            # Prioritize high-value pages
-                            priority_keywords = [
-                                "department", "government", "director", "office",
-                                "team", "about", "leadership", "staff", "contact",
-                                "executive", "management", "board", "council", "services"
-                            ]
+                            # Prioritize high-value pages based on org type
+                            if config.org_type == "enterprise":
+                                priority_keywords = [
+                                    "leadership", "executive", "team", "about", "company",
+                                    "management", "officers", "board", "directors", "ceo",
+                                    "coo", "cfo", "president", "vice-president", "vp",
+                                    "investor", "careers", "divisions", "business-units"
+                                ]
+                            else:
+                                # Municipal priority keywords
+                                priority_keywords = [
+                                    "department", "government", "director", "office",
+                                    "team", "about", "leadership", "staff", "contact",
+                                    "executive", "management", "board", "council", "services"
+                                ]
                             if any(kw in full_url.lower() for kw in priority_keywords):
                                 to_visit.insert(0, full_url)
                             else:
@@ -1217,10 +1301,12 @@ class DiscoveryEngine:
             )
 
     def _extract_executive_safe(
-        self, result: DiscoveryResult, pages: dict[str, str]
+        self, result: DiscoveryResult, pages: dict[str, str], config: CrawlConfig
     ) -> None:
-        """Extract mayor and chief officers with null-safety."""
+        """Extract executives with null-safety. Supports municipal and enterprise orgs."""
         try:
+            is_enterprise = config.org_type == "enterprise"
+
             for url, content in pages.items():
                 if not content:
                     continue
@@ -1228,63 +1314,135 @@ class DiscoveryEngine:
                 soup = BeautifulSoup(content, "html.parser")
                 text_content = (soup.get_text() or "").lower()
 
-                # Look for mayor
-                if not result.executive and "mayor" in text_content:
-                    for pattern in [
-                        r"Mayor\s+([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+)",
-                        r"([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+),?\s+Mayor",
-                    ]:
-                        match = re.search(pattern, content or "")
-                        if match:
-                            name = self._safe_group(match, 1)
-                            if name and len(name.split()) >= 2:
-                                result.executive = Executive(
-                                    name=name,
-                                    title="Mayor",
-                                    office="Office of the Mayor",
-                                    url=url,
-                                )
-                                break
+                if is_enterprise:
+                    # Extract enterprise executives (CEO, COO, CFO, etc.)
+                    self._extract_enterprise_executives(result, url, content, text_content)
+                else:
+                    # Extract municipal executives (Mayor, etc.)
+                    self._extract_municipal_executives(result, url, content, text_content)
 
-                # Look for chief officers
-                for officer_pattern in EXECUTIVE_PATTERNS[1:]:
-                    if not re.search(officer_pattern, text_content):
-                        continue
-
-                    for name_pattern in [
-                        rf"({officer_pattern.replace(chr(92) + 's*', ' ')})\s+([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+)",
-                        rf"([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+),?\s+({officer_pattern.replace(chr(92) + 's*', ' ')})",
-                    ]:
-                        try:
-                            matches = re.finditer(name_pattern, content or "", re.IGNORECASE)
-                            for match in matches:
-                                groups = match.groups()
-                                if not groups or len(groups) < 2:
-                                    continue
-
-                                name = self._safe_strip(groups[1] if groups[1] else groups[0])
-                                title = self._safe_strip(groups[0] if groups[1] else "")
-
-                                if name and len(name.split()) >= 2:
-                                    officer = Executive(
-                                        name=name,
-                                        title=title.title() if title else "Chief Officer",
-                                        office="Executive Office",
-                                        url=url,
-                                    )
-                                    if not any(o.name == officer.name for o in result.chief_officers):
-                                        result.chief_officers.append(officer)
-                                        break
-                        except Exception:
-                            continue
         except Exception:
             pass  # Log but don't crash
 
+    def _extract_municipal_executives(
+        self, result: DiscoveryResult, url: str, content: str, text_content: str
+    ) -> None:
+        """Extract municipal executives (Mayor, City Manager, etc.)."""
+        # Look for mayor
+        if not result.executive and "mayor" in text_content:
+            for pattern in [
+                r"Mayor\s+([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+)",
+                r"([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+),?\s+Mayor",
+            ]:
+                match = re.search(pattern, content or "")
+                if match:
+                    name = self._safe_group(match, 1)
+                    if name and len(name.split()) >= 2:
+                        result.executive = Executive(
+                            name=name,
+                            title="Mayor",
+                            office="Office of the Mayor",
+                            url=url,
+                        )
+                        break
+
+        # Look for chief officers
+        for officer_pattern in EXECUTIVE_PATTERNS[1:]:
+            if not re.search(officer_pattern, text_content):
+                continue
+
+            for name_pattern in [
+                rf"({officer_pattern.replace(chr(92) + 's*', ' ')})\s+([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+)",
+                rf"([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+),?\s+({officer_pattern.replace(chr(92) + 's*', ' ')})",
+            ]:
+                try:
+                    matches = re.finditer(name_pattern, content or "", re.IGNORECASE)
+                    for match in matches:
+                        groups = match.groups()
+                        if not groups or len(groups) < 2:
+                            continue
+
+                        name = self._safe_strip(groups[1] if groups[1] else groups[0])
+                        title = self._safe_strip(groups[0] if groups[1] else "")
+
+                        if name and len(name.split()) >= 2:
+                            officer = Executive(
+                                name=name,
+                                title=title.title() if title else "Chief Officer",
+                                office="Executive Office",
+                                url=url,
+                            )
+                            if not any(o.name == officer.name for o in result.chief_officers):
+                                result.chief_officers.append(officer)
+                                break
+                except Exception:
+                    continue
+
+    def _extract_enterprise_executives(
+        self, result: DiscoveryResult, url: str, content: str, text_content: str
+    ) -> None:
+        """Extract enterprise executives (CEO, COO, CFO, VPs, etc.)."""
+        # Check for C-suite and executive patterns
+        for title_pattern, title_name in ENTERPRISE_EXECUTIVE_PATTERNS:
+            if not re.search(title_pattern, text_content, re.IGNORECASE):
+                continue
+
+            # Look for name patterns near the title
+            name_patterns = [
+                # Title followed by name
+                rf"(?:{title_pattern})[,:\s]+([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+)",
+                # Name followed by title
+                rf"([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+)[,\s]+(?:{title_pattern})",
+                # Name with title in context
+                rf"([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+)\s*[-–—]\s*(?:{title_pattern})",
+            ]
+
+            for name_pattern in name_patterns:
+                try:
+                    matches = re.finditer(name_pattern, content or "", re.IGNORECASE)
+                    for match in matches:
+                        name = self._safe_group(match, 1)
+                        if not name or len(name.split()) < 2:
+                            continue
+
+                        # Skip common false positives
+                        if any(fp in name.lower() for fp in ["company", "corporation", "inc", "llc", "about", "contact"]):
+                            continue
+
+                        # CEO is the top executive
+                        if "ceo" in title_name.lower() or "chief executive" in title_name.lower():
+                            if not result.executive:
+                                result.executive = Executive(
+                                    name=name,
+                                    title=title_name,
+                                    office="Office of the CEO",
+                                    url=url,
+                                )
+                        else:
+                            # Other executives go to chief_officers
+                            officer = Executive(
+                                name=name,
+                                title=title_name,
+                                office="Executive Team",
+                                url=url,
+                            )
+                            if not any(o.name == officer.name for o in result.chief_officers):
+                                result.chief_officers.append(officer)
+                        break
+                except Exception:
+                    continue
+
     def _extract_departments_safe(
-        self, result: DiscoveryResult, pages: dict[str, str], base_url: str
+        self, result: DiscoveryResult, pages: dict[str, str], base_url: str, config: CrawlConfig
     ) -> None:
         """Extract departments and their directors with null-safety."""
         seen_departments: set[str] = set()
+
+        # Use appropriate department keywords based on org type
+        if config.org_type == "enterprise":
+            department_keywords = ENTERPRISE_DEPARTMENT_KEYWORDS
+        else:
+            department_keywords = DEPARTMENT_KEYWORDS
 
         try:
             for url, content in pages.items():
@@ -1301,7 +1459,7 @@ class DiscoveryEngine:
 
                         text_lower = text.lower()
 
-                        for template_id, keywords in DEPARTMENT_KEYWORDS.items():
+                        for template_id, keywords in department_keywords.items():
                             if any(kw in text_lower for kw in keywords):
                                 dept_key = text_lower[:50]
                                 if dept_key in seen_departments:
