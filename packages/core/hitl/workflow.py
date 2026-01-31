@@ -11,8 +11,9 @@ Provides:
 from __future__ import annotations
 
 import json
+from collections import deque, defaultdict
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from pathlib import Path
 from typing import Any, Callable
@@ -24,6 +25,10 @@ from packages.core.hitl import (
     HITLManager,
     get_hitl_manager,
 )
+
+# PERFORMANCE: Maximum notifications to keep in memory
+MAX_NOTIFICATIONS_IN_MEMORY = 10000
+NOTIFICATION_CLEANUP_INTERVAL_SECONDS = 300  # 5 minutes
 
 
 class NotificationType(str, Enum):
@@ -146,8 +151,14 @@ class HITLWorkflowManager:
         self._reviewers: dict[str, ReviewerProfile] = {}
         self._escalation_rules: list[EscalationRule] = []
         self._sla_configs: dict[HITLMode, SLAConfig] = {}
-        self._notifications: dict[str, Notification] = []
+
+        # PERFORMANCE: Use bounded deque instead of unbounded list
+        # Prevents memory exhaustion under high load
+        self._notifications: deque[Notification] = deque(maxlen=MAX_NOTIFICATIONS_IN_MEMORY)
+        # Index for O(1) lookup by recipient
+        self._notifications_by_recipient: defaultdict[str, list[Notification]] = defaultdict(list)
         self._notification_handlers: list[Callable[[Notification], None]] = []
+        self._last_notification_cleanup = datetime.now(timezone.utc)
 
         # Load configuration
         self._load_config()
@@ -583,6 +594,31 @@ class HITLWorkflowManager:
         """Register a notification handler."""
         self._notification_handlers.append(handler)
 
+    def _cleanup_old_notifications(self) -> None:
+        """Periodically clean up old notifications from recipient index.
+
+        PERFORMANCE: The deque auto-limits total count, but we need to
+        sync the recipient index to avoid stale references.
+        """
+        now = datetime.now(timezone.utc)
+        if (now - self._last_notification_cleanup).total_seconds() < NOTIFICATION_CLEANUP_INTERVAL_SECONDS:
+            return
+
+        # Get IDs still in deque
+        valid_ids = {n.id for n in self._notifications}
+
+        # Clean up recipient index
+        for recipient_id in list(self._notifications_by_recipient.keys()):
+            self._notifications_by_recipient[recipient_id] = [
+                n for n in self._notifications_by_recipient[recipient_id]
+                if n.id in valid_ids
+            ]
+            # Remove empty lists
+            if not self._notifications_by_recipient[recipient_id]:
+                del self._notifications_by_recipient[recipient_id]
+
+        self._last_notification_cleanup = now
+
     def _send_notification(
         self,
         type: NotificationType,
@@ -594,6 +630,7 @@ class HITLWorkflowManager:
     ) -> Notification:
         """Send a notification."""
         import uuid
+
         notification = Notification(
             id=str(uuid.uuid4()),
             type=type,
@@ -604,7 +641,14 @@ class HITLWorkflowManager:
             metadata=metadata or {},
         )
 
+        # Add to bounded deque (auto-removes oldest when full)
         self._notifications.append(notification)
+
+        # Add to recipient index for O(1) lookup
+        self._notifications_by_recipient[recipient_id].append(notification)
+
+        # Periodic cleanup of stale index entries
+        self._cleanup_old_notifications()
 
         # Call handlers
         for handler in self._notification_handlers:
@@ -621,12 +665,16 @@ class HITLWorkflowManager:
         unread_only: bool = False,
         limit: int = 50,
     ) -> list[Notification]:
-        """Get notifications for a recipient."""
-        results = [
-            n for n in self._notifications
-            if n.recipient_id == recipient_id
-            and (not unread_only or not n.read)
-        ]
+        """Get notifications for a recipient.
+
+        PERFORMANCE: Uses recipient index for O(1) lookup instead of O(n) scan.
+        """
+        # Use indexed lookup instead of scanning all notifications
+        results = self._notifications_by_recipient.get(recipient_id, [])
+
+        if unread_only:
+            results = [n for n in results if not n.read]
+
         return results[-limit:]
 
     def mark_notification_read(self, notification_id: str) -> bool:
@@ -634,7 +682,7 @@ class HITLWorkflowManager:
         for notification in self._notifications:
             if notification.id == notification_id:
                 notification.read = True
-                notification.read_at = datetime.utcnow().isoformat()
+                notification.read_at = datetime.now(timezone.utc).isoformat()
                 return True
         return False
 

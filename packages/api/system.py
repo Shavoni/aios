@@ -380,12 +380,57 @@ async def list_templates() -> dict:
     return {"templates": templates}
 
 
+def _validate_safe_id(id_value: str, id_name: str = "ID") -> str:
+    """Validate that an ID contains only safe characters (no path traversal).
+
+    SECURITY: Prevents path traversal attacks like '../../../etc/passwd'
+    """
+    import re
+    if not id_value:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"{id_name} cannot be empty"
+        )
+    # Only allow alphanumeric, dash, underscore
+    if not re.match(r'^[a-zA-Z0-9_-]+$', id_value):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid {id_name} format. Only alphanumeric, dash, and underscore allowed."
+        )
+    return id_value
+
+
+def _safe_path_join(base: Path, *parts: str) -> Path:
+    """Safely join path parts and verify result is within base directory.
+
+    SECURITY: Prevents path traversal even with edge cases like symlinks.
+    """
+    result = base.joinpath(*parts)
+    try:
+        # Resolve both to handle symlinks
+        base_resolved = base.resolve()
+        result_resolved = result.resolve()
+        # Check result is within base
+        result_resolved.relative_to(base_resolved)
+        return result
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid path"
+        )
+
+
 @router.get("/templates/{template_id}")
 async def get_template(template_id: str) -> dict:
     """Get a specific template by ID."""
     import json
 
-    template_file = Path(f"data/templates/{template_id}.json")
+    # SECURITY: Validate template_id to prevent path traversal
+    _validate_safe_id(template_id, "Template ID")
+
+    templates_base = Path("data/templates")
+    template_file = _safe_path_join(templates_base, f"{template_id}.json")
+
     if not template_file.exists():
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -405,7 +450,12 @@ async def import_template(request: ImportTemplateRequest) -> dict:
     """
     import json
 
-    template_file = Path(f"data/templates/{request.template_id}.json")
+    # SECURITY: Validate template_id to prevent path traversal
+    _validate_safe_id(request.template_id, "Template ID")
+
+    templates_base = Path("data/templates")
+    template_file = _safe_path_join(templates_base, f"{request.template_id}.json")
+
     if not template_file.exists():
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -473,7 +523,12 @@ async def import_template(request: ImportTemplateRequest) -> dict:
 @router.delete("/templates/{template_id}")
 async def delete_template(template_id: str) -> dict:
     """Delete a saved template."""
-    template_file = Path(f"data/templates/{template_id}.json")
+    # SECURITY: Validate template_id to prevent path traversal
+    _validate_safe_id(template_id, "Template ID")
+
+    templates_base = Path("data/templates")
+    template_file = _safe_path_join(templates_base, f"{template_id}.json")
+
     if not template_file.exists():
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -1122,28 +1177,95 @@ class LLMConfigUpdateRequest(BaseModel):
     temperature: float | None = Field(default=None, ge=0.0, le=2.0)
 
 
-def _encrypt_api_key(key: str) -> str:
-    """Encrypt API key for storage.
+def _get_encryption_key() -> bytes:
+    """Get or generate encryption key for API key storage.
 
-    SECURITY: Uses base64 encoding as a placeholder.
-    In production, use proper encryption (e.g., Fernet with KMS-managed keys).
+    SECURITY: In production, use KMS (AWS KMS, Azure Key Vault, HashiCorp Vault).
+    This implementation uses a file-based key as fallback for development.
     """
+    import os
     import base64
 
-    # TODO: Replace with proper encryption using KMS
-    # For now, use reversible encoding + marker to indicate it's encrypted
-    encoded = base64.b64encode(key.encode()).decode()
-    return f"enc:{encoded}"
+    # Check for KMS-provided key first (production)
+    kms_key = os.getenv("AIOS_ENCRYPTION_KEY")
+    if kms_key:
+        # Ensure it's valid Fernet key (32 bytes, base64-encoded)
+        try:
+            key_bytes = base64.urlsafe_b64decode(kms_key)
+            if len(key_bytes) == 32:
+                return kms_key.encode()
+        except Exception:
+            pass
+
+    # Fallback: file-based key (development only)
+    key_file = Path("data/.encryption_key")
+    if key_file.exists():
+        return key_file.read_bytes().strip()
+
+    # Generate new key if none exists
+    from cryptography.fernet import Fernet
+    new_key = Fernet.generate_key()
+    key_file.parent.mkdir(parents=True, exist_ok=True)
+    key_file.write_bytes(new_key)
+    # Set restrictive permissions (owner read/write only)
+    try:
+        import stat
+        key_file.chmod(stat.S_IRUSR | stat.S_IWUSR)
+    except Exception:
+        pass  # Windows may not support chmod
+
+    return new_key
+
+
+def _encrypt_api_key(key: str) -> str:
+    """Encrypt API key for storage using Fernet symmetric encryption.
+
+    SECURITY: Uses AES-128-CBC with HMAC for authenticated encryption.
+    Keys are never stored in plaintext.
+    """
+    from cryptography.fernet import Fernet
+
+    if not key:
+        return ""
+
+    try:
+        encryption_key = _get_encryption_key()
+        f = Fernet(encryption_key)
+        encrypted = f.encrypt(key.encode())
+        return f"fernet:{encrypted.decode()}"
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Encryption failed: {e}")
+        raise ValueError("Failed to encrypt API key")
 
 
 def _decrypt_api_key(encrypted: str) -> str:
     """Decrypt API key from storage."""
+    from cryptography.fernet import Fernet
     import base64
 
-    if not encrypted.startswith("enc:"):
-        return encrypted  # Not encrypted (legacy)
-    encoded = encrypted[4:]
-    return base64.b64decode(encoded.encode()).decode()
+    if not encrypted:
+        return ""
+
+    # Handle Fernet-encrypted keys (new format)
+    if encrypted.startswith("fernet:"):
+        try:
+            encryption_key = _get_encryption_key()
+            f = Fernet(encryption_key)
+            encrypted_bytes = encrypted[7:].encode()
+            return f.decrypt(encrypted_bytes).decode()
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).error(f"Decryption failed: {e}")
+            raise ValueError("Failed to decrypt API key")
+
+    # Handle legacy base64 format (migrate on next save)
+    if encrypted.startswith("enc:"):
+        encoded = encrypted[4:]
+        return base64.b64decode(encoded.encode()).decode()
+
+    # Plaintext (very old format)
+    return encrypted
 
 
 def _mask_api_key(key: str) -> str:
