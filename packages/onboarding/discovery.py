@@ -4,15 +4,18 @@ from __future__ import annotations
 
 import hashlib
 import json
+import logging
 import re
 import threading
 import time
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from pathlib import Path
 from typing import Any
 from urllib.parse import urljoin, urlparse
+
+logger = logging.getLogger(__name__)
 
 try:
     import httpx
@@ -486,7 +489,7 @@ class DiscoveryEngine:
             if result.status in (DiscoveryStatus.CRAWLING, DiscoveryStatus.EXTRACTING, DiscoveryStatus.PENDING):
                 result.cancelled = True
                 result.status = DiscoveryStatus.CANCELLED
-                result.completed_at = datetime.utcnow().isoformat()
+                result.completed_at = datetime.now(timezone.utc).isoformat()
                 self._save_jobs()
                 return True
         return False
@@ -539,8 +542,8 @@ class DiscoveryEngine:
                     # Only use cache if status is awaiting_selection or completed
                     if cached_result.status in (DiscoveryStatus.AWAITING_SELECTION, DiscoveryStatus.COMPLETED):
                         return cached_result
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug("Failed to load cached discovery: %s", e)
 
         return None
 
@@ -552,8 +555,8 @@ class DiscoveryEngine:
         try:
             with open(cache_file, "w", encoding="utf-8") as f:
                 json.dump(result.to_dict(), f, indent=2)
-        except Exception:
-            pass  # Caching is best-effort
+        except Exception as e:
+            logger.debug("Failed to cache discovery: %s", e)  # Caching is best-effort
 
     def get_cached_or_start(
         self,
@@ -592,8 +595,8 @@ class DiscoveryEngine:
                         job_id = job_data.get("id")
                         if job_id:
                             self._jobs[job_id] = self._dict_to_result(job_data)
-            except Exception:
-                pass
+            except Exception as e:
+                logger.warning("Failed to load discovery jobs: %s", e)
 
     def _save_jobs(self) -> None:
         """Save discovery jobs to storage."""
@@ -683,7 +686,7 @@ class DiscoveryEngine:
 
     def _generate_job_id(self, url: str) -> str:
         """Generate a unique job ID."""
-        timestamp = datetime.utcnow().isoformat()
+        timestamp = datetime.now(timezone.utc).isoformat()
         return hashlib.sha256(f"{url}:{timestamp}".encode()).hexdigest()[:12]
 
     def start_discovery(
@@ -706,7 +709,7 @@ class DiscoveryEngine:
         result = DiscoveryResult(
             id=job_id,
             status=DiscoveryStatus.PENDING,
-            started_at=datetime.utcnow().isoformat(),
+            started_at=datetime.now(timezone.utc).isoformat(),
             source_url=url,
             config=config,
             mode=config.mode,
@@ -767,7 +770,7 @@ class DiscoveryEngine:
                 if time.time() - start_time > config.timeout_seconds:
                     result.error = "Discovery timed out"
                     result.status = DiscoveryStatus.FAILED
-                    result.completed_at = datetime.utcnow().isoformat()
+                    result.completed_at = datetime.now(timezone.utc).isoformat()
                     self._save_jobs()
                     return
 
@@ -825,7 +828,7 @@ class DiscoveryEngine:
                 else:
                     result.status = DiscoveryStatus.COMPLETED
 
-                result.completed_at = datetime.utcnow().isoformat()
+                result.completed_at = datetime.now(timezone.utc).isoformat()
 
                 # Cache successful discovery for reuse
                 self._cache_discovery(result, config)
@@ -834,7 +837,7 @@ class DiscoveryEngine:
             import traceback
             result.status = DiscoveryStatus.FAILED
             result.error = f"{str(e)}\n{traceback.format_exc()}"
-            result.completed_at = datetime.utcnow().isoformat()
+            result.completed_at = datetime.now(timezone.utc).isoformat()
 
         self._save_jobs()
 
