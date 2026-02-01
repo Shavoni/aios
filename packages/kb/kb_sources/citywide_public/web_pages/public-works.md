@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/public-works"
-retrieved_at: "2026-01-25T22:09:16.774Z"
+retrieved_at: "2026-02-01T03:08:57.052Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Department of Public Works | City of Cleveland Ohio"
@@ -32,13 +32,13 @@ knowledge_profile: "public_works"
  
  
  [**](/)
- /
+ 
  
  [City Hall](/city-hall)
- /
+ 
  
  [Departments](/city-hall/departments)
- /
+ 
  Department of Public Works
  
  
@@ -307,14 +307,16 @@ The Department also maintains City parks and parking lots all while facilitating
  
  
  
- **
+### 
  
+ **
  
  
  Resurfacing Projects
  
  
  
+
  
  
  
@@ -328,14 +330,16 @@ W 130th, W 150th, E 45th, E 80th, E 101st , and Medina Ave. [View details](/site
  
  
  
- **
+### 
  
+ **
  
  
  East 140th Street Rehabilitation & Streetscape Project
  
  
  
+
  
  
  
@@ -349,14 +353,16 @@ St. Clair Ave to Lakeshore Blvd. [View details](/sites/clevelandohio/files/2023-
  
  
  
- **
+### 
  
+ **
  
  
  West Franklin Boulevard Rehabilitation Project
  
  
  
+
  
  
  
@@ -370,14 +376,16 @@ W 85th St to W 25th St. [View details](/sites/clevelandohio/files/2023-06/Traffi
  
  
  
- **
+### 
  
+ **
  
  
  East 185th Street Rehabilitation & Streetscape Project
  
  
  
+
  
  
  
@@ -391,14 +399,16 @@ Nottingham Rd to Lake Erie. [View details](/sites/clevelandohio/files/2023-06/Tr
  
  
  
- **
+### 
  
+ **
  
  
  Frank Avenue Extension Project
  
  
  
+
  
  
  
@@ -412,14 +422,16 @@ E 105th St to E 101st St. [View details](/sites/clevelandohio/files/2023-06/Traf
  
  
  
- **
+### 
  
+ **
  
  
  East 79th Street Rehabilitation Project
  
  
  
+
  
  
  
@@ -433,14 +445,16 @@ Woodland Ave to Chester Ave. [View details](/sites/clevelandohio/files/2023-06/T
  
  
  
- **
+### 
  
+ **
  
  
  Pipeline Improvements
  
  
  
+
  
  
  
@@ -607,14 +621,16 @@ Jan 01, 2023
  
  
  
- *
+### 
  
+ *
  
  
  What are some of the common reasons citations are issued for waste collection?
  
  
  
+
  
  
  
@@ -628,14 +644,16 @@ Excess waste placed outside of the black/gray/blue cart, trash mixed with recycl
  
  
  
- **
+### 
  
+ **
  
  
  How can I pay my parking ticket?
  
  
  
+
  
  
  
@@ -651,14 +669,16 @@ Excess waste placed outside of the black/gray/blue cart, trash mixed with recycl
  
  
  
- **
+### 
  
+ **
  
  
  Our street is flooding because of a blocked storm drain. What should I do?
  
  
  
+
  
  
  

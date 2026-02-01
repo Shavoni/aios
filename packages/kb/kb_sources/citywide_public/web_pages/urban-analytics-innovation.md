@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/innovation-technology/uai"
-retrieved_at: "2026-01-25T22:09:13.882Z"
+retrieved_at: "2026-02-01T03:08:54.123Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Urban Analytics & Innovation | City of Cleveland Ohio"
@@ -32,16 +32,16 @@ knowledge_profile: "uai"
  
  
  [**](/)
- /
+ 
  
  [City Hall](/city-hall)
- /
+ 
  
  [Departments](/city-hall/departments)
- /
+ 
  
  [Department of Innovation & Technology](/city-hall/departments/innovation-technology)
- /
+ 
  Urban Analytics & Innovation 
  
  
@@ -350,14 +350,16 @@ Cleveland 311 was recognized at this year’s Best of Tech Awards for its though
  
  
  
- *
+### 
  
+ *
  
  
  Strategic Plan Initiative C2: 311 Operating Model Integration 
  
  
  
+
  
  
  

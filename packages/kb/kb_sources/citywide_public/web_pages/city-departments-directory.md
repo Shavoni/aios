@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments"
-retrieved_at: "2026-01-25T22:09:12.928Z"
+retrieved_at: "2026-02-01T03:08:53.107Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Departments | City of Cleveland Ohio"
@@ -32,10 +32,10 @@ knowledge_profile: "department_map"
  
  
  [**](/)
- /
+ 
  
  [City Hall](/city-hall)
- /
+ 
  Departments
  
  

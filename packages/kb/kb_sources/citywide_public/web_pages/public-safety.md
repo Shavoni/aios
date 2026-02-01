@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/public-safety"
-retrieved_at: "2026-01-25T22:09:15.962Z"
+retrieved_at: "2026-02-01T03:08:56.127Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Department of Public Safety | City of Cleveland Ohio"
@@ -32,13 +32,13 @@ knowledge_profile: "public_safety"
  
  
  [**](/)
- /
+ 
  
  [City Hall](/city-hall)
- /
+ 
  
  [Departments](/city-hall/departments)
- /
+ 
  Department of Public Safety
  
  
@@ -69,10 +69,6 @@ Dornat A. Drummond - Chief Director of Public Safety
  
  
 
- [Divisions](/city-hall/departments/public-safety/divisions)
-
- [Public Safety Careers](/city-hall/departments/public-safety/public-safety-careers)
-
  [Police Recruitment Process](/city-hall/departments/public-safety/police-recruitment-process)
 
  [Office of the Inspector General](/city-hall/departments/public-safety/oig)
@@ -85,10 +81,6 @@ Dornat A. Drummond - Chief Director of Public Safety
  Menu
  ](#)
  
-
- [Divisions](/city-hall/departments/public-safety/divisions)
-
- [Public Safety Careers](/city-hall/departments/public-safety/public-safety-careers)
 
  [Police Recruitment Process](/city-hall/departments/public-safety/police-recruitment-process)
 
@@ -172,14 +164,16 @@ Contact The Public Safety Recruitment Team
  
  
  
- **
+### 
  
+ **
  
  
  Police Officer
  
  
  
+
  
  
  
@@ -197,14 +191,16 @@ Police officers can make a difference in someone’s life on every call they res
  
  
  
- **
+### 
  
+ **
  
  
  Firefighter
  
  
  
+
  
  
  
@@ -228,14 +224,16 @@ Questions? Contact [Firefighter Paul Williams](mailto:pwilliams5@clevelandohio.g
  
  
  
- **
+### 
  
+ **
  
  
  Emergency Medical Technician or Paramedic
  
  
  
+
  
  
  
@@ -269,14 +267,16 @@ Questions? Contact [Sergeant Desmond Anderson](mailto:DAnderson@clevelandohio.go
  
  
  
- **
+### 
  
+ **
  
  
  Animal Care and Control Officer
  
  
  
+
  
  
  
@@ -298,14 +298,16 @@ Animal control officers (ACO) work to promote public safety by educating the com
  
  
  
- **
+### 
  
+ **
  
  
  Dispatcher
  
  
  
+
  
  
  

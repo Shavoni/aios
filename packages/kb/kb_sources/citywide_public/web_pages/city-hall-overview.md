@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall"
-retrieved_at: "2026-01-25T22:09:13.608Z"
+retrieved_at: "2026-02-01T03:08:54.074Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "City Hall | City of Cleveland Ohio"
@@ -32,7 +32,7 @@ knowledge_profile: "city_leadership"
  
  
  [**](/)
- /
+ 
  City Hall
  
  
@@ -387,6 +387,27 @@ Learn More
  
  
  
+Community Development
+
+ 
+### Public Combined Notice – Notice of FONSI and NOI-RROF for Buckeye Apartments Over Retail
+
+ 
+Jan 29, 2026
+
+ 
+ ](/news/public-combined-notice-notice-fonsi-and-noi-rrof-buckeye-apartments-over-retail)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
+ 
 ### City of Cleveland Activates Full Response Ahead of Incoming Winter Storm
 
  
@@ -412,27 +433,6 @@ Jan 21, 2026
 
  
  ](/news/regional-salt-shortage-what-you-need-know)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- 
-Sustainability
-
- 
-### Public Comment: Installation of Electric Vehicle (EV) Charging Stations at Michael Zone and Sterling Rec Centers 
-
- 
-Jan 09, 2026
-
- 
- ](/news/public-comment-installation-electric-vehicle-ev-charging-stations-michael-zone-and-sterling)
  
 
  

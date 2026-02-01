@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/building-housing"
-retrieved_at: "2026-01-25T22:09:17.945Z"
+retrieved_at: "2026-02-01T03:08:58.120Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Department of Building & Housing | City of Cleveland Ohio"
@@ -32,13 +32,13 @@ knowledge_profile: "housing"
  
  
  [**](/)
- /
+ 
  
  [City Hall](/city-hall)
- /
+ 
  
  [Departments](/city-hall/departments)
- /
+ 
  Department of Building & Housing
  
  
@@ -340,14 +340,16 @@ The Director’s office supervises and manages the Code Enforcement, Constructio
  
  
  
- **
+### 
  
+ **
  
  
  Do I need a permit to do work on my own home?
  
  
  
+
  
  
  
@@ -361,14 +363,16 @@ While a permit is not needed to paint and perform minor maintenance or repairs, 
  
  
  
- **
+### 
  
+ **
  
  
  How do I become a registered contractor in the City of Cleveland?
  
  
  
+
  
  
  
@@ -384,14 +388,16 @@ Then complete and submit the contractor packet that can be found on our [Resourc
  
  
  
- **
+### 
  
+ **
  
  
  What should I do if I receive a building, housing, or zoning code violation notice?
  
  
  
+
  
  
  

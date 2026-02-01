@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/"
-retrieved_at: "2026-01-25T22:09:12.664Z"
+retrieved_at: "2026-02-01T03:08:53.054Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Home | City of Cleveland Ohio"
@@ -161,6 +161,23 @@ Cleveland Municipal School District's Building Brighter Futures is a strategic i
  *
  
  
+ Public Combined Notice – Notice of FONSI and NOI-RROF for Buckeye Apartments Over Retail
+
+ 
+Jan 29, 2026
+
+ 
+ ](/news/public-combined-notice-notice-fonsi-and-noi-rrof-buckeye-apartments-over-retail)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
  City of Cleveland Activates Full Response Ahead of Incoming Winter Storm
 
  
@@ -185,23 +202,6 @@ Jan 21, 2026
 
  
  ](/news/regional-salt-shortage-what-you-need-know)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- Public Comment: Installation of Electric Vehicle (EV) Charging Stations at Michael Zone and Sterling Rec Centers 
-
- 
-Jan 09, 2026
-
- 
- ](/news/public-comment-installation-electric-vehicle-ev-charging-stations-michael-zone-and-sterling)
  
 
  
@@ -466,37 +466,20 @@ For additional information, you may contact the City of Cleveland Citizen Suppor
  [
  
  
-### Fair Employment Wage Board
-
- 
-Friday | Jan 23, 2026
-
- 
-1910 Carnegie Avenue, 3rd Floor Conference Room
-
- 
- ](/events/fewb-1)
- 
+### Commission on Black Women and Girls - Meeting of the Commission
 
  
 
+ Thursday
+ | 
+ Feb 12, 2026
  
- [
- 
- 
- 
- 
- 
-### RESCHEDULED: Urban Forestry Commission - Winter 2026 Public Meeting
 
  
-Tuesday | Jan 27, 2026
+TBD
 
  
-Cleveland City Hall | 601 Lakeside Ave., Room 514, Cleveland, OH 44114
-
- 
- ](/events/rescheduled-urban-forestry-commission-winter-2026-public-meeting)
+ ](/events/commission-black-women-and-girls-meeting-commission-12)
  
 
  
@@ -508,13 +491,42 @@ Cleveland City Hall | 601 Lakeside Ave., Room 514, Cleveland, OH 44114
 ### Commission on Black Women and Girls - Meeting of the Commission
 
  
-Thursday | Feb 12, 2026
+
+ Wednesday
+ | 
+ Mar 25, 2026
+ 
 
  
 TBD
 
  
- ](/events/commission-black-women-and-girls-meeting-commission-12)
+ ](/events/commission-black-women-and-girls-meeting-commission-13)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
+ 
+### Urban Forestry Commission - Spring 2026 Public Meeting
+
+ 
+
+ Tuesday
+ | 
+ Apr 14, 2026
+ 
+
+ 
+Cleveland City Hall | 601 Lakeside Ave., Room 514, Cleveland, OH 44114
+
+ 
+ ](/events/urban-forestry-commission-spring-2026-public-meeting)
  
 
  

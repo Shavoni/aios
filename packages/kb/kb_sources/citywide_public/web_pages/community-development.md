@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/community-development"
-retrieved_at: "2026-01-25T22:09:18.840Z"
+retrieved_at: "2026-02-01T03:08:59.049Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Community Development | City of Cleveland Ohio"
@@ -32,13 +32,13 @@ knowledge_profile: "community_dev"
  
  
  [**](/)
- /
+ 
  
  [City Hall](/city-hall)
- /
+ 
  
  [Departments](/city-hall/departments)
- /
+ 
  Community Development
  
  
@@ -214,14 +214,16 @@ The Department of Community Development envisions a Cleveland where stakeholders
  
  
  
- *
+### 
  
+ *
  
  
  Interim Director, Joy Anderson
  
  
  
+
  
  
  
@@ -237,14 +239,16 @@ Joy has a Master’s of Planning degree from the University of Cincinnati’s Co
  
  
  
- **
+### 
  
+ **
  
  
  Bureau Chief for Neighborhood Revitalization, Trudy Andrzejewski
  
  
  
+
  
  
  
@@ -264,14 +268,16 @@ She has earned professional certifications in Real Estate Development from Corne
  
  
  
- **
+### 
  
+ **
  
  
  Bureau Chief for Community Programming, Arin Miller-Tait
  
  
  
+
  
  
  
@@ -287,14 +293,16 @@ She holds a Bachelor of Arts in Urban Studies from Cleveland State University an
  
  
  
- **
+### 
  
+ **
  
  
  Bureau Chief for Residential Improvement, Dannette Davis
  
  
  
+
  
  
  
@@ -337,6 +345,31 @@ In addition to her professional pursuits, Dannette is deeply rooted in Cleveland
  [
  
  *
+ 
+ 
+ 
+ 
+Community Development
+
+ 
+### Public Combined Notice – Notice of FONSI and NOI-RROF for Buckeye Apartments Over Retail
+
+ 
+Jan 29, 2026
+
+ 
+ In accordance with requirements of the U.S. Department of Housing and Urban Development (HUD), the Buckeye Apartments Over Retail project is now available for public comment. The project has been reviewed, and the City is requesting public comments o...
+ 
+ 
+ ](/news/public-combined-notice-notice-fonsi-and-noi-rrof-buckeye-apartments-over-retail)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
  
  
  
@@ -407,31 +440,6 @@ Sep 02, 2025
  
 
  
-
- 
- [
- 
- 
- 
- 
- 
- 
-Community Development
-
- 
-### Public Notice – Notice of NOI-RROF for Hough Senior Independent Living
-
- 
-Aug 25, 2025
-
- 
- In accordance with requirements of the U.S. Department of Housing and Urban Development (HUD), the Ohio Department of Development, City of Cleveland and CMHA’s Environmental Review of Hough Senior Independent Living are now available for public comme...
- 
- 
- ](/news/public-notice-notice-noi-rrof-hough-senior-independent-living)
- 
-
- 
  
  
  
@@ -458,14 +466,16 @@ Aug 25, 2025
  
  
  
- *
+### 
  
+ *
  
  
  Is a contractor required to be licensed, bonded and insured to work in the City of Cleveland?
  
  
  
+
  
  
  
@@ -479,14 +489,16 @@ Yes! You can verify if a contractor is licensed, bonded, and insured to do work 
  
  
  
- **
+### 
  
+ **
  
  
  Can I check my property tax payment online?
  
  
  
+
  
  
  
@@ -500,14 +512,16 @@ Yes, there is an online app on the [Cuyahoga County Fiscal Officer's website](ht
  
  
  
- **
+### 
  
+ **
  
  
  What is “fair housing?”
  
  
  
+
  
  
  
