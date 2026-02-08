@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/"
-retrieved_at: "2026-02-01T03:08:53.054Z"
+retrieved_at: "2026-02-08T03:08:52.407Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Home | City of Cleveland Ohio"
@@ -116,16 +116,16 @@ Cleveland is a city where entrepreneurial grit actually has a nice ring to it. W
  
  
  
-# Building Brighter Futures Starts Here
+# Building Brighter Futures: Choose Your School Today
 
  
  
  
  
  
-Cleveland Municipal School District's Building Brighter Futures is a strategic initiative to tackle a perfect storm of declining population, rising costs, and under-enrolled school buildings citywide. We’re reshaping CMSD schools to meet the needs of today and tomorrow for every scholar in every neighborhood.
+Find the best school for your family! Students at schools transitioning under CMSD's Building Brighter Futures plan must visit ChooseCMSD.org to confirm a reserved seat at their welcoming school. Transitioning students also receive first priority for other eligible schools, and all 8th graders will be supported in choosing the right high school. **Make your choice by February 27, 2026. **
 
-[About the plan](https://www.clevelandmetroschools.org/building-brighter-futures) [A message from Mayor Bibb](https://www.youtube.com/watch?v=LqShZuHE9_A)
+[Choose your school for 2026/2027](https://www.clevelandmetroschools.org/building-brighter-futures/bbf-enrollment-page) [Education resources](https://www.clevelandohio.gov/residents/resources/education-cleveland)
 
  
  
@@ -161,6 +161,40 @@ Cleveland Municipal School District's Building Brighter Futures is a strategic i
  *
  
  
+ Public Notice – Public Hearings on City of Cleveland 5-Year Consolidated Plan
+
+ 
+Feb 06, 2026
+
+ 
+ ](/news/public-notice-public-hearings-city-cleveland-5-year-consolidated-plan)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
+ Cleveland Police Monitoring Team Reports Substantial Compliance Advancements in Consent Decree
+
+ 
+Feb 05, 2026
+
+ 
+ ](/news/cleveland-police-monitoring-team-reports-substantial-compliance-advancements-consent-decree)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
  Public Combined Notice – Notice of FONSI and NOI-RROF for Buckeye Apartments Over Retail
 
  
@@ -168,40 +202,6 @@ Jan 29, 2026
 
  
  ](/news/public-combined-notice-notice-fonsi-and-noi-rrof-buckeye-apartments-over-retail)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- City of Cleveland Activates Full Response Ahead of Incoming Winter Storm
-
- 
-Jan 23, 2026
-
- 
- ](/news/city-cleveland-activates-full-response-ahead-incoming-winter-storm)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- Regional Salt Shortage | What You Need to Know
-
- 
-Jan 21, 2026
-
- 
- ](/news/regional-salt-shortage-what-you-need-know)
  
 
  
@@ -466,6 +466,31 @@ For additional information, you may contact the City of Cleveland Citizen Suppor
  [
  
  
+ 
+ 
+ 
+### Urban Forestry Commission: Policy Committee Meeting 02/11/2026
+
+ 
+
+ Wednesday
+ | 
+ Feb 11, 2026
+ 
+
+ 
+Webinar
+
+ 
+ ](/events/urban-forestry-commission-policy-committee-meeting-02112026)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
 ### Commission on Black Women and Girls - Meeting of the Commission
 
  
@@ -488,45 +513,23 @@ TBD
  [
  
  
-### Commission on Black Women and Girls - Meeting of the Commission
+ 
+ 
+ 
+### Urban Forestry Commission: Budget Committee Meeting 03/13/2026
 
  
 
- Wednesday
+ Friday
  | 
- Mar 25, 2026
+ Mar 13, 2026
  
 
  
-TBD
+Webinar
 
  
- ](/events/commission-black-women-and-girls-meeting-commission-13)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- 
-### Urban Forestry Commission - Spring 2026 Public Meeting
-
- 
-
- Tuesday
- | 
- Apr 14, 2026
- 
-
- 
-Cleveland City Hall | 601 Lakeside Ave., Room 514, Cleveland, OH 44114
-
- 
- ](/events/urban-forestry-commission-spring-2026-public-meeting)
+ ](/events/urban-forestry-commission-budget-committee-meeting-03132026)
  
 
  

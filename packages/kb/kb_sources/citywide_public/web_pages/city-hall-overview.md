@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall"
-retrieved_at: "2026-02-01T03:08:54.074Z"
+retrieved_at: "2026-02-08T03:08:53.598Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "City Hall | City of Cleveland Ohio"
@@ -390,6 +390,45 @@ Learn More
 Community Development
 
  
+### Public Notice – Public Hearings on City of Cleveland 5-Year Consolidated Plan
+
+ 
+Feb 06, 2026
+
+ 
+ ](/news/public-notice-public-hearings-city-cleveland-5-year-consolidated-plan)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
+ 
+### Cleveland Police Monitoring Team Reports Substantial Compliance Advancements in Consent Decree
+
+ 
+Feb 05, 2026
+
+ 
+ ](/news/cleveland-police-monitoring-team-reports-substantial-compliance-advancements-consent-decree)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
+ 
+Community Development
+
+ 
 ### Public Combined Notice – Notice of FONSI and NOI-RROF for Buckeye Apartments Over Retail
 
  
@@ -397,42 +436,6 @@ Jan 29, 2026
 
  
  ](/news/public-combined-notice-notice-fonsi-and-noi-rrof-buckeye-apartments-over-retail)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- 
-### City of Cleveland Activates Full Response Ahead of Incoming Winter Storm
-
- 
-Jan 23, 2026
-
- 
- ](/news/city-cleveland-activates-full-response-ahead-incoming-winter-storm)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- 
-### Regional Salt Shortage | What You Need to Know
-
- 
-Jan 21, 2026
-
- 
- ](/news/regional-salt-shortage-what-you-need-know)
  
 
  

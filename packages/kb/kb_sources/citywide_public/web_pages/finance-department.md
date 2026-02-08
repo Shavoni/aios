@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/finance"
-retrieved_at: "2026-02-01T03:08:58.060Z"
+retrieved_at: "2026-02-08T03:08:57.496Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Finance | City of Cleveland Ohio"
@@ -129,7 +129,7 @@ The Department of Finance also upholds a respected credit rating in the financia
 
 The Department is composed of thirteen Divisions, all of which practice generally accepted financial management principles in a manner consistent with the guidelines required by the Codified Ordinances of Cleveland, City Council, and the Mayor’s Office. Finance Administration supervises the activities of each Division, helping to maintain a high level of efficiency, productivity, and professionalism.
 
-[2026 Mayor's Estimate](http://clevelandohio.gov/sites/clevelandohio/files/finance-docs/documents/2026-Mayors_Estimate.pdf)
+[2026 Mayor's Estimate](/sites/clevelandohio/files/finance-docs/documents/2026-Mayors_Estimate.pdf)
 
 [2025 Budget Book](/sites/clevelandohio/files/finance-docs/2025_City%20of%20Cleveland%20Budget%20Book%20(final)_Signed.pdf)
 

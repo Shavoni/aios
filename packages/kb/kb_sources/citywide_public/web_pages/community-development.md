@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/community-development"
-retrieved_at: "2026-02-01T03:08:59.049Z"
+retrieved_at: "2026-02-08T03:08:58.437Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Community Development | City of Cleveland Ohio"
@@ -58,7 +58,7 @@ knowledge_profile: "community_dev"
 # Community Development
 
  
-Alyssa Hernandez - Director of Community Development
+Joy Anderson - Interim Director of Community Development
 
  
  
@@ -352,6 +352,31 @@ In addition to her professional pursuits, Dannette is deeply rooted in Cleveland
 Community Development
 
  
+### Public Notice – Public Hearings on City of Cleveland 5-Year Consolidated Plan
+
+ 
+Feb 06, 2026
+
+ 
+ The City of Cleveland Department of Community Development will hold two public hearings regarding the development and adoption of the City’s 5-Year Consolidated Plan, which will govern the use of federal funds received under the Community Development...
+ 
+ 
+ ](/news/public-notice-public-hearings-city-cleveland-5-year-consolidated-plan)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
+ 
+ 
+Community Development
+
+ 
 ### Public Combined Notice – Notice of FONSI and NOI-RROF for Buckeye Apartments Over Retail
 
  
@@ -412,31 +437,6 @@ Sep 05, 2025
  
  
  ](/news/public-notice-notice-fonsi-and-noi-rrof-cd-programming-nora-village)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- 
- 
-Community Development
-
- 
-### Public Notice – Notice of NOI-RROF for Depot on Detroit
-
- 
-Sep 02, 2025
-
- 
- In accordance with requirements of the U.S. Department of Housing and Urban Development (HUD), the City of Cleveland, and Cuyahoga County’s Environmental Review of Depot on Detroit are now available for public comment. The following project has been ...
- 
- 
- ](/news/public-notice-notice-noi-rrof-depot-detroit)
  
 
  
