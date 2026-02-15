@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/finance"
-retrieved_at: "2026-02-08T03:08:57.496Z"
+retrieved_at: "2026-02-15T03:08:46.490Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Finance | City of Cleveland Ohio"

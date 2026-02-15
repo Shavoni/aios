@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/"
-retrieved_at: "2026-02-08T03:08:52.407Z"
+retrieved_at: "2026-02-15T03:08:41.630Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Home | City of Cleveland Ohio"
@@ -469,53 +469,6 @@ For additional information, you may contact the City of Cleveland Citizen Suppor
  
  
  
-### Urban Forestry Commission: Policy Committee Meeting 02/11/2026
-
- 
-
- Wednesday
- | 
- Feb 11, 2026
- 
-
- 
-Webinar
-
- 
- ](/events/urban-forestry-commission-policy-committee-meeting-02112026)
- 
-
- 
-
- 
- [
- 
- 
-### Commission on Black Women and Girls - Meeting of the Commission
-
- 
-
- Thursday
- | 
- Feb 12, 2026
- 
-
- 
-TBD
-
- 
- ](/events/commission-black-women-and-girls-meeting-commission-12)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- 
 ### Urban Forestry Commission: Budget Committee Meeting 03/13/2026
 
  
@@ -530,6 +483,53 @@ Webinar
 
  
  ](/events/urban-forestry-commission-budget-committee-meeting-03132026)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+### Commission on Black Women and Girls - Meeting of the Commission
+
+ 
+
+ Wednesday
+ | 
+ Mar 25, 2026
+ 
+
+ 
+TBD
+
+ 
+ ](/events/commission-black-women-and-girls-meeting-commission-13)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
+ 
+### Urban Forestry Commission: Policy Committee Meeting 04/08/2026
+
+ 
+
+ Wednesday
+ | 
+ Apr 08, 2026
+ 
+
+ 
+Webinar
+
+ 
+ ](/events/urban-forestry-commission-policy-committee-meeting-04082026)
  
 
  
