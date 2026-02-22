@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/311"
-retrieved_at: "2026-02-15T03:08:43.510Z"
+retrieved_at: "2026-02-22T04:20:22.823Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "311 | City of Cleveland Ohio"
@@ -68,6 +68,8 @@ Welcome to
 
  [How Do I...?](/311/how-do-i)
 
+ [City Support Vehicle](/311/citizen-support-vehicle)
+
  [Building & Housing Issues](/311/building-housing)
 
  [Cemetery Maintenance Issues](/311/cemetery-maintenance)
@@ -96,6 +98,8 @@ Welcome to
  
 
  [How Do I...?](/311/how-do-i)
+
+ [City Support Vehicle](/311/citizen-support-vehicle)
 
  [Building & Housing Issues](/311/building-housing)
 
@@ -182,6 +186,34 @@ Current city updates to keep residents informed and engaged.
  
  
  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+### City of Cleveland's Electric Aggregation Program
+
+ 
+Aggregation allows the City to combine or "aggregate" the electricity supply for residential and small businesses into one bulk amount. The benefit of bulk purchasing is that this method is more likely to provide a better electricity product at a more stable price than residents could achieve on their own.
+
+ 
+
+If you receive a letter, you are in the program. CCA programs are not mandatory; residents can opt out if they wish. This is an optional service provided by the City to its residents.
+
+ 
+
+For more information, call 1-888-733-8512 or [visit their web page](/city-hall/office-mayor/sustainability/programs-resources/sopec).
+
+ 
+
+ 
+ 
+ 
+ 
+
  
  
  
@@ -331,6 +363,20 @@ Cleveland 311 was recognized at this year’s Best of Tech Awards for its though
  
  
  
+## About 311
+
+ 
+
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
 ## FAQs
 
  
@@ -385,7 +431,7 @@ Check out these videos highlighting different departments hard at work. Look for
  
  
  
- *
+ 
  
  
  
@@ -445,51 +491,6 @@ Check out these videos highlighting different departments hard at work. Look for
  
  
  
- 
- 
- 
- 
- 
-## Introducing 311
-
- 
-Learn about our non-emergency services system.
-
- 
- 
- 
- 
- [
- 
- 
- 
- 
- 
- play_circle_filled*
-
- 
- 
- 
- 
- 
- 
-
- Non-Emergency Services PSA
- 
-
- 
- 
- 
- **
- 
- 
- ](https://www.youtube.com/watch?v=6VUmqFksgyE)
-
- 
- 
- 
- 
-
  
  
  

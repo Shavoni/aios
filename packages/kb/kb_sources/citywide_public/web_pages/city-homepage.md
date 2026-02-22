@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/"
-retrieved_at: "2026-02-15T03:08:41.630Z"
+retrieved_at: "2026-02-22T04:20:20.826Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Home | City of Cleveland Ohio"
@@ -161,6 +161,23 @@ Find the best school for your family! Students at schools transitioning under CM
  *
  
  
+ City of Cleveland, United States Department of Justice File Motion to Terminate Consent Decree
+
+ 
+Feb 19, 2026
+
+ 
+ ](/news/city-cleveland-united-states-department-justice-file-motion-terminate-consent-decree)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
  Public Notice – Public Hearings on City of Cleveland 5-Year Consolidated Plan
 
  
@@ -185,23 +202,6 @@ Feb 05, 2026
 
  
  ](/news/cleveland-police-monitoring-team-reports-substantial-compliance-advancements-consent-decree)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- Public Combined Notice – Notice of FONSI and NOI-RROF for Buckeye Apartments Over Retail
-
- 
-Jan 29, 2026
-
- 
- ](/news/public-combined-notice-notice-fonsi-and-noi-rrof-buckeye-apartments-over-retail)
  
 
  

@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall"
-retrieved_at: "2026-02-15T03:08:42.470Z"
+retrieved_at: "2026-02-22T04:20:21.652Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "City Hall | City of Cleveland Ohio"
@@ -387,6 +387,24 @@ Learn More
  
  
  
+### City of Cleveland, United States Department of Justice File Motion to Terminate Consent Decree
+
+ 
+Feb 19, 2026
+
+ 
+ ](/news/city-cleveland-united-states-department-justice-file-motion-terminate-consent-decree)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
+ 
 Community Development
 
  
@@ -415,27 +433,6 @@ Feb 05, 2026
 
  
  ](/news/cleveland-police-monitoring-team-reports-substantial-compliance-advancements-consent-decree)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- 
-Community Development
-
- 
-### Public Combined Notice – Notice of FONSI and NOI-RROF for Buckeye Apartments Over Retail
-
- 
-Jan 29, 2026
-
- 
- ](/news/public-combined-notice-notice-fonsi-and-noi-rrof-buckeye-apartments-over-retail)
  
 
  
