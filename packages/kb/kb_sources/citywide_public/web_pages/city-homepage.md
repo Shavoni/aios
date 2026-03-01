@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/"
-retrieved_at: "2026-02-22T04:20:20.826Z"
+retrieved_at: "2026-03-01T04:24:32.607Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Home | City of Cleveland Ohio"
@@ -466,6 +466,28 @@ For additional information, you may contact the City of Cleveland Citizen Suppor
  [
  
  
+### Fair Employment Wage Board
+
+ 
+
+ Friday
+ | 
+ Feb 27, 2026
+ 
+
+ 
+1910 Carnegie Avenue (3rd Floor Conference Room)
+
+ 
+ ](/events/fair-employment-wage-board-7)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
  
  
  
@@ -491,45 +513,20 @@ Webinar
  [
  
  
-### Commission on Black Women and Girls - Meeting of the Commission
+### CBRE & CUBE Symposium
 
  
 
- Wednesday
+ Tuesday
  | 
- Mar 25, 2026
+ Mar 24, 2026
  
 
  
-TBD
+Tri-C Corporate College East
 
  
- ](/events/commission-black-women-and-girls-meeting-commission-13)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- 
-### Urban Forestry Commission: Policy Committee Meeting 04/08/2026
-
- 
-
- Wednesday
- | 
- Apr 08, 2026
- 
-
- 
-Webinar
-
- 
- ](/events/urban-forestry-commission-policy-committee-meeting-04082026)
+ ](/events/cbre-cube-symposium)
  
 
  

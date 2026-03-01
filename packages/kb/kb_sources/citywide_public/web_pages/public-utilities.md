@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/public-utilities"
-retrieved_at: "2026-02-22T04:20:24.946Z"
+retrieved_at: "2026-03-01T04:24:37.072Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Department of Public Utilities | City of Cleveland Ohio"
