@@ -13,6 +13,10 @@
 
 1. **[ROUTING_ARCHITECTURE.md](./ROUTING_ARCHITECTURE.md)** - Core routing system, critical issues, and fixes required
 2. **[DEPLOYMENT_TEMPLATES.md](./DEPLOYMENT_TEMPLATES.md)** - Multi-tenant deployment, reset, and cloning
+3. **[UI_DEVELOPMENT_GUIDE.md](./UI_DEVELOPMENT_GUIDE.md)** - Frontend development and UI customization guide
+
+**For questions about UI capabilities**:
+- **[QUICK_START_UI.md](./QUICK_START_UI.md)** - Quick answer: "Can AIOS help me build professional UIs?"
 
 ---
 
@@ -142,6 +146,47 @@ python -m aios reset --full --confirm
 # Initialize for new city (to be implemented)
 python -m aios init --template generic-city
 ```
+
+---
+
+## Documentation Library
+
+### Getting Started
+- **[README.md](../README.md)** - Project overview and quick start
+- **[UI_DEVELOPMENT_GUIDE.md](./UI_DEVELOPMENT_GUIDE.md)** - Frontend development, component library, and customization
+
+### Architecture & Design
+- **[HAAIS_AIOS_OVERVIEW.md](./HAAIS_AIOS_OVERVIEW.md)** - High-level system overview
+- **[ROUTING_ARCHITECTURE.md](./ROUTING_ARCHITECTURE.md)** - Core routing system and critical issues
+- **[GOVERNANCE_ARCHITECTURE.md](./GOVERNANCE_ARCHITECTURE.md)** - Governance system review and gaps analysis
+- **[GOVERNANCE_STRENGTHENING.md](./GOVERNANCE_STRENGTHENING.md)** - How to strengthen governance for cross-agent consistency
+- **[TWO_TIER_GOVERNANCE_IMPLEMENTATION.md](./TWO_TIER_GOVERNANCE_IMPLEMENTATION.md)** - Implementation plan for policy + knowledge governance
+- **[HITL_EXECUTION_ANALYSIS.md](./HITL_EXECUTION_ANALYSIS.md)** - Complete Human-in-the-Loop system analysis
+- **[AUDITABILITY_AND_MULTITENANCY.md](./AUDITABILITY_AND_MULTITENANCY.md)** - Decision tracing and tenant isolation analysis
+- **[RELIABILITY_AND_ENTERPRISE_READINESS.md](./RELIABILITY_AND_ENTERPRISE_READINESS.md)** - Failure handling, rate limiting, environment separation, dashboards
+- **[CROSS_DEPARTMENT_CONTINUITY.md](./CROSS_DEPARTMENT_CONTINUITY.md)** - Cross-agent knowledge and conflict detection analysis
+- **[LLM_ORCHESTRATION_LAYER.md](./LLM_ORCHESTRATION_LAYER.md)** - LLM routing and provider management
+- **[ENTERPRISE_DISCOVERY_ARCHITECTURE.md](./ENTERPRISE_DISCOVERY_ARCHITECTURE.md)** - Auto-discovery system
+
+### Deployment & Operations
+- **[DEPLOYMENT_TEMPLATES.md](./DEPLOYMENT_TEMPLATES.md)** - Multi-tenant deployment and templates
+- **[CGI_DEPLOYMENT_GUIDE.md](./CGI_DEPLOYMENT_GUIDE.md)** - Production deployment guide
+- **[TENANCY_MODEL.md](./TENANCY_MODEL.md)** - Multi-tenant architecture
+
+### Development
+- **[DEVELOPER_HANDOFF.md](./DEVELOPER_HANDOFF.md)** - Comprehensive developer guide
+- **[AIOS_BUILD_SPEC.md](./AIOS_BUILD_SPEC.md)** - Build specifications
+- **[IMPLEMENTATION_STATUS.md](./IMPLEMENTATION_STATUS.md)** - Current implementation status
+- **[AIOS_TECHNICAL_ROADMAP.md](./AIOS_TECHNICAL_ROADMAP.md)** - Future roadmap
+
+### Features
+- **[ONBOARDING_SPEC.md](./ONBOARDING_SPEC.md)** - Agent onboarding system
+- **[KNOWLEDGE_LAYER_SPEC.md](../KNOWLEDGE_LAYER_SPEC.md)** - Knowledge base architecture
+- **[ENTERPRISE_REVIEW_PACK.md](../ENTERPRISE_REVIEW_PACK.md)** - Enterprise features
+
+### Executive
+- **[EXECUTIVE_SUMMARY.md](./EXECUTIVE_SUMMARY.md)** - Executive overview
+- **[PHOENIX_OVERVIEW.md](./PHOENIX_OVERVIEW.md)** - Phoenix project overview
 
 ---
 
