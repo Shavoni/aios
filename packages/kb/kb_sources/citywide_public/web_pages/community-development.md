@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/community-development"
-retrieved_at: "2026-03-01T04:24:38.767Z"
+retrieved_at: "2026-03-08T03:05:44.642Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Community Development | City of Cleveland Ohio"
@@ -23,7 +23,9 @@ knowledge_profile: "community_dev"
  
  
  
- [*](#searchDropdown)
+ [
+ *
+ ](#searchDropdown)
 
  
 
@@ -58,7 +60,7 @@ knowledge_profile: "community_dev"
 # Community Development
 
  
-Joy Anderson - Interim Director of Community Development
+Arin Miller-Tait - Director of Community Development
 
  
  

@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/"
-retrieved_at: "2026-03-01T04:24:32.607Z"
+retrieved_at: "2026-03-08T03:05:38.719Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Home | City of Cleveland Ohio"
@@ -23,7 +23,9 @@ knowledge_profile: "city_info"
  
  
  
- [*](#searchDropdown)
+ [
+ *
+ ](#searchDropdown)
 
  
 
@@ -59,14 +61,6 @@ knowledge_profile: "city_info"
 
  
  
- 
- 
- 
- 
- 
- 
- 
- 
  [
  **
  Previous
@@ -76,6 +70,17 @@ knowledge_profile: "city_info"
  Next
  ](#carouselBanner)
  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
  
  
  
@@ -89,43 +94,6 @@ knowledge_profile: "city_info"
 Cleveland is a city where entrepreneurial grit actually has a nice ring to it. Where world-changing breakthroughs meet genuine, hardworking people connected by the traditions we share, the opportunities we embrace, and the progress we seek. In other words, there’s no better place to live and work.
 
 [About Cleveland](/explore/about-cleveland) [The Cleveland ERA is here](/city-hall/office-mayor/mayors-initiatives/cleveland-era)
-
- 
- 
- 
- 
- 
-
- 
- 
- 
- 
- 
- 
- 
- 
- [
- **
- Previous
- ](#carouselBanner)
- [
- **
- Next
- ](#carouselBanner)
- 
- 
- 
- 
-# Building Brighter Futures: Choose Your School Today
-
- 
- 
- 
- 
- 
-Find the best school for your family! Students at schools transitioning under CMSD's Building Brighter Futures plan must visit ChooseCMSD.org to confirm a reserved seat at their welcoming school. Transitioning students also receive first priority for other eligible schools, and all 8th graders will be supported in choosing the right high school. **Make your choice by February 27, 2026. **
-
-[Choose your school for 2026/2027](https://www.clevelandmetroschools.org/building-brighter-futures/bbf-enrollment-page) [Education resources](https://www.clevelandohio.gov/residents/resources/education-cleveland)
 
  
  
@@ -417,6 +385,34 @@ Feb 05, 2026
 
  
  
+ [
+ 
+ 
+ 
+ 
+ 
+ *apartment*
+
+ 
+ 
+ 
+ 
+ 
+ 
+
+ Permit Portal 
+ 
+
+ 
+ 
+ 
+ **
+ 
+ 
+ ](https://coc-prod-publicportal.accela.com/core/index)
+
+ 
+ 
  
  
  
@@ -466,28 +462,6 @@ For additional information, you may contact the City of Cleveland Citizen Suppor
  [
  
  
-### Fair Employment Wage Board
-
- 
-
- Friday
- | 
- Feb 27, 2026
- 
-
- 
-1910 Carnegie Avenue (3rd Floor Conference Room)
-
- 
- ](/events/fair-employment-wage-board-7)
- 
-
- 
-
- 
- [
- 
- 
  
  
  
@@ -527,6 +501,28 @@ Tri-C Corporate College East
 
  
  ](/events/cbre-cube-symposium)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+### Commission on Black Women and Girls - Meeting of the Commission
+
+ 
+
+ Wednesday
+ | 
+ Mar 25, 2026
+ 
+
+ 
+TBD
+
+ 
+ ](/events/commission-black-women-and-girls-meeting-commission-13)
  
 
  

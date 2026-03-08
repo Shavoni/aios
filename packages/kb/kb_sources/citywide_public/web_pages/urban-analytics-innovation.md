@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/innovation-technology/uai"
-retrieved_at: "2026-03-01T04:24:33.840Z"
+retrieved_at: "2026-03-08T03:05:39.829Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Urban Analytics & Innovation | City of Cleveland Ohio"
@@ -23,7 +23,9 @@ knowledge_profile: "uai"
  
  
  
- [*](#searchDropdown)
+ [
+ *
+ ](#searchDropdown)
 
  
 
@@ -339,7 +341,7 @@ Cleveland 311 was recognized at this year’s Best of Tech Awards for its though
  
  
 
-**Urban AI contributes to the Stategic Plan by working towards the following initiatives:**
+**Urban AI contributes to the Strategic Plan by working towards the following initiatives:**
 
  
  

@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/public-works"
-retrieved_at: "2026-03-01T04:24:36.802Z"
+retrieved_at: "2026-03-08T03:05:42.633Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Department of Public Works | City of Cleveland Ohio"
@@ -23,7 +23,9 @@ knowledge_profile: "public_works"
  
  
  
- [*](#searchDropdown)
+ [
+ *
+ ](#searchDropdown)
 
  
 
