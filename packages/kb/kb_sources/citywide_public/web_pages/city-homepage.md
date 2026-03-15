@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/"
-retrieved_at: "2026-03-08T03:05:38.719Z"
+retrieved_at: "2026-03-15T03:09:50.308Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Home | City of Cleveland Ohio"
@@ -129,30 +129,13 @@ Cleveland is a city where entrepreneurial grit actually has a nice ring to it. W
  *
  
  
- City of Cleveland, United States Department of Justice File Motion to Terminate Consent Decree
+ Public Notice – NOI-RROF for CD Programming: Habitat Acquisition and Rehabilitation of 3264 W 114th St
 
  
-Feb 19, 2026
+Mar 11, 2026
 
  
- ](/news/city-cleveland-united-states-department-justice-file-motion-terminate-consent-decree)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- Public Notice – Public Hearings on City of Cleveland 5-Year Consolidated Plan
-
- 
-Feb 06, 2026
-
- 
- ](/news/public-notice-public-hearings-city-cleveland-5-year-consolidated-plan)
+ ](/news/public-notice-noi-rrof-cd-programming-habitat-acquisition-and-rehabilitation-3264-w-114th-st)
  
 
  
@@ -163,13 +146,30 @@ Feb 06, 2026
  
  
  
- Cleveland Police Monitoring Team Reports Substantial Compliance Advancements in Consent Decree
+ City of Cleveland Announces Former Councilwoman Rebecca Maurer as Senior Advisor for Lead Accountability
 
  
-Feb 05, 2026
+Mar 10, 2026
 
  
- ](/news/cleveland-police-monitoring-team-reports-substantial-compliance-advancements-consent-decree)
+ ](/news/city-cleveland-announces-former-councilwoman-rebecca-maurer-senior-advisor-lead-accountability)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
+ City of Cleveland Engages with First Interstate Properties for Redevelopment of Former Dave’s Supermarket and Ponderosa Site
+
+ 
+Mar 09, 2026
+
+ 
+ ](/news/city-cleveland-engages-first-interstate-properties-redevelopment-former-daves-supermarket-and)
  
 
  
@@ -465,7 +465,7 @@ For additional information, you may contact the City of Cleveland Citizen Suppor
  
  
  
-### Urban Forestry Commission: Budget Committee Meeting 03/13/2026
+### CANCELLED - Urban Forestry Commission: Budget Committee Meeting 03/13/2026
 
  
 
@@ -478,7 +478,32 @@ For additional information, you may contact the City of Cleveland Citizen Suppor
 Webinar
 
  
- ](/events/urban-forestry-commission-budget-committee-meeting-03132026)
+ ](/events/cancelled-urban-forestry-commission-budget-committee-meeting-03132026)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
+ 
+### Urban Forestry Commission: Maintenance Committee Meeting 03/18/2026
+
+ 
+
+ Wednesday
+ | 
+ Mar 18, 2026
+ 
+
+ 
+Webinar
+
+ 
+ ](/events/urban-forestry-commission-maintenance-committee-meeting-03182026)
  
 
  
@@ -501,28 +526,6 @@ Tri-C Corporate College East
 
  
  ](/events/cbre-cube-symposium)
- 
-
- 
-
- 
- [
- 
- 
-### Commission on Black Women and Girls - Meeting of the Commission
-
- 
-
- Wednesday
- | 
- Mar 25, 2026
- 
-
- 
-TBD
-
- 
- ](/events/commission-black-women-and-girls-meeting-commission-13)
  
 
  
@@ -581,7 +584,7 @@ Mayor Bibb is reconnecting Cleveland to its waterfronts with over $150 million f
 
  
  
-There are 17 members representing the 17 wards of the City of Cleveland. Each ward has approximately 25,000 people.
+There are 15 members representing the 15 wards of the City of Cleveland. Each ward has approximately 25,000 people.
 
  
  

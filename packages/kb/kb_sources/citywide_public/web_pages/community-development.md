@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/community-development"
-retrieved_at: "2026-03-08T03:05:44.642Z"
+retrieved_at: "2026-03-15T03:09:56.270Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Community Development | City of Cleveland Ohio"
@@ -354,6 +354,31 @@ In addition to her professional pursuits, Dannette is deeply rooted in Cleveland
 Community Development
 
  
+### Public Notice – NOI-RROF for CD Programming: Habitat Acquisition and Rehabilitation of 3264 W 114th St
+
+ 
+Mar 11, 2026
+
+ 
+ In accordance with requirements of the U.S. Department of Housing and Urban Development (HUD), the 2026 Acquisition and Rehabilitation of 3264 W 114th St by Habitat for Humanity is now available for public comment. The project has been reviewed and i...
+ 
+ 
+ ](/news/public-notice-noi-rrof-cd-programming-habitat-acquisition-and-rehabilitation-3264-w-114th-st)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
+ 
+ 
+Community Development
+
+ 
 ### Public Notice – Public Hearings on City of Cleveland 5-Year Consolidated Plan
 
  
@@ -414,31 +439,6 @@ Sep 22, 2025
  
  
  ](/news/public-notice-notice-fonsi-and-noi-rrof-cleveland-west-veterans)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- 
- 
-Community Development
-
- 
-### Public Notice – Notice of FONSI and NOI-RROF for CD Programming: NORA Village
-
- 
-Sep 05, 2025
-
- 
- In accordance with requirements of the U.S. Department of Housing and Urban Development (HUD), the NORA Village project is now available for public comment. The project has been reviewed, and the City is requesting public comment on the Finding of No...
- 
- 
- ](/news/public-notice-notice-fonsi-and-noi-rrof-cd-programming-nora-village)
  
 
  

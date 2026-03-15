@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/311"
-retrieved_at: "2026-03-08T03:05:40.641Z"
+retrieved_at: "2026-03-15T03:09:52.264Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "311 | City of Cleveland Ohio"
@@ -199,7 +199,7 @@ Current city updates to keep residents informed and engaged.
 ### City of Cleveland's Electric Aggregation Program
 
  
-Aggregation allows the City to combine or "aggregate" the electricity supply for residential and small businesses into one bulk amount. The benefit of bulk purchasing is that this method is more likely to provide a better electricity product at a more stable price than residents could achieve on their own.
+Aggregation allows the City to combine or aggregate the electricity supply for residential and small businesses into one bulk amount. The benefit of bulk purchasing is that this method is more likely to provide a better electricity product at a more stable price than residents could achieve on their own.
 
  
 

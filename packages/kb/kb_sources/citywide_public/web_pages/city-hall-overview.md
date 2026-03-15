@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall"
-retrieved_at: "2026-03-08T03:05:39.651Z"
+retrieved_at: "2026-03-15T03:09:51.263Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "City Hall | City of Cleveland Ohio"
@@ -389,34 +389,16 @@ Learn More
  
  
  
-### City of Cleveland, United States Department of Justice File Motion to Terminate Consent Decree
-
- 
-Feb 19, 2026
-
- 
- ](/news/city-cleveland-united-states-department-justice-file-motion-terminate-consent-decree)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- 
 Community Development
 
  
-### Public Notice – Public Hearings on City of Cleveland 5-Year Consolidated Plan
+### Public Notice – NOI-RROF for CD Programming: Habitat Acquisition and Rehabilitation of 3264 W 114th St
 
  
-Feb 06, 2026
+Mar 11, 2026
 
  
- ](/news/public-notice-public-hearings-city-cleveland-5-year-consolidated-plan)
+ ](/news/public-notice-noi-rrof-cd-programming-habitat-acquisition-and-rehabilitation-3264-w-114th-st)
  
 
  
@@ -428,13 +410,31 @@ Feb 06, 2026
  
  
  
-### Cleveland Police Monitoring Team Reports Substantial Compliance Advancements in Consent Decree
+### City of Cleveland Announces Former Councilwoman Rebecca Maurer as Senior Advisor for Lead Accountability
 
  
-Feb 05, 2026
+Mar 10, 2026
 
  
- ](/news/cleveland-police-monitoring-team-reports-substantial-compliance-advancements-consent-decree)
+ ](/news/city-cleveland-announces-former-councilwoman-rebecca-maurer-senior-advisor-lead-accountability)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
+ 
+### City of Cleveland Engages with First Interstate Properties for Redevelopment of Former Dave’s Supermarket and Ponderosa Site
+
+ 
+Mar 09, 2026
+
+ 
+ ](/news/city-cleveland-engages-first-interstate-properties-redevelopment-former-daves-supermarket-and)
  
 
  
