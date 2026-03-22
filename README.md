@@ -154,6 +154,8 @@ Access the web dashboard at `http://localhost:3000`:
 | **Analytics** | Usage metrics, cost tracking, performance data |
 | **Settings** | API keys, governance policies, system reset |
 
+**Want to customize the UI?** See the [UI Development Guide](docs/UI_DEVELOPMENT_GUIDE.md) for comprehensive documentation on the frontend architecture, component library, theming, and how to build custom pages.
+
 ### Concierge Chat
 
 Access the public-facing chat interface at `http://localhost:3000/chat`:
@@ -334,6 +336,45 @@ cd web && npm run lint
 
 ---
 
+## FAQ
+
+### What is AIOS?
+
+AIOS is an **Enterprise AI Governance Platform** that helps organizations manage and orchestrate multiple AI agents. It provides centralized control, routing, and compliance for AI deployments.
+
+### Can AIOS help me build professional UIs?
+
+AIOS includes a **production-ready professional UI** built with Next.js 16, React 19, and shadcn/ui. While AIOS is not a UI builder tool, you can:
+
+✅ Study the codebase as a reference implementation  
+✅ Customize and extend the existing UI components  
+✅ Use the same professional tech stack for your projects  
+✅ Learn modern frontend development patterns  
+
+See the [UI Development Guide](docs/UI_DEVELOPMENT_GUIDE.md) for comprehensive documentation.
+
+### What can I build with AIOS?
+
+AIOS is designed for:
+- **Enterprise AI deployments** across organizations
+- **Multi-agent systems** with centralized governance
+- **Municipal/government** AI services
+- **Corporate AI gateways** with policy compliance
+
+### Do I need coding experience?
+
+- **End Users**: No coding required - use the dashboard and chat interface
+- **Administrators**: Basic configuration via web UI
+- **Developers**: Python/TypeScript knowledge helpful for customization
+
+### How much does it cost?
+
+AIOS is **open source and free** (MIT License). You only pay for:
+- LLM API costs (OpenAI, Anthropic, or free with local models)
+- Hosting/infrastructure costs
+
+---
+
 ## Contributing
 
 Contributions are welcome! Please read our contributing guidelines before submitting PRs.
@@ -354,7 +395,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-- **Documentation**: [docs/INDEX.md](docs/INDEX.md)
+- **Documentation**: [docs/INDEX.md](docs/INDEX.md) - Full documentation library
+- **UI Development**: [docs/UI_DEVELOPMENT_GUIDE.md](docs/UI_DEVELOPMENT_GUIDE.md) - Frontend customization guide
 - **Issues**: [GitHub Issues](https://github.com/Shavoni/aios/issues)
 - **Email**: support@haais.io
 
