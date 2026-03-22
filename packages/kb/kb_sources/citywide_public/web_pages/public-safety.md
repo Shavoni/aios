@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/public-safety"
-retrieved_at: "2026-03-15T03:09:53.373Z"
+retrieved_at: "2026-03-22T03:09:16.105Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Department of Public Safety | City of Cleveland Ohio"
@@ -33,15 +33,21 @@ knowledge_profile: "public_safety"
  
  
  
+ 
+- 
  [**](/)
  
  
+- 
  [City Hall](/city-hall)
  
  
+- 
  [Departments](/city-hall/departments)
  
- Department of Public Safety
+ 
+- Department of Public Safety
+ 
  
  
  
@@ -71,6 +77,8 @@ Dornat A. Drummond - Chief Director of Public Safety
  
  
 
+ [Divisions](/city-hall/departments/public-safety/divisions)
+
  [Police Recruitment Process](/city-hall/departments/public-safety/police-recruitment-process)
 
  [Office of the Inspector General](/city-hall/departments/public-safety/oig)
@@ -83,6 +91,8 @@ Dornat A. Drummond - Chief Director of Public Safety
  Menu
  ](#)
  
+
+ [Divisions](/city-hall/departments/public-safety/divisions)
 
  [Police Recruitment Process](/city-hall/departments/public-safety/police-recruitment-process)
 
@@ -216,7 +226,7 @@ Cleveland firefighters can showcase their hardworking abilities and intelligence
 - Valid Ohio driver’s license (less than 6 points)
 [Apply Today](https://www.governmentjobs.com/careers/cleveland)
 
-Questions? Contact [Firefighter Paul Williams](mailto:pwilliams5@clevelandohio.gov) or [Firefighter Antoine Draft](mailto:adraft@clevelandohio.gov)
+Questions? Contact [Firefighter Antoine Draft](mailto:adraft@clevelandohio.gov).
 
  
  

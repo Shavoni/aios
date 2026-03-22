@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/careers"
-retrieved_at: "2026-03-15T03:09:56.357Z"
+retrieved_at: "2026-03-22T03:09:19.107Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Careers | City of Cleveland Ohio"
@@ -33,9 +33,13 @@ knowledge_profile: "hr_services"
  
  
  
+ 
+- 
  [**](/)
  
- Careers
+ 
+- Careers
+ 
  
  
  

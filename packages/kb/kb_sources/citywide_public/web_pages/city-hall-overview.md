@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall"
-retrieved_at: "2026-03-15T03:09:51.263Z"
+retrieved_at: "2026-03-22T03:09:13.944Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "City Hall | City of Cleveland Ohio"
@@ -33,9 +33,13 @@ knowledge_profile: "city_leadership"
  
  
  
+ 
+- 
  [**](/)
  
- City Hall
+ 
+- City Hall
+ 
  
  
  
@@ -389,16 +393,13 @@ Learn More
  
  
  
-Community Development
+### Independent Monitor’s 18th Semiannual Report Identifies Major Compliance Findings Under the Consent Decree
 
  
-### Public Notice – NOI-RROF for CD Programming: Habitat Acquisition and Rehabilitation of 3264 W 114th St
+Mar 19, 2026
 
  
-Mar 11, 2026
-
- 
- ](/news/public-notice-noi-rrof-cd-programming-habitat-acquisition-and-rehabilitation-3264-w-114th-st)
+ ](/news/independent-monitors-18th-semiannual-report-identifies-major-compliance-findings-under-0)
  
 
  
@@ -410,13 +411,13 @@ Mar 11, 2026
  
  
  
-### City of Cleveland Announces Former Councilwoman Rebecca Maurer as Senior Advisor for Lead Accountability
+### Independent Monitor’s 18th Semiannual Report Identifies Major Compliance Findings Under the Consent Decree
 
  
-Mar 10, 2026
+Mar 19, 2026
 
  
- ](/news/city-cleveland-announces-former-councilwoman-rebecca-maurer-senior-advisor-lead-accountability)
+ ](/news/independent-monitors-18th-semiannual-report-identifies-major-compliance-findings-under-consent)
  
 
  
@@ -428,13 +429,13 @@ Mar 10, 2026
  
  
  
-### City of Cleveland Engages with First Interstate Properties for Redevelopment of Former Dave’s Supermarket and Ponderosa Site
+### Cleveland Welcomes the 2026 St. Patrick’s Day Parade on March 17, 2026: Important Traffic and Safety Information for Attendees
 
  
-Mar 09, 2026
+Mar 16, 2026
 
  
- ](/news/city-cleveland-engages-first-interstate-properties-redevelopment-former-daves-supermarket-and)
+ ](/news/cleveland-welcomes-2026-st-patricks-day-parade-march-17-2026-important-traffic-and-safety)
  
 
  

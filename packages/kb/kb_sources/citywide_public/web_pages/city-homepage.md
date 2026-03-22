@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/"
-retrieved_at: "2026-03-15T03:09:50.308Z"
+retrieved_at: "2026-03-22T03:09:13.000Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Home | City of Cleveland Ohio"
@@ -129,30 +129,13 @@ Cleveland is a city where entrepreneurial grit actually has a nice ring to it. W
  *
  
  
- Public Notice – NOI-RROF for CD Programming: Habitat Acquisition and Rehabilitation of 3264 W 114th St
+ Independent Monitor’s 18th Semiannual Report Identifies Major Compliance Findings Under the Consent Decree
 
  
-Mar 11, 2026
+Mar 19, 2026
 
  
- ](/news/public-notice-noi-rrof-cd-programming-habitat-acquisition-and-rehabilitation-3264-w-114th-st)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- City of Cleveland Announces Former Councilwoman Rebecca Maurer as Senior Advisor for Lead Accountability
-
- 
-Mar 10, 2026
-
- 
- ](/news/city-cleveland-announces-former-councilwoman-rebecca-maurer-senior-advisor-lead-accountability)
+ ](/news/independent-monitors-18th-semiannual-report-identifies-major-compliance-findings-under-0)
  
 
  
@@ -163,13 +146,30 @@ Mar 10, 2026
  
  
  
- City of Cleveland Engages with First Interstate Properties for Redevelopment of Former Dave’s Supermarket and Ponderosa Site
+ Independent Monitor’s 18th Semiannual Report Identifies Major Compliance Findings Under the Consent Decree
 
  
-Mar 09, 2026
+Mar 19, 2026
 
  
- ](/news/city-cleveland-engages-first-interstate-properties-redevelopment-former-daves-supermarket-and)
+ ](/news/independent-monitors-18th-semiannual-report-identifies-major-compliance-findings-under-consent)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
+ Cleveland Welcomes the 2026 St. Patrick’s Day Parade on March 17, 2026: Important Traffic and Safety Information for Attendees
+
+ 
+Mar 16, 2026
+
+ 
+ ](/news/cleveland-welcomes-2026-st-patricks-day-parade-march-17-2026-important-traffic-and-safety)
  
 
  
@@ -462,56 +462,6 @@ For additional information, you may contact the City of Cleveland Citizen Suppor
  [
  
  
- 
- 
- 
-### CANCELLED - Urban Forestry Commission: Budget Committee Meeting 03/13/2026
-
- 
-
- Friday
- | 
- Mar 13, 2026
- 
-
- 
-Webinar
-
- 
- ](/events/cancelled-urban-forestry-commission-budget-committee-meeting-03132026)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- 
-### Urban Forestry Commission: Maintenance Committee Meeting 03/18/2026
-
- 
-
- Wednesday
- | 
- Mar 18, 2026
- 
-
- 
-Webinar
-
- 
- ](/events/urban-forestry-commission-maintenance-committee-meeting-03182026)
- 
-
- 
-
- 
- [
- 
- 
 ### CBRE & CUBE Symposium
 
  
@@ -526,6 +476,50 @@ Tri-C Corporate College East
 
  
  ](/events/cbre-cube-symposium)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+### Public Notice - Principal Clerk
+
+ 
+
+ Tuesday
+ | 
+ Mar 24, 2026
+ 
+
+ 
+Public Auditorium Room LL08, 500 Lakeside Avenue, Cleveland, Ohio, 44114
+
+ 
+ ](/events/public-notice-principal-clerk)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+### Public Notice - Principal Clerk
+
+ 
+
+ Tuesday
+ | 
+ Mar 24, 2026
+ 
+
+ 
+Public Auditorium Room LL08, 500 Lakeside Avenue, Cleveland, Ohio, 44114
+
+ 
+ ](/events/public-notice-principal-clerk-0)
  
 
  

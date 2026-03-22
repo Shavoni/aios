@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/community-development"
-retrieved_at: "2026-03-15T03:09:56.270Z"
+retrieved_at: "2026-03-22T03:09:18.944Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Community Development | City of Cleveland Ohio"
@@ -33,15 +33,21 @@ knowledge_profile: "community_dev"
  
  
  
+ 
+- 
  [**](/)
  
  
+- 
  [City Hall](/city-hall)
  
  
+- 
  [Departments](/city-hall/departments)
  
- Community Development
+ 
+- Community Development
+ 
  
  
  

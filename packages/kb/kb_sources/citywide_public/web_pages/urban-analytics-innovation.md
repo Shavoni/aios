@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/innovation-technology/uai"
-retrieved_at: "2026-03-15T03:09:51.375Z"
+retrieved_at: "2026-03-22T03:09:14.197Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Urban Analytics & Innovation | City of Cleveland Ohio"
@@ -33,18 +33,25 @@ knowledge_profile: "uai"
  
  
  
+ 
+- 
  [**](/)
  
  
+- 
  [City Hall](/city-hall)
  
  
+- 
  [Departments](/city-hall/departments)
  
  
+- 
  [Department of Innovation & Technology](/city-hall/departments/innovation-technology)
  
- Urban Analytics & Innovation 
+ 
+- Urban Analytics & Innovation 
+ 
  
  
  
