@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall"
-retrieved_at: "2026-03-22T03:09:13.944Z"
+retrieved_at: "2026-03-29T03:11:08.864Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "City Hall | City of Cleveland Ohio"
@@ -263,7 +263,7 @@ Learn More
  
  City Council
  
-There are 17 members representing the 17 wards of the City of Cleveland. Each ward has approximately 25,000 people.
+There are 15 members representing the 15 wards of the City of Cleveland. Each ward has approximately 25,000 people.
 
  
 Learn More
@@ -393,31 +393,16 @@ Learn More
  
  
  
-### Independent Monitor’s 18th Semiannual Report Identifies Major Compliance Findings Under the Consent Decree
+Community Development
 
  
-Mar 19, 2026
+### Public Notice – NOI-RROF for CD Programming: Habitat Acquisition and Rehabilitation of 3109 W 100th St
 
  
- ](/news/independent-monitors-18th-semiannual-report-identifies-major-compliance-findings-under-0)
- 
+Mar 27, 2026
 
  
-
- 
- [
- 
- 
- 
- 
- 
-### Independent Monitor’s 18th Semiannual Report Identifies Major Compliance Findings Under the Consent Decree
-
- 
-Mar 19, 2026
-
- 
- ](/news/independent-monitors-18th-semiannual-report-identifies-major-compliance-findings-under-consent)
+ ](/news/public-notice-noi-rrof-cd-programming-habitat-acquisition-and-rehabilitation-3109-w-100th-st)
  
 
  
@@ -429,13 +414,34 @@ Mar 19, 2026
  
  
  
-### Cleveland Welcomes the 2026 St. Patrick’s Day Parade on March 17, 2026: Important Traffic and Safety Information for Attendees
+Burke Lakefront Airport
 
  
-Mar 16, 2026
+### A New Era for Cleveland's Lakefront: Burke Impact Studies Unveil Transformational Economic Opportunity for the Region
 
  
- ](/news/cleveland-welcomes-2026-st-patricks-day-parade-march-17-2026-important-traffic-and-safety)
+Mar 25, 2026
+
+ 
+ ](/news/new-era-clevelands-lakefront-burke-impact-studies-unveil-transformational-economic-opportunity)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
+ 
+### City of Cleveland to Host “Food Truck Rodeo” This Week – A One-Stop-Shop for Local Business Owners’ Permitting Needs
+
+ 
+Mar 23, 2026
+
+ 
+ ](/news/city-cleveland-host-food-truck-rodeo-week-one-stop-shop-local-business-owners-permitting-0)
  
 
  

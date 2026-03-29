@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/community-development"
-retrieved_at: "2026-03-22T03:09:18.944Z"
+retrieved_at: "2026-03-29T03:11:13.851Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Community Development | City of Cleveland Ohio"
@@ -360,6 +360,31 @@ In addition to her professional pursuits, Dannette is deeply rooted in Cleveland
 Community Development
 
  
+### Public Notice – NOI-RROF for CD Programming: Habitat Acquisition and Rehabilitation of 3109 W 100th St
+
+ 
+Mar 27, 2026
+
+ 
+ In accordance with requirements of the U.S. Department of Housing and Urban Development (HUD), the 2026 Acquisition and Rehabilitation of 3109 W 100th St by Habitat for Humanity is now available for public comment. The project has been reviewed and i...
+ 
+ 
+ ](/news/public-notice-noi-rrof-cd-programming-habitat-acquisition-and-rehabilitation-3109-w-100th-st)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
+ 
+ 
+Community Development
+
+ 
 ### Public Notice – NOI-RROF for CD Programming: Habitat Acquisition and Rehabilitation of 3264 W 114th St
 
  
@@ -420,31 +445,6 @@ Jan 29, 2026
  
  
  ](/news/public-combined-notice-notice-fonsi-and-noi-rrof-buckeye-apartments-over-retail)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- 
- 
-Community Development
-
- 
-### Public Notice – Notice of FONSI and NOI-RROF for Cleveland West Veterans
-
- 
-Sep 22, 2025
-
- 
- In accordance with requirements of the U.S. Department of Housing and Urban Development (HUD), the Ohio Department of Development, City of Cleveland, Cuyahoga County's Environmental Review of Cleveland West Veterans is now available for public commen...
- 
- 
- ](/news/public-notice-notice-fonsi-and-noi-rrof-cleveland-west-veterans)
  
 
  

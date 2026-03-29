@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/"
-retrieved_at: "2026-03-22T03:09:13.000Z"
+retrieved_at: "2026-03-29T03:11:08.019Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Home | City of Cleveland Ohio"
@@ -129,30 +129,13 @@ Cleveland is a city where entrepreneurial grit actually has a nice ring to it. W
  *
  
  
- Independent Monitor’s 18th Semiannual Report Identifies Major Compliance Findings Under the Consent Decree
+ Public Notice – NOI-RROF for CD Programming: Habitat Acquisition and Rehabilitation of 3109 W 100th St
 
  
-Mar 19, 2026
+Mar 27, 2026
 
  
- ](/news/independent-monitors-18th-semiannual-report-identifies-major-compliance-findings-under-0)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- Independent Monitor’s 18th Semiannual Report Identifies Major Compliance Findings Under the Consent Decree
-
- 
-Mar 19, 2026
-
- 
- ](/news/independent-monitors-18th-semiannual-report-identifies-major-compliance-findings-under-consent)
+ ](/news/public-notice-noi-rrof-cd-programming-habitat-acquisition-and-rehabilitation-3109-w-100th-st)
  
 
  
@@ -163,13 +146,30 @@ Mar 19, 2026
  
  
  
- Cleveland Welcomes the 2026 St. Patrick’s Day Parade on March 17, 2026: Important Traffic and Safety Information for Attendees
+ A New Era for Cleveland's Lakefront: Burke Impact Studies Unveil Transformational Economic Opportunity for the Region
 
  
-Mar 16, 2026
+Mar 25, 2026
 
  
- ](/news/cleveland-welcomes-2026-st-patricks-day-parade-march-17-2026-important-traffic-and-safety)
+ ](/news/new-era-clevelands-lakefront-burke-impact-studies-unveil-transformational-economic-opportunity)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
+ City of Cleveland to Host “Food Truck Rodeo” This Week – A One-Stop-Shop for Local Business Owners’ Permitting Needs
+
+ 
+Mar 23, 2026
+
+ 
+ ](/news/city-cleveland-host-food-truck-rodeo-week-one-stop-shop-local-business-owners-permitting-0)
  
 
  
@@ -462,20 +462,17 @@ For additional information, you may contact the City of Cleveland Citizen Suppor
  [
  
  
-### CBRE & CUBE Symposium
+### Civil Service Commission Meeting March 27, 2026
 
  
 
- Tuesday
+ Friday
  | 
- Mar 24, 2026
+ Mar 27, 2026
  
 
  
-Tri-C Corporate College East
-
- 
- ](/events/cbre-cube-symposium)
+ ](/events/civil-service-commission-meeting-march-27-2026)
  
 
  
@@ -484,20 +481,20 @@ Tri-C Corporate College East
  [
  
  
-### Public Notice - Principal Clerk
+### Fair Employment Wage Board
 
  
 
- Tuesday
+ Friday
  | 
- Mar 24, 2026
+ Mar 27, 2026
  
 
  
-Public Auditorium Room LL08, 500 Lakeside Avenue, Cleveland, Ohio, 44114
+1910 Carnegie Avenue (3rd Floor Conference Room)
 
  
- ](/events/public-notice-principal-clerk)
+ ](/events/fair-employment-wage-board-8)
  
 
  
@@ -506,20 +503,23 @@ Public Auditorium Room LL08, 500 Lakeside Avenue, Cleveland, Ohio, 44114
  [
  
  
-### Public Notice - Principal Clerk
+ 
+ 
+ 
+### RESCHEDULED - Urban Forestry Commission: Budget Committee Meeting 04/03/2026
 
  
 
- Tuesday
+ Friday
  | 
- Mar 24, 2026
+ Apr 03, 2026
  
 
  
-Public Auditorium Room LL08, 500 Lakeside Avenue, Cleveland, Ohio, 44114
+Webinar
 
  
- ](/events/public-notice-principal-clerk-0)
+ ](/events/rescheduled-urban-forestry-commission-budget-committee-meeting-04032026)
  
 
  

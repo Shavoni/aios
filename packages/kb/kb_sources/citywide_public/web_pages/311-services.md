@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/311"
-retrieved_at: "2026-03-22T03:09:14.996Z"
+retrieved_at: "2026-03-29T03:11:09.843Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "311 | City of Cleveland Ohio"
@@ -200,6 +200,51 @@ Current city updates to keep residents informed and engaged.
  
  
  
+### Construction Permitting is Going Digital!
+
+ 
+#### Beginning on April 13th, 2026, we will no longer accept paper plans or paper applications.
+
+- Submit applications in the [Permit Portal](https://coc-prod-publicportal.accela.com/core/index).
+- Upload plans and supporting documentation in the Digital Plan room.
+- Download permits and stamped plans.
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+### Temporary 1st Police District Power Shutdown 
+
+ 
+#### March 26th 6am- March 27th 6am
+
+The 1st District station will be without electrical power. During this time, residents who need to file a police report are asked to request an officer to respond to their location.
+
+ 
+
+If an in-person visit is necessary, residents should go to the **2nd Police District at 3481 Fulton**.
+
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 ### City of Cleveland's Electric Aggregation Program
 
  
@@ -214,28 +259,6 @@ If you receive a letter, you are in the program. CCA programs are not mandatory;
 For more information, call 1-888-733-8512 or [visit their web page](/city-hall/office-mayor/sustainability/programs-resources/sopec).
 
  
-
- 
- 
- 
- 
-
- 
- 
- 
- 
- 
- 
- 
- 
-### New Member of the 311 Team Coming
-
- 
-You might catch a glimpse of our new 311 City Support Vehicle. It will help us spot and address issues before complaints need to be made.
-
- 
-
-More information to come as the pilot program officially rolls out...
 
  
  
