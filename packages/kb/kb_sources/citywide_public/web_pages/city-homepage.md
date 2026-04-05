@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/"
-retrieved_at: "2026-03-29T03:11:08.019Z"
+retrieved_at: "2026-04-05T03:10:22.075Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Home | City of Cleveland Ohio"
@@ -129,6 +129,40 @@ Cleveland is a city where entrepreneurial grit actually has a nice ring to it. W
  *
  
  
+ City of Cleveland Launches Financial Empowerment Blueprint to Advance Economic Stability and Wealth-Building for Residents
+
+ 
+Apr 02, 2026
+
+ 
+ ](/news/city-cleveland-launches-financial-empowerment-blueprint-advance-economic-stability-and-wealth)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
+ City of Cleveland and Kent State University Launch Initiative to Strengthen Police-Community Trust
+
+ 
+Apr 02, 2026
+
+ 
+ ](/news/city-cleveland-and-kent-state-university-launch-initiative-strengthen-police-community-trust)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
  Public Notice – NOI-RROF for CD Programming: Habitat Acquisition and Rehabilitation of 3109 W 100th St
 
  
@@ -136,40 +170,6 @@ Mar 27, 2026
 
  
  ](/news/public-notice-noi-rrof-cd-programming-habitat-acquisition-and-rehabilitation-3109-w-100th-st)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- A New Era for Cleveland's Lakefront: Burke Impact Studies Unveil Transformational Economic Opportunity for the Region
-
- 
-Mar 25, 2026
-
- 
- ](/news/new-era-clevelands-lakefront-burke-impact-studies-unveil-transformational-economic-opportunity)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- City of Cleveland to Host “Food Truck Rodeo” This Week – A One-Stop-Shop for Local Business Owners’ Permitting Needs
-
- 
-Mar 23, 2026
-
- 
- ](/news/city-cleveland-host-food-truck-rodeo-week-one-stop-shop-local-business-owners-permitting-0)
  
 
  
@@ -462,47 +462,6 @@ For additional information, you may contact the City of Cleveland Citizen Suppor
  [
  
  
-### Civil Service Commission Meeting March 27, 2026
-
- 
-
- Friday
- | 
- Mar 27, 2026
- 
-
- 
- ](/events/civil-service-commission-meeting-march-27-2026)
- 
-
- 
-
- 
- [
- 
- 
-### Fair Employment Wage Board
-
- 
-
- Friday
- | 
- Mar 27, 2026
- 
-
- 
-1910 Carnegie Avenue (3rd Floor Conference Room)
-
- 
- ](/events/fair-employment-wage-board-8)
- 
-
- 
-
- 
- [
- 
- 
  
  
  
@@ -520,6 +479,50 @@ Webinar
 
  
  ](/events/rescheduled-urban-forestry-commission-budget-committee-meeting-04032026)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+### Public Notice - CSR - Call Center
+
+ 
+
+ Monday
+ | 
+ Apr 06, 2026
+ 
+
+ 
+Public Auditorium Room LL08, 500 Lakeside Avenue, Cleveland, Ohio, 44114
+
+ 
+ ](/events/public-notice-csr-call-center)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+### Public Notice - Industrial Maintenance Technician
+
+ 
+
+ Tuesday
+ | 
+ Apr 07, 2026
+ 
+
+ 
+4901 South Marginal Road, Cleveland Ohio
+
+ 
+ ](/events/public-notice-industrial-maintenance-technician)
  
 
  

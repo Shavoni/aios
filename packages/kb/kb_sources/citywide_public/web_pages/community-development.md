@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/community-development"
-retrieved_at: "2026-03-29T03:11:13.851Z"
+retrieved_at: "2026-04-05T03:10:28.013Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Community Development | City of Cleveland Ohio"
@@ -131,11 +131,11 @@ Arin Miller-Tait - Director of Community Development
 ## Department of Community Development
 
  
-The Department of Community Development plays a vital role in shaping the future of the city of Cleveland, working with partners in the nonprofit, government, and philanthropy sectors to support the growth and vibrancy of our communities. 
+The Department of Community Development plays a vital role in shaping the future of the city of Cleveland, working with partners in the nonprofit, government, and philanthropy sectors to support the growth and vibrancy of our communities.
 
 Guided by our core values – collaboration, commitment, compassion, equity, and service – the Department envisions a Cleveland where stakeholders are empowered to build the pathway to equity. This vision is realized by creating quality housing and vibrant neighborhoods that serve as the foundation for generational wealth and community prosperity.
 
-With programs ranging from the renovation of business storefronts to the management of the lead hazard reduction in all projects, the Department seeks to make Cleveland a better place to live, work, and invest. 
+With programs ranging from the renovation of business storefronts to the management of the lead hazard reduction in all projects, the Department seeks to make Cleveland a better place to live, work, and invest.
 
  
  
@@ -152,33 +152,17 @@ With programs ranging from the renovation of business storefronts to the managem
  
  
  
-## Our Values
-
- 
-Collaboration, Commitment, Compassion, Equity and Service
-
- 
- 
- 
- 
- 
- 
-
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
 ## Our Vision
 
  
 The Department of Community Development envisions a Cleveland where stakeholders are empowered to build the pathway to equity. This vision is realized by creating quality housing and vibrant neighborhoods that serve as the foundation for generational wealth and community prosperity.
 
+**& Values**
+
+Collaboration, Commitment, Compassion, Equity and Service
+
+ 
+
  
  
  
@@ -191,20 +175,173 @@ The Department of Community Development envisions a Cleveland where stakeholders
  
  
  
-## Resource Links
-
- 
-[Department Grant and Program Online Submission Portal](https://portal.neighborlysoftware.com/clevelandoh/Participant)
-
-[2023 CDBG Council Hearing Budget Book](#)
-
-[Storefront Renovation Program](/city-hall/departments/community-development/programs-services/storefront-renovation-program)
+## Programs & Services
 
  
  
  
  
+ 
+ [
+ 
+ 
+ Asset Redevelopment
+ 
+Learn More
 
+ 
+ 
+ ](/city-hall/departments/community-development/programs-services/asset-redevelopment)
+ 
+ 
+ 
+ [
+ 
+ 
+ Cleveland Land Bank
+ 
+Learn More
+
+ 
+ 
+ ](/city-hall/departments/community-development/programs-services/cleveland-land-bank)
+ 
+ 
+ 
+ [
+ 
+ 
+ Compliance Review
+ 
+Learn More
+
+ 
+ 
+ ](/city-hall/departments/community-development/programs-services/compliance-review)
+ 
+ 
+ 
+ [
+ 
+ 
+ Consumer Affairs
+ 
+Learn More
+
+ 
+ 
+ ](/city-hall/departments/community-development/programs-services/consumer-affairs)
+ 
+ 
+ 
+ [
+ 
+ 
+ Fair Housing
+ 
+Learn More
+
+ 
+ 
+ ](/city-hall/departments/community-development/programs-services/fair-housing)
+ 
+ 
+ 
+ [
+ 
+ 
+ Financial Empowerment
+ 
+Learn More
+
+ 
+ 
+ ](/city-hall/departments/community-development/programs-services/financial-empowerment)
+ 
+ 
+ 
+ [
+ 
+ 
+ Home Repair and Maintenance
+ 
+Learn More
+
+ 
+ 
+ ](/city-hall/departments/community-development/programs-services/home-repair)
+ 
+ 
+ 
+ [
+ 
+ 
+ Housing Trust Fund
+ 
+Learn More
+
+ 
+ 
+ ](/city-hall/departments/community-development/programs-services/housing-trust-fund)
+ 
+ 
+ 
+ [
+ 
+ 
+ Lead Hazard Control
+ 
+Learn More
+
+ 
+ 
+ ](/city-hall/departments/community-development/programs-services/lead-hazard-control)
+ 
+ 
+ 
+ [
+ 
+ 
+ Public Grant Programs
+ 
+Learn More
+
+ 
+ 
+ ](/city-hall/departments/community-development/programs-services/public-grant-programs)
+ 
+ 
+ 
+ [
+ 
+ 
+ Residential Tax Abatement Program
+ 
+Learn More
+
+ 
+ 
+ ](/city-hall/departments/community-development/programs-services/tax-abatement)
+ 
+ 
+ 
+ [
+ 
+ 
+ Storefront Renovation Program
+ 
+Learn More
+
+ 
+ 
+ ](/city-hall/departments/community-development/programs-services/storefront-renovation-program)
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  
  
  
@@ -227,7 +364,7 @@ The Department of Community Development envisions a Cleveland where stakeholders
  *
  
  
- Interim Director, Joy Anderson
+ Director, Arin Miller-Tait
  
  
  
@@ -235,63 +372,34 @@ The Department of Community Development envisions a Cleveland where stakeholders
  
  
  
-Joy has over 25 years’ experience in public sector governance, community planning, project management, grantmaking and philanthropy. Before joining the Department of Community Development’s management team, she was the Civic Affairs Program Officer at Nord Family Foundation in Lorain County, Ohio. 
-
-Joy has a Master’s of Planning degree from the University of Cincinnati’s College of Design, Art, Architecture and Planning, and a Bachelor of Arts in Sociology.
-
- 
- 
- 
- 
-
- 
- 
- 
-### 
- 
- **
- 
- 
- Bureau Chief for Neighborhood Revitalization, Trudy Andrzejewski
- 
- 
- 
-
- 
- 
- 
-Trudy Andrzejewski brings 12 years of professional experience in the government and non-profit sectors. She has been with the City of Cleveland for 6 years, holding key positions in the Mayor’s Office and the Department of Community Development (CD), where she played a central role in establishing CD’s Asset Redevelopment Office. 
-
-Before joining the City, she managed residential rehabilitation loan projects with the Cleveland Restoration Society’s Heritage Home Program. She worked in Historic Compliance and Placemaking at the Presidio of San Francisco. 
-
-Trudy holds a B.A. in American Studies from Kenyon College and a Master of Preservation Studies from the Tulane School of Architecture in New Orleans. 
-
-She has earned professional certifications in Real Estate Development from Cornell University and Historic Real Estate Finance from GrowAmerica (formerly NDC). 
-
- 
- 
- 
- 
-
- 
- 
- 
-### 
- 
- **
- 
- 
- Bureau Chief for Community Programming, Arin Miller-Tait
- 
- 
- 
-
- 
- 
- 
-Arin is a lifelong resident of Greater Cleveland, with over 20 years of experience in education, nonprofit, and community institutions. She served as a classroom teacher and school administrator in both independent schools and the Cleveland Metropolitan School District. With a focus on education, workforce training, and arts and culture programming, Arin has served organizations across the city, most recently as Senior Director of Community Education at University Circle Inc. 
+Arin is a lifelong resident of Greater Cleveland, with over 20 years of experience in education, nonprofit, and community institutions. She served as a classroom teacher and school administrator in both independent schools and the Cleveland Metropolitan School District. With a focus on education, workforce training, and arts and culture programming, Arin has served organizations across the city, most recently as Senior Director of Community Education at University Circle Inc.
 
 She holds a Bachelor of Arts in Urban Studies from Cleveland State University and a Master of Arts in Education from Ursuline College.
+
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+### 
+ 
+ **
+ 
+ 
+ Bureau Chief for Enterprise Operations, Joy Anderson
+ 
+ 
+ 
+
+ 
+ 
+ 
+Joy has over 25 years’ experience in public sector governance, community planning, project management, grantmaking and philanthropy. Before joining the Department of Community Development’s management team, she was the Civic Affairs Program Officer at Nord Family Foundation in Lorain County, Ohio.
+
+Joy has a Master’s of Planning degree from the University of Cincinnati’s College of Design, Art, Architecture and Planning, and a Bachelor of Arts in Sociology.
 
  
  
@@ -314,9 +422,9 @@ She holds a Bachelor of Arts in Urban Studies from Cleveland State University an
  
  
  
-Dannette Davis is a seasoned professional with a robust program development and operational management background. Her professional tenure encompasses notable positions such as Middle Neighborhood Project Director for the City of Cleveland and Neighborhood Development Specialist for the City of Lorain. 
+Dannette Davis is a seasoned professional with a robust program development and operational management background. Her professional tenure encompasses notable positions such as Middle Neighborhood Project Director for the City of Cleveland and Neighborhood Development Specialist for the City of Lorain.
 
-Dannette is particularly adept in community engagement, housing, and regulatory compliance. Her expertise extends to multifamily housing development, budget management, program implementation, and renovation/construction rehabs, all complemented by a proven record of accomplishment in her field. 
+Dannette is particularly adept in community engagement, housing, and regulatory compliance. Her expertise extends to multifamily housing development, budget management, program implementation, and renovation/construction rehabs, all complemented by a proven record of accomplishment in her field.
 
 In addition to her professional pursuits, Dannette is deeply rooted in Cleveland, having spent her upbringing on the city's South East Side. Her commitment to the community is exemplified through her voluntary service as a servant leader at a Battered Women’s Shelter and with the Red Cross. Despite her extensive engagements, Dannette remains devoted to Cleveland and resides there with her two children.
 
@@ -462,95 +570,6 @@ Jan 29, 2026
  
  
  
- 
-## FAQs
-
- 
- 
- 
- 
- 
- 
- 
- 
- 
-### 
- 
- *
- 
- 
- Is a contractor required to be licensed, bonded and insured to work in the City of Cleveland?
- 
- 
- 
-
- 
- 
- 
-Yes! You can verify if a contractor is licensed, bonded, and insured to do work in Cleveland by calling the Department of Building & Housing at 216.664.2910.
-
- 
- 
- 
- 
-
- 
- 
- 
-### 
- 
- **
- 
- 
- Can I check my property tax payment online?
- 
- 
- 
-
- 
- 
- 
-Yes, there is an online app on the [Cuyahoga County Fiscal Officer's website](https://www.cuyahogacounty.us/fiscal-officer).
-
- 
- 
- 
- 
-
- 
- 
- 
-### 
- 
- **
- 
- 
- What is “fair housing?”
- 
- 
- 
-
- 
- 
- 
-Fair housing is a right, not a privilege. It is your right under the law to compete equally for housing, without regard to race, color, national origin, religion, sex, disability or family status.
-
- 
- 
- 
- 
-
- 
- 
- 
- 
- 
-
- 
- 
- 
- 
- 
 ## Legal Notices
 
  
@@ -612,7 +631,7 @@ Fair housing is a right, not a privilege. It is your right under the law to comp
  
  
  
- [** Call Department](tel:(216) 664-4000)
+ [* Call Department](tel:(216) 664-4000)
  [** Directions](https://www.google.com/maps/dir/?api=1&destination=601+Lakeside+Ave. Room+320 Cleveland,+Ohio+44114)
  
  

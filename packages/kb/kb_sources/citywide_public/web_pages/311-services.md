@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/311"
-retrieved_at: "2026-03-29T03:11:09.843Z"
+retrieved_at: "2026-04-05T03:10:24.011Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "311 | City of Cleveland Ohio"
@@ -200,14 +200,11 @@ Current city updates to keep residents informed and engaged.
  
  
  
-### Construction Permitting is Going Digital!
+### No Trash Delay this Friday
 
  
-#### Beginning on April 13th, 2026, we will no longer accept paper plans or paper applications.
+There is no trash collection delay for the Good Friday holiday. Your pickup will take place as scheduled. Have a nice weekend!
 
-- Submit applications in the [Permit Portal](https://coc-prod-publicportal.accela.com/core/index).
-- Upload plans and supporting documentation in the Digital Plan room.
-- Download permits and stamped plans.
  
  
  
@@ -245,21 +242,14 @@ If an in-person visit is necessary, residents should go to the **2nd Police Dist
  
  
  
-### City of Cleveland's Electric Aggregation Program
+### Construction Permitting is Going Digital!
 
  
-Aggregation allows the City to combine or aggregate the electricity supply for residential and small businesses into one bulk amount. The benefit of bulk purchasing is that this method is more likely to provide a better electricity product at a more stable price than residents could achieve on their own.
+#### Beginning on April 13th, 2026, we will no longer accept paper plans or paper applications.
 
- 
-
-If you receive a letter, you are in the program. CCA programs are not mandatory; residents can opt out if they wish. This is an optional service provided by the City to its residents.
-
- 
-
-For more information, call 1-888-733-8512 or [visit their web page](/city-hall/office-mayor/sustainability/programs-resources/sopec).
-
- 
-
+- Submit applications in the [Permit Portal](https://coc-prod-publicportal.accela.com/core/index).
+- Upload plans and supporting documentation in the Digital Plan room.
+- Download permits and stamped plans.
  
  
  

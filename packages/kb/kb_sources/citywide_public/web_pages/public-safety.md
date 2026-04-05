@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/public-safety"
-retrieved_at: "2026-03-29T03:11:11.136Z"
+retrieved_at: "2026-04-05T03:10:25.190Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Department of Public Safety | City of Cleveland Ohio"

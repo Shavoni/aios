@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall"
-retrieved_at: "2026-03-29T03:11:08.864Z"
+retrieved_at: "2026-04-05T03:10:23.015Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "City Hall | City of Cleveland Ohio"
@@ -393,6 +393,42 @@ Learn More
  
  
  
+### City of Cleveland Launches Financial Empowerment Blueprint to Advance Economic Stability and Wealth-Building for Residents
+
+ 
+Apr 02, 2026
+
+ 
+ ](/news/city-cleveland-launches-financial-empowerment-blueprint-advance-economic-stability-and-wealth)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
+ 
+### City of Cleveland and Kent State University Launch Initiative to Strengthen Police-Community Trust
+
+ 
+Apr 02, 2026
+
+ 
+ ](/news/city-cleveland-and-kent-state-university-launch-initiative-strengthen-police-community-trust)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
+ 
 Community Development
 
  
@@ -403,45 +439,6 @@ Mar 27, 2026
 
  
  ](/news/public-notice-noi-rrof-cd-programming-habitat-acquisition-and-rehabilitation-3109-w-100th-st)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- 
-Burke Lakefront Airport
-
- 
-### A New Era for Cleveland's Lakefront: Burke Impact Studies Unveil Transformational Economic Opportunity for the Region
-
- 
-Mar 25, 2026
-
- 
- ](/news/new-era-clevelands-lakefront-burke-impact-studies-unveil-transformational-economic-opportunity)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- 
-### City of Cleveland to Host “Food Truck Rodeo” This Week – A One-Stop-Shop for Local Business Owners’ Permitting Needs
-
- 
-Mar 23, 2026
-
- 
- ](/news/city-cleveland-host-food-truck-rodeo-week-one-stop-shop-local-business-owners-permitting-0)
  
 
  
