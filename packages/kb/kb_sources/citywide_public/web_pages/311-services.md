@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/311"
-retrieved_at: "2026-04-05T03:10:24.011Z"
+retrieved_at: "2026-04-12T03:11:21.452Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "311 | City of Cleveland Ohio"
@@ -192,48 +192,6 @@ Current city updates to keep residents informed and engaged.
  
  
  
- 
- 
- 
- 
- 
- 
- 
- 
-### No Trash Delay this Friday
-
- 
-There is no trash collection delay for the Good Friday holiday. Your pickup will take place as scheduled. Have a nice weekend!
-
- 
- 
- 
- 
-
- 
- 
- 
- 
- 
- 
- 
- 
-### Temporary 1st Police District Power Shutdown 
-
- 
-#### March 26th 6am- March 27th 6am
-
-The 1st District station will be without electrical power. During this time, residents who need to file a police report are asked to request an officer to respond to their location.
-
- 
-
-If an in-person visit is necessary, residents should go to the **2nd Police District at 3481 Fulton**.
-
- 
- 
- 
- 
-
  
  
  

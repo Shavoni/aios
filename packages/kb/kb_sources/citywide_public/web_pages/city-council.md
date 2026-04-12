@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/city-council"
-retrieved_at: "2026-04-05T03:10:25.001Z"
+retrieved_at: "2026-04-12T03:11:22.446Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "City Council | City of Cleveland Ohio"

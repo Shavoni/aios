@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/"
-retrieved_at: "2026-04-05T03:10:22.075Z"
+retrieved_at: "2026-04-12T03:11:19.447Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Home | City of Cleveland Ohio"
@@ -462,23 +462,17 @@ For additional information, you may contact the City of Cleveland Citizen Suppor
  [
  
  
- 
- 
- 
-### RESCHEDULED - Urban Forestry Commission: Budget Committee Meeting 04/03/2026
+### Civil Service Commission Meeting April 10, 2026
 
  
 
  Friday
  | 
- Apr 03, 2026
+ Apr 10, 2026
  
 
  
-Webinar
-
- 
- ](/events/rescheduled-urban-forestry-commission-budget-committee-meeting-04032026)
+ ](/events/civil-service-commission-meeting-april-10-2026)
  
 
  
@@ -487,20 +481,20 @@ Webinar
  [
  
  
-### Public Notice - CSR - Call Center
+### MHRAC | Full Meeting
 
  
 
- Monday
+ Friday
  | 
- Apr 06, 2026
+ Apr 10, 2026
  
 
  
-Public Auditorium Room LL08, 500 Lakeside Avenue, Cleveland, Ohio, 44114
+https://us06web.zoom.us/j/85105591368
 
  
- ](/events/public-notice-csr-call-center)
+ ](/events/mhrac-full-meeting)
  
 
  
@@ -509,20 +503,23 @@ Public Auditorium Room LL08, 500 Lakeside Avenue, Cleveland, Ohio, 44114
  [
  
  
-### Public Notice - Industrial Maintenance Technician
+ 
+ 
+ 
+### Urban Forestry Commission - Spring 2026 Public Meeting
 
  
 
  Tuesday
  | 
- Apr 07, 2026
+ Apr 14, 2026
  
 
  
-4901 South Marginal Road, Cleveland Ohio
+Cleveland City Hall | 601 Lakeside Ave., Room 514, Cleveland, OH 44114
 
  
- ](/events/public-notice-industrial-maintenance-technician)
+ ](/events/urban-forestry-commission-spring-2026-public-meeting)
  
 
  
