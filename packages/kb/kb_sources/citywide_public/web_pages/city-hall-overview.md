@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall"
-retrieved_at: "2026-04-12T03:11:20.474Z"
+retrieved_at: "2026-04-19T03:10:57.255Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "City Hall | City of Cleveland Ohio"
@@ -410,6 +410,9 @@ Apr 02, 2026
  
  
  
+ 
+Police Accountability Team
+
  
 ### City of Cleveland and Kent State University Launch Initiative to Strengthen Police-Community Trust
 

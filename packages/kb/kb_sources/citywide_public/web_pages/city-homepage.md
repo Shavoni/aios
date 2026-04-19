@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/"
-retrieved_at: "2026-04-12T03:11:19.447Z"
+retrieved_at: "2026-04-19T03:10:56.102Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Home | City of Cleveland Ohio"
@@ -462,17 +462,20 @@ For additional information, you may contact the City of Cleveland Citizen Suppor
  [
  
  
-### Civil Service Commission Meeting April 10, 2026
+### Lead Screening and Testing Commission
 
  
 
- Friday
+ Thursday
  | 
- Apr 10, 2026
+ Apr 23, 2026
  
 
  
- ](/events/civil-service-commission-meeting-april-10-2026)
+Virtual meeting on Zoom
+
+ 
+ ](/events/lead-screening-and-testing-commission)
  
 
  
@@ -481,20 +484,20 @@ For additional information, you may contact the City of Cleveland Citizen Suppor
  [
  
  
-### MHRAC | Full Meeting
+### Commission on Black Women and Girls - Meeting of the Commission
 
  
 
- Friday
+ Thursday
  | 
- Apr 10, 2026
+ Apr 23, 2026
  
 
  
-https://us06web.zoom.us/j/85105591368
+Bridge City Church, 3381 Fulton Road, Cleveland, OH 44109
 
  
- ](/events/mhrac-full-meeting)
+ ](/events/commission-black-women-and-girls-meeting-commission-22)
  
 
  
@@ -503,23 +506,17 @@ https://us06web.zoom.us/j/85105591368
  [
  
  
- 
- 
- 
-### Urban Forestry Commission - Spring 2026 Public Meeting
+### Civil Service Commission Meeting April 24, 2026
 
  
 
- Tuesday
+ Friday
  | 
- Apr 14, 2026
+ Apr 24, 2026
  
 
  
-Cleveland City Hall | 601 Lakeside Ave., Room 514, Cleveland, OH 44114
-
- 
- ](/events/urban-forestry-commission-spring-2026-public-meeting)
+ ](/events/civil-service-commission-meeting-april-24-2026)
  
 
  
@@ -557,7 +554,7 @@ Justin M. Bibb, Cleveland's 58th mayor, is driving transformative change to mode
 
 Mayor Bibb is reconnecting Cleveland to its waterfronts with over $150 million for Lake Erie shoreline improvements and the $5 billion Shore-to-Core-to-Shore plan, fostering economic development and access. Nationally, he leads as president of the Democratic Mayors Association and co-chairs America is All In, promoting climate action and equity. Bibb is also a national co-chair of Mayors Against Illegal Guns. 
 
-[Download Full Bio](/sites/clevelandohio/files/2025%20MJB%20Full%20Bio1.pdf) [Download Short Bio](/sites/clevelandohio/files/2025%20MJB%20Short%20Bio_updated.pdf)
+[Read Mayor Bibb's Bio](/mayor/bio)
 
  
  

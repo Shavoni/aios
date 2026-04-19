@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/finance"
-retrieved_at: "2026-04-12T03:11:24.438Z"
+retrieved_at: "2026-04-19T03:11:01.251Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Finance | City of Cleveland Ohio"
@@ -85,6 +85,8 @@ Paul Barrett - Chief Finance Officer
 
  [Forms & Resources](/city-hall/departments/finance/forms-resources)
 
+ [Archived Forms & Resources](/city-hall/departments/finance/archived-forms-resources)
+
  
 ### Menu
 
@@ -101,6 +103,8 @@ Paul Barrett - Chief Finance Officer
  [Request for Qualifications/Proposal](/city-hall/departments/finance/request-qualificationsproposal)
 
  [Forms & Resources](/city-hall/departments/finance/forms-resources)
+
+ [Archived Forms & Resources](/city-hall/departments/finance/archived-forms-resources)
 
  
  
