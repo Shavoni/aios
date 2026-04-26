@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/public-safety"
-retrieved_at: "2026-04-19T03:10:59.289Z"
+retrieved_at: "2026-04-26T03:12:06.922Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Department of Public Safety | City of Cleveland Ohio"
@@ -79,6 +79,8 @@ Dornat A. Drummond - Chief Director of Public Safety
 
  [Divisions](/city-hall/departments/public-safety/divisions)
 
+ [Public Safety Careers](/city-hall/departments/public-safety/public-safety-careers)
+
  [Police Recruitment Process](/city-hall/departments/public-safety/police-recruitment-process)
 
  [Office of the Inspector General](/city-hall/departments/public-safety/oig)
@@ -93,6 +95,8 @@ Dornat A. Drummond - Chief Director of Public Safety
  
 
  [Divisions](/city-hall/departments/public-safety/divisions)
+
+ [Public Safety Careers](/city-hall/departments/public-safety/public-safety-careers)
 
  [Police Recruitment Process](/city-hall/departments/public-safety/police-recruitment-process)
 
@@ -472,6 +476,9 @@ The aforementioned Civil Service Rules are hereby waived either in their entiret
  
  
  Last Name *
+ 
+ 
+ 
  
  
  

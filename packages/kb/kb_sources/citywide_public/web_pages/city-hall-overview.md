@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall"
-retrieved_at: "2026-04-19T03:10:57.255Z"
+retrieved_at: "2026-04-26T03:12:04.875Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "City Hall | City of Cleveland Ohio"
@@ -393,6 +393,24 @@ Learn More
  
  
  
+### No Evidence of Process Bias in Cleveland Division of Police 2024 Stop, Search, and Seizure Data: Third-Party Firm Sigma Squared Confirms 
+
+ 
+Apr 21, 2026
+
+ 
+ ](/news/no-evidence-process-bias-cleveland-division-police-2024-stop-search-and-seizure-data-third)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
+ 
 ### City of Cleveland Launches Financial Empowerment Blueprint to Advance Economic Stability and Wealth-Building for Residents
 
  
@@ -421,27 +439,6 @@ Apr 02, 2026
 
  
  ](/news/city-cleveland-and-kent-state-university-launch-initiative-strengthen-police-community-trust)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- 
-Community Development
-
- 
-### Public Notice – NOI-RROF for CD Programming: Habitat Acquisition and Rehabilitation of 3109 W 100th St
-
- 
-Mar 27, 2026
-
- 
- ](/news/public-notice-noi-rrof-cd-programming-habitat-acquisition-and-rehabilitation-3109-w-100th-st)
  
 
  

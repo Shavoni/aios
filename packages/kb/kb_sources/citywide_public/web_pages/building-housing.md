@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/building-housing"
-retrieved_at: "2026-04-19T03:11:01.345Z"
+retrieved_at: "2026-04-26T03:12:08.915Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Department of Building & Housing | City of Cleveland Ohio"

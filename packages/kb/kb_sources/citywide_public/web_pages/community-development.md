@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/community-development"
-retrieved_at: "2026-04-19T03:11:02.102Z"
+retrieved_at: "2026-04-26T03:12:10.018Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Community Development | City of Cleveland Ohio"
@@ -77,10 +77,6 @@ Arin Miller-Tait - Director of Community Development
  
  
 
- [Bureaus](/city-hall/departments/community-development/bureaus)
-
- [Programs & Services](/city-hall/departments/community-development/programs-services)
-
  [Forms & Publications](/city-hall/departments/community-development/forms-publications)
 
  [GIS & Data](/city-hall/departments/community-development/gis-data)
@@ -93,10 +89,6 @@ Arin Miller-Tait - Director of Community Development
  Menu
  ](#)
  
-
- [Bureaus](/city-hall/departments/community-development/bureaus)
-
- [Programs & Services](/city-hall/departments/community-development/programs-services)
 
  [Forms & Publications](/city-hall/departments/community-development/forms-publications)
 
@@ -211,6 +203,19 @@ Learn More
  [
  
  
+ Community Engagement
+ 
+Learn More
+
+ 
+ 
+ ](/city-hall/departments/community-development/programs-services/community-engagement)
+ 
+ 
+ 
+ [
+ 
+ 
  Compliance Review
  
 Learn More
@@ -296,6 +301,19 @@ Learn More
  
  
  ](/city-hall/departments/community-development/programs-services/lead-hazard-control)
+ 
+ 
+ 
+ [
+ 
+ 
+ Middle Neighborhood Programs
+ 
+Learn More
+
+ 
+ 
+ ](/city-hall/departments/community-development/bureaus/community/middle-neighborhoods)
  
  
  
@@ -570,29 +588,119 @@ Jan 29, 2026
  
  
  
+ 
 ## Legal Notices
 
  
-- [September 5, 2025 - Legal Notice - NORA Village](/sites/clevelandohio/files/cd/legal/Legal%20Notice%20-%20NORA%20Village.pdf)
-- [September 2, 2025 - FONSI-and-RROF Joint Public Notice - Depot on Detroit](/sites/clevelandohio/files/cd/legal/FONSI-and-RROF%20Joint%20Public%20Notice%20-%20Depot%20on%20Detroit.pdf)
-- [August 25, 2025 - Joint Combined Notice-City-ODOD- Hough Senior Independent Living](/sites/clevelandohio/files/cd/legal/Joint%20Combined%20Notice-City-ODOD-%20Hough%20Senior%20Independent%20Living_Final_City.pdf)
-- [August 19, 2025 - Legal Notice - 2025 Habitat Acquisition-Rehab 13628 Belleshire Ave FONSI NOI-RROF](/sites/clevelandohio/files/cd/legal/Legal%20Notice%20-%202025%20Habitat%20Acquisition-Rehab%2013628%20Belleshire%20Ave%20FONSI%20NOI-RROF.pdf)
-- [August 18, 2025 - FONSI-and-RROF - Gateway 66 Final Version for City and County](/sites/clevelandohio/files/cd/legal/FONSI-and-RROF%20-%20Gateway%2066%20Final%20Version%20for%20City%20and%20County.pdf)
-- [August 11, 2025 - Fairfax Innovation Square Phase II Public Notice](/sites/clevelandohio/files/cd/legal/Fairfax%20Innovation%20Square%20Phase%20II%20Public%20Notice.pdf)
-- [July 11, 2025 - 2025 CMHA Radon Mitigation FONSI NOI-RROF](/sites/clevelandohio/files/cd/legal/Final%20Legal%20Notice%20-%202025%20CMHA%20Radon%20Mitigation%20FONSI%20NOI-RROF.pdf)
-- [July 11, 2025 - 2025 CMHA Habitat Tiered Review NOI-RROF](/sites/clevelandohio/files/cd/legal/Final%20Legal%20Notice%20-%202025%20CMHA%20Habitat%20Tiered%20Review%20NOI-RROF.pdf)
-- [May 7, 2025 - Notice of Intent to Request Release of Funds for Tiered Projects and Programs](/sites/clevelandohio/files/cd/legal/2025%20Annual%20Tier%20I%20Public%20Notice%20PD%20C10991232-01.pdf)
-- [July 24, 2024 - Consolidated Annual Performance Evaluation Report (CAPER) - Notification of Availability for Public Review](/sites/clevelandohio/files/cd/Caper%202023%20Public%20Notice%20(Final)07242024.pdf)
-- [June 21, 2024 City of Cleveland DRAFT application to the U.S. Department of Housing and Urban Development’s Preservation and Reinvestment Initiative for Community Enhancement (PRICE) Main Program](/sites/clevelandohio/files/Community%20Development/Legal%20Notices/Cleveland%20Draft%20PRICE%20application.pdf)
-- [June 20, 2024 Intent to Apply for the U.S. Department of Housing and Urban Development’s Preservation and Reinvestment Initiative for Community Enhancement (PRICE) Main Program](/sites/clevelandohio/files/Community%20Development/Legal%20Notices/Public%20Notice-PRICE.pdf)
-- [April 11, 2024 Notice of Professional Services for Housing Rehabilitation, Housing Repair, and Lead Hazard Mitigation Implementation Vendor RFP Due Date Extension](/sites/clevelandohio/files/rfp/2024/housing-rehab/Public%20Notice-%202024%20Implementation%20Vendor%20RFP%20(002)%20.%20Extension.pdf)
-- [March 8, 2024 Notice of Finding of No Significant Impact and Notice of Intent to Request Release of Funds](/sites/clevelandohio/files/Community%20Development/Legal%20Notices/HitchcockPublicNotice.pdf)
-- [February 9, 2024 Notice of Finding of No Significant Impact](/sites/clevelandohio/files/Community%20Development/Legal%20Notices/Public%20Posting%2089th%20Rising.pdf)
-- [November 29, 2023 Notice of Finding of No Significant Impact and Notice of Intent to Request Release of Funds](/sites/clevelandohio/files/C10794943-01.PDF)
-- [November 10, 2023 Notice of Intent to Request Release of Funds](/sites/clevelandohio/files/Community%20Development/Legal%20Notices/C10787242-01.PDF)
-- [October 11, 2023 Intent to Apply for HUD Pro Housing Grant](/sites/clevelandohio/files/2023-10/C10765383-01%20(2).PDF)
-- [October 11, 2023 Contractor Pricing List and Contractor Rotation List](/sites/clevelandohio/files/2023-10/C10765380-01%20(1).PDF)
-- [October 4, 2023 Notice of Intent to Request Release of Funds](/sites/clevelandohio/files/Community%20Development/Legal%20Notices/C10750433-02%20(1).PDF)
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+### 
+ 
+ *
+ 
+ 
+ 2025
+ 
+ 
+ 
+
+ 
+ 
+ 
+[September 5, 2025 - Legal Notice - NORA Village](/sites/clevelandohio/files/cd/legal/Legal%20Notice%20-%20NORA%20Village.pdf)
+
+[September 2, 2025 - FONSI-and-RROF Joint Public Notice - Depot on Detroit](/sites/clevelandohio/files/cd/legal/FONSI-and-RROF%20Joint%20Public%20Notice%20-%20Depot%20on%20Detroit.pdf)
+
+[August 25, 2025 - Joint Combined Notice-City-ODOD- Hough Senior Independent Living](/sites/clevelandohio/files/cd/legal/Joint%20Combined%20Notice-City-ODOD-%20Hough%20Senior%20Independent%20Living_Final_City.pdf)
+
+[August 19, 2025 - Legal Notice - 2025 Habitat Acquisition-Rehab 13628 Belleshire Ave FONSI NOI-RROF](/sites/clevelandohio/files/cd/legal/Legal%20Notice%20-%202025%20Habitat%20Acquisition-Rehab%2013628%20Belleshire%20Ave%20FONSI%20NOI-RROF.pdf)
+
+[August 18, 2025 - FONSI-and-RROF - Gateway 66 Final Version for City and County](/sites/clevelandohio/files/cd/legal/FONSI-and-RROF%20-%20Gateway%2066%20Final%20Version%20for%20City%20and%20County.pdf)
+
+[August 11, 2025 - Fairfax Innovation Square Phase II Public Notice](/sites/clevelandohio/files/cd/legal/Fairfax%20Innovation%20Square%20Phase%20II%20Public%20Notice.pdf)
+
+[July 11, 2025 - 2025 CMHA Radon Mitigation FONSI NOI-RROF](/sites/clevelandohio/files/cd/legal/Final%20Legal%20Notice%20-%202025%20CMHA%20Radon%20Mitigation%20FONSI%20NOI-RROF.pdf)
+
+[July 11, 2025 - 2025 CMHA Habitat Tiered Review NOI-RROF](/sites/clevelandohio/files/cd/legal/Final%20Legal%20Notice%20-%202025%20CMHA%20Habitat%20Tiered%20Review%20NOI-RROF.pdf)
+
+[May 7, 2025 - Notice of Intent to Request Release of Funds for Tiered Projects and Programs](/sites/clevelandohio/files/cd/legal/2025%20Annual%20Tier%20I%20Public%20Notice%20PD%20C10991232-01.pdf)
+
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+### 
+ 
+ **
+ 
+ 
+ 2024
+ 
+ 
+ 
+
+ 
+ 
+ 
+[July 24, 2024 - Consolidated Annual Performance Evaluation Report (CAPER) - Notification of Availability for Public Review](/sites/clevelandohio/files/cd/Caper%202023%20Public%20Notice%20(Final)07242024.pdf)
+
+[June 21, 2024 City of Cleveland DRAFT application to the U.S. Department of Housing and Urban Development’s Preservation and Reinvestment Initiative for Community Enhancement (PRICE) Main Program](/sites/clevelandohio/files/Community%20Development/Legal%20Notices/Cleveland%20Draft%20PRICE%20application.pdf)
+
+[June 20, 2024 Intent to Apply for the U.S. Department of Housing and Urban Development’s Preservation and Reinvestment Initiative for Community Enhancement (PRICE) Main Program](/sites/clevelandohio/files/Community%20Development/Legal%20Notices/Public%20Notice-PRICE.pdf)
+
+[April 11, 2024 Notice of Professional Services for Housing Rehabilitation, Housing Repair, and Lead Hazard Mitigation Implementation Vendor RFP Due Date Extension](/sites/clevelandohio/files/rfp/2024/housing-rehab/Public%20Notice-%202024%20Implementation%20Vendor%20RFP%20(002)%20.%20Extension.pdf)
+
+[March 8, 2024 Notice of Finding of No Significant Impact and Notice of Intent to Request Release of Funds](/sites/clevelandohio/files/Community%20Development/Legal%20Notices/HitchcockPublicNotice.pdf)
+
+[February 9, 2024 Notice of Finding of No Significant Impact](/sites/clevelandohio/files/Community%20Development/Legal%20Notices/Public%20Posting%2089th%20Rising.pdf)
+
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+### 
+ 
+ **
+ 
+ 
+ 2023
+ 
+ 
+ 
+
+ 
+ 
+ 
+[November 29, 2023 Notice of Finding of No Significant Impact and Notice of Intent to Request Release of Funds](/sites/clevelandohio/files/C10794943-01.PDF)
+
+[November 10, 2023 Notice of Intent to Request Release of Funds](/sites/clevelandohio/files/Community%20Development/Legal%20Notices/C10787242-01.PDF)
+
+[October 11, 2023 Intent to Apply for HUD Pro Housing Grant](/sites/clevelandohio/files/2023-10/C10765383-01%20(2).PDF)
+
+[October 11, 2023 Contractor Pricing List and Contractor Rotation List](/sites/clevelandohio/files/2023-10/C10765380-01%20(1).PDF)
+
+[October 4, 2023 Notice of Intent to Request Release of Funds](/sites/clevelandohio/files/Community%20Development/Legal%20Notices/C10750433-02%20(1).PDF)
+
+ 
+ 
+ 
+ 
+
+ 
  
  
  
@@ -631,7 +739,7 @@ Jan 29, 2026
  
  
  
- [* Call Department](tel:(216) 664-4000)
+ [** Call Department](tel:(216) 664-4000)
  [** Directions](https://www.google.com/maps/dir/?api=1&destination=601+Lakeside+Ave. Room+320 Cleveland,+Ohio+44114)
  
  

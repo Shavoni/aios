@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/"
-retrieved_at: "2026-04-19T03:10:56.102Z"
+retrieved_at: "2026-04-26T03:12:03.872Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Home | City of Cleveland Ohio"
@@ -129,6 +129,23 @@ Cleveland is a city where entrepreneurial grit actually has a nice ring to it. W
  *
  
  
+ No Evidence of Process Bias in Cleveland Division of Police 2024 Stop, Search, and Seizure Data: Third-Party Firm Sigma Squared Confirms 
+
+ 
+Apr 21, 2026
+
+ 
+ ](/news/no-evidence-process-bias-cleveland-division-police-2024-stop-search-and-seizure-data-third)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
  City of Cleveland Launches Financial Empowerment Blueprint to Advance Economic Stability and Wealth-Building for Residents
 
  
@@ -153,23 +170,6 @@ Apr 02, 2026
 
  
  ](/news/city-cleveland-and-kent-state-university-launch-initiative-strengthen-police-community-trust)
- 
-
- 
-
- 
- [
- 
- 
- 
- 
- Public Notice – NOI-RROF for CD Programming: Habitat Acquisition and Rehabilitation of 3109 W 100th St
-
- 
-Mar 27, 2026
-
- 
- ](/news/public-notice-noi-rrof-cd-programming-habitat-acquisition-and-rehabilitation-3109-w-100th-st)
  
 
  
@@ -462,50 +462,6 @@ For additional information, you may contact the City of Cleveland Citizen Suppor
  [
  
  
-### Lead Screening and Testing Commission
-
- 
-
- Thursday
- | 
- Apr 23, 2026
- 
-
- 
-Virtual meeting on Zoom
-
- 
- ](/events/lead-screening-and-testing-commission)
- 
-
- 
-
- 
- [
- 
- 
-### Commission on Black Women and Girls - Meeting of the Commission
-
- 
-
- Thursday
- | 
- Apr 23, 2026
- 
-
- 
-Bridge City Church, 3381 Fulton Road, Cleveland, OH 44109
-
- 
- ](/events/commission-black-women-and-girls-meeting-commission-22)
- 
-
- 
-
- 
- [
- 
- 
 ### Civil Service Commission Meeting April 24, 2026
 
  
@@ -517,6 +473,50 @@ Bridge City Church, 3381 Fulton Road, Cleveland, OH 44109
 
  
  ](/events/civil-service-commission-meeting-april-24-2026)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+### Civil Service Commission Meeting May 8, 2026
+
+ 
+
+ Friday
+ | 
+ May 08, 2026
+ 
+
+ 
+ ](/events/civil-service-commission-meeting-may-8-2026)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+ 
+ 
+ 
+### Urban Forestry Commission: Budget Committee Meeting 05/08/2026
+
+ 
+
+ Friday
+ | 
+ May 08, 2026
+ 
+
+ 
+Webinar
+
+ 
+ ](/events/urban-forestry-commission-budget-committee-meeting-05082026)
  
 
  

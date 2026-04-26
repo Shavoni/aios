@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/departments/innovation-technology/uai"
-retrieved_at: "2026-04-19T03:10:57.284Z"
+retrieved_at: "2026-04-26T03:12:04.926Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Urban Analytics & Innovation | City of Cleveland Ohio"
@@ -70,7 +70,7 @@ knowledge_profile: "uai"
 # Urban Analytics & Innovation 
 
  
-Elizabeth Crowe, PhD - Director of Urban Analytics and Innovation
+Renee Raffalli - Director of Urban Analytics & Innovation
 
  
  
@@ -86,8 +86,6 @@ Elizabeth Crowe, PhD - Director of Urban Analytics and Innovation
  [Data Analytics](/city-hall/departments/innovation-technology/uai/data-analytics)
 
  [Data Engineering](/city-hall/departments/innovation-technology/uai/data-engineering)
-
- [Meet the Director](/city-hall/departments/innovation-technology/uai/meet-director)
 
  
 ### Menu
@@ -103,8 +101,6 @@ Elizabeth Crowe, PhD - Director of Urban Analytics and Innovation
  [Data Analytics](/city-hall/departments/innovation-technology/uai/data-analytics)
 
  [Data Engineering](/city-hall/departments/innovation-technology/uai/data-engineering)
-
- [Meet the Director](/city-hall/departments/innovation-technology/uai/meet-director)
 
  
  
