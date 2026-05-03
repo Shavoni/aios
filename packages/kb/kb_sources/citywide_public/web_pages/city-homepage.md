@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/"
-retrieved_at: "2026-04-26T03:12:03.872Z"
+retrieved_at: "2026-05-03T03:13:24.188Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Home | City of Cleveland Ohio"
@@ -462,25 +462,6 @@ For additional information, you may contact the City of Cleveland Citizen Suppor
  [
  
  
-### Civil Service Commission Meeting April 24, 2026
-
- 
-
- Friday
- | 
- Apr 24, 2026
- 
-
- 
- ](/events/civil-service-commission-meeting-april-24-2026)
- 
-
- 
-
- 
- [
- 
- 
 ### Civil Service Commission Meeting May 8, 2026
 
  
@@ -492,6 +473,28 @@ For additional information, you may contact the City of Cleveland Citizen Suppor
 
  
  ](/events/civil-service-commission-meeting-may-8-2026)
+ 
+
+ 
+
+ 
+ [
+ 
+ 
+### Public Notice - Customer Account Associate-Billing Services Exam
+
+ 
+
+ Friday
+ | 
+ May 08, 2026
+ 
+
+ 
+City Hall Room 20
+
+ 
+ ](/events/public-notice-customer-account-associate-billing-services-exam)
  
 
  

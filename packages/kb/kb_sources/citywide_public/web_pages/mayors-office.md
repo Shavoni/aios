@@ -1,6 +1,6 @@
 ---
 source_url: "https://www.clevelandohio.gov/city-hall/office-mayor"
-retrieved_at: "2026-04-26T03:12:05.936Z"
+retrieved_at: "2026-05-03T03:13:26.246Z"
 publisher: "City of Cleveland"
 source_type: "web_page"
 title: "Office of the Mayor | City of Cleveland Ohio"
